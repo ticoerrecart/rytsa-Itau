@@ -1,12 +1,16 @@
 package rytsa.itau.valuaciones;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
+import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperoOperacionesSWAPAValuarResponse;
-
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -16,6 +20,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  *
  */
 public class Valuaciones {
+
+	private static final int DIAS = 5400;
 
 	private static int modo = 2;
 
@@ -121,7 +127,13 @@ public class Valuaciones {
 
 	public static void construccionTasasFWD(RecuperoOperacionesSWAPAValuarResponse pOperaciones,
 			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda, FeriadosResponse pFeriados) {
-
+			//llamo un metodo que me devuelve el arreglo con la catidad DIAS no feriados de tasasFWD 
+			List<TasaFWD> tasasFwd =	new ArrayList<TasaFWD>(DIAS);
+			for (TasaFWD tasaFWD : tasasFwd) {
+				
+				tasaFWD.calcularFactorDeActualizacion(new Date());
+			}
+			
 	}
 
 	public static void calcularMTMParaNdf() {
