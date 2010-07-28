@@ -1,0 +1,12 @@
+<FeriadosResponse>
+	<FeriadosResult>
+		<FechaData>
+			<Fecha>30/07/2010</Fecha>
+			<Habil>0</Habil>
+		</FechaData>
+		<FechaData>
+			<Fecha>31/07/2010</Fecha>
+			<Habil>1</Habil>
+		</FechaData>
+	</FeriadosResult>
+</FeriadosResponse>
