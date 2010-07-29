@@ -1,12 +1,13 @@
 package rytsa.itau.valuaciones;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import rytsa.itau.dominio.TasaFWD;
+import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
@@ -21,7 +22,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class Valuaciones {
 
-	private static final int DIAS = 5400;
+	private static final int DIAS = 6;//5400
 
 	private static int modo = 2;
 
@@ -42,11 +43,12 @@ public class Valuaciones {
 
 	 *
 	 */
-	public static void calcularMTMParaSwap() {
+	public static void calcularMTMParaSwap(Date pFechaProceso) {
 		/*ESBClient client = null;
 		 ESBRequest esbRequest = null;
 		 ESBResponse response = new ESBResponse();
 		 try {
+		 //TODO
 		 client = ESBClientFactory.createInstance(modo, host, puerto);
 		 esbRequest = client.createRequest("RecuperoOperacionesSWAPAValuar"); //nombre del servicio
 		 esbRequest.setParameter("FechaProceso", "23/07/2010");
@@ -57,17 +59,12 @@ public class Valuaciones {
 		 esbRequest.setParameter("FechaProceso", "23/07/2010");
 		 client.execute(esbRequest, response);
 		 String sRtaAgendaCuponesOperaciones = response.getResult();
-
-		 esbRequest = client.createRequest("Feriados"); //nombre del servicio
-		 esbRequest.setParameter("FechaProceso", "23/07/2010");
-		 client.execute(esbRequest, response);
-		 String sRtaFeriados = response.getResult();*/
+		 */
 
 		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP();
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP();
-		FeriadosResponse feriados = feriados();
 
-		construccionTasasFWD(operacionesSWAP, agendaSWAP, feriados);
+		construccionTasasFWD(operacionesSWAP, agendaSWAP, diasHabiles(pFechaProceso));
 		calculoMTM();
 		/*} catch (ESBClientException e) {
 		 e.printStackTrace();
@@ -82,21 +79,23 @@ public class Valuaciones {
 
 	}
 
-	private static FeriadosResponse feriados() {
+	private static FeriadosResponse diasHabiles(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
 		InputStream is = Valuaciones.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml");
 		FeriadosResponse fr = (FeriadosResponse) xs.fromXML(is);
+
+		//TODO acá iría el llamado al WS hasta conseguir a partir de la fecha, los 5400 (DIAS) hábiles!!!!!!!!!!!
+		/*esbRequest = client.createRequest("Feriados"); //nombre del servicio
+		 esbRequest.setParameter("FechaProceso", "23/07/2010");
+		 client.execute(esbRequest, response);
+		 String sRtaFeriados = response.getResult();*/
+
 		return fr;
 	}
 
 	private static RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP() {
 		XStream xs = new XStream(new DomDriver());
-		/*RecuperoAgendaCuponesOperacionesSWAPAValuarResponse ar = new RecuperoAgendaCuponesOperacionesSWAPAValuarResponse();
-		 AgendaCuponOperacioneSWAPAValuarData data = new AgendaCuponOperacioneSWAPAValuarData();
-		 ar.addAgendaCuponOperacioneSWAPAValuarData(data);
-		 String w = xs.toXML(ar);*/
-
 		InputStream is = Valuaciones.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/agendaCuponOperacioneSWAPAValuar.xml");
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse salida = (RecuperoAgendaCuponesOperacionesSWAPAValuarResponse) xs
@@ -109,31 +108,29 @@ public class Valuaciones {
 		xs.alias("RecuperoOperacionesSWAPAValuarResponse",
 				RecuperoOperacionesSWAPAValuarResponse.class);
 		xs.alias("OperacionSWAPAValuarData", OperacionSWAPAValuarData.class);
-		/*xs.addImplicitCollection(RecuperoOperacionesSWAPAValuarResponse.class,
-		 "RecuperoOperacionesSWAPAValuarResult");*/
-		/*RecuperoOperacionesSWAPAValuarResponse rs = new RecuperoOperacionesSWAPAValuarResponse();
-		 OperacionSWAPAValuarData oa = new OperacionSWAPAValuarData();
-		 rs.addOperacionSWAPAValuarData(oa);
-		 String w = xs.toXML(rs);*/
-
 		InputStream is = Valuaciones.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/operacionesSwapAValuar.xml");
-		/*xs.addImplicitCollection(OperacionSWAPAValuarData.class,
-		 "operaciones");*/
 		RecuperoOperacionesSWAPAValuarResponse salida = (RecuperoOperacionesSWAPAValuarResponse) xs
 				.fromXML(is);
 		return salida;
 	}
 
-	public static void construccionTasasFWD(RecuperoOperacionesSWAPAValuarResponse pOperaciones,
-			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda, FeriadosResponse pFeriados) {
-			//llamo un metodo que me devuelve el arreglo con la cantidad DIAS no feriados de tasasFWD 
-			List<TasaFWD> tasasFwd =	new ArrayList<TasaFWD>(DIAS);
-			for (TasaFWD tasaFWD : tasasFwd) {
-				
-				tasaFWD.calcularFactorDeActualizacion(new Date());
-			}
-			
+	private static void construccionTasasFWD(RecuperoOperacionesSWAPAValuarResponse pOperaciones,
+			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda,
+			FeriadosResponse pDiasHabiles) {
+
+		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
+
+		for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
+			TasaFWD tasaFWD = new TasaFWD();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+			Date convertedDate = dateFormat.parse(fechaData.getFecha());
+
+			tasaFWD.setFechaPublicacion(convertedDate);
+			tasaFWD.calcularFactorDeActualizacion();
+			tasasFwd.add(tasaFWD);
+		}
+
 	}
 
 	public static void calcularMTMParaNdf() {

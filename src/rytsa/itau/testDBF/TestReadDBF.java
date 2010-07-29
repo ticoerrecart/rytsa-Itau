@@ -14,7 +14,7 @@ public class TestReadDBF {
 		try {
 
 			// create a DBFReader object
-			InputStream inputStream = new FileInputStream("E:\\DESARROLLO\\Workspace\\Itau\\DBFs\\curva_3.DBF");
+			InputStream inputStream = new FileInputStream("C:\\Documents and Settings\\rerrecart\\Mis documentos\\rytsa\\Itau\\DBFs\\curva_4.DBF");
 			DBFReader reader = new DBFReader(inputStream);
 
 			// get the field count if you want for some reasons like the
