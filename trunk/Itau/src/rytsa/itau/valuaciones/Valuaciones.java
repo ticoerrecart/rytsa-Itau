@@ -127,7 +127,7 @@ public class Valuaciones {
 
 	public static void construccionTasasFWD(RecuperoOperacionesSWAPAValuarResponse pOperaciones,
 			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda, FeriadosResponse pFeriados) {
-			//llamo un metodo que me devuelve el arreglo con la catidad DIAS no feriados de tasasFWD 
+			//llamo un metodo que me devuelve el arreglo con la cantidad DIAS no feriados de tasasFWD 
 			List<TasaFWD> tasasFwd =	new ArrayList<TasaFWD>(DIAS);
 			for (TasaFWD tasaFWD : tasasFwd) {
 				
