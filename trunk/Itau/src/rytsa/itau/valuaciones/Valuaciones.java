@@ -132,12 +132,15 @@ public class Valuaciones {
 
 		try {
 			List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
-			Long plazo = null;
+			Double plazo = null;
 			for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
 				//TasaFWD tasaFWD = new TasaFWD();
 				Date fecha = DateUtils.stringToDate(fechaData.getFecha());
-				plazo = fecha.getTime() - pFechaProceso.getTime();
-				tasasFwd.addAll(DAO.obtenerFechaAct(DateUtils.convertDate(fecha), plazo));
+				plazo = Math.floor((fecha.getTime() - pFechaProceso.getTime())
+						/ (1000 * 60 * 60 * 24));
+
+				tasasFwd.addAll(DAO.obtenerFechaAct(DateUtils.convertDate(pFechaProceso), plazo
+						.longValue()));
 			}
 		} catch (ParseException e) {
 			// TODO Bloque catch generado automáticamente
