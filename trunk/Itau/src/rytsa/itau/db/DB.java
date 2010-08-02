@@ -2,13 +2,19 @@ package rytsa.itau.db;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Date;
 
 import rytsa.itau.utils.FileUtils;
+import br.com.softsite.sfc.tini.persistence.FieldNotFoundException;
+import br.com.softsite.sfc.tini.persistence.FieldTypeException;
+import br.com.softsite.sfc.tini.persistence.Table;
+import br.com.softsite.sfc.tini.persistence.TableCorruptException;
 
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
@@ -20,7 +26,7 @@ public class DB {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-
+		test();
 		try {
 
 			// create a DBFReader object
@@ -38,7 +44,7 @@ public class DB {
 
 			// Now, lets us start reading the rows
 			int filas = reader.getRecordCount();
-
+			System.out.println("Otro método!!!!!!!!!!!!!!!!!!!!!");
 			for (int j = 0; j < filas; j++) {
 				try {
 					Object[] rowObjects = reader.nextRecord();
@@ -66,6 +72,45 @@ public class DB {
 		}
 	}
 
+	public static void test() {
+		try {
+			Table t = new Table(
+					"/home/rodolfo/workspaces/workspace1/Itau/DBFs/curva_4.DBF");
+			System.out.println(t.getNumberOfRecords());
+			for (int i = 0; i < t.getNumberOfRecords(); i++) {
+				t.nextRecord();
+				try {
+					Integer plazo = t.getFieldInteger("PLAZO");
+					Double tna = t.getFieldDouble("TNA");
+					Double fDesc = t.getFieldDouble("F_DESC");
+					Double fAct = t.getFieldDouble("F_ACT");
+					Date dProc = t.getFieldDate("D_PROC");
+					System.out.println(plazo + " | " + tna + " | " + fDesc
+							+ " | " + fAct + " | " + dProc);
+				} catch (NumberFormatException nfe) {
+					System.err.println(nfe.getMessage());
+				}
+
+			}
+			t.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TableCorruptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FieldNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FieldTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static void crearCupon4() {
 		try {
 			Connection conn = DB.getConnection();
@@ -84,9 +129,9 @@ public class DB {
 
 					for (int i = 0; i < rowObjects.length; i++) {
 						System.out.print(rowObjects[i] + " | ");
-						stmt.setObject(i+1, rowObjects[i]);
+						stmt.setObject(i + 1, rowObjects[i]);
 					}
-					
+
 					stmt.execute();
 					System.out.println("---------------------------");
 
@@ -122,4 +167,5 @@ public class DB {
 		Connection connection = DriverManager.getConnection(url);
 		return connection;
 	}
+
 }
