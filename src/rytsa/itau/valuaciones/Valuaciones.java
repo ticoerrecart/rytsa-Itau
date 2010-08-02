@@ -1,14 +1,17 @@
 package rytsa.itau.valuaciones;
 
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.TasaFWD;
+import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
+import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperoOperacionesSWAPAValuarResponse;
@@ -64,7 +67,7 @@ public class Valuaciones {
 		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP();
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP();
 
-		construccionTasasFWD(operacionesSWAP, agendaSWAP, diasHabiles(pFechaProceso));
+		construccionTasasFWD(operacionesSWAP, agendaSWAP, diasHabiles(pFechaProceso), pFechaProceso);
 		calculoMTM();
 		/*} catch (ESBClientException e) {
 		 e.printStackTrace();
@@ -81,6 +84,9 @@ public class Valuaciones {
 
 	private static FeriadosResponse diasHabiles(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
+		xs.alias("FeriadosResponse", FeriadosResponse.class);
+		xs.alias("FechaData", FechaData.class);
+
 		InputStream is = Valuaciones.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml");
 		FeriadosResponse fr = (FeriadosResponse) xs.fromXML(is);
@@ -96,6 +102,11 @@ public class Valuaciones {
 
 	private static RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP() {
 		XStream xs = new XStream(new DomDriver());
+		xs.alias("RecuperoAgendaCuponesOperacionesSWAPAValuarResponse",
+				RecuperoAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs
+				.alias("AgendaCuponOperacioneSWAPAValuarData",
+						AgendaCuponOperacioneSWAPAValuarData.class);
 		InputStream is = Valuaciones.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/agendaCuponOperacioneSWAPAValuar.xml");
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse salida = (RecuperoAgendaCuponesOperacionesSWAPAValuarResponse) xs
@@ -117,18 +128,20 @@ public class Valuaciones {
 
 	private static void construccionTasasFWD(RecuperoOperacionesSWAPAValuarResponse pOperaciones,
 			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda,
-			FeriadosResponse pDiasHabiles) {
+			FeriadosResponse pDiasHabiles, Date pFechaProceso) {
 
-		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
-
-		for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
-			TasaFWD tasaFWD = new TasaFWD();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-			Date convertedDate = dateFormat.parse(fechaData.getFecha());
-
-			tasaFWD.setFechaPublicacion(convertedDate);
-			tasaFWD.calcularFactorDeActualizacion();
-			tasasFwd.add(tasaFWD);
+		try {
+			List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
+			Long plazo = null;
+			for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
+				//TasaFWD tasaFWD = new TasaFWD();
+				Date fecha = DateUtils.stringToDate(fechaData.getFecha());
+				plazo = fecha.getTime() - pFechaProceso.getTime();
+				tasasFwd.addAll(DAO.obtenerFechaAct(DateUtils.convertDate(fecha), plazo));
+			}
+		} catch (ParseException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
 		}
 
 	}
