@@ -2,87 +2,87 @@ package rytsa.itau.valuaciones.dto.swap;
 
 public class AgendaCuponOperacioneSWAPAValuarData {
 
-	public String numeroOperacion;
+	public String NumeroOperacion;
 
-	public String idCupon;
+	public String IdCupon;
 
-	public String tipoFlujo;
+	public String TipoFlujo;
 
-	public String receivedOPayment;
+	public String ReceivedOPayment;
 
-	public String fechaInicio;
+	public String FechaInicio;
 
-	public String fechaVencimiento;
+	public String FechaVencimiento;
 
-	public String fechaIndiceInicio;
+	public String FechaIndiceInicio;
 
-	public String fechaIndiceFin;
+	public String FechaIndiceFin;
 
 	public AgendaCuponOperacioneSWAPAValuarData() {
 	}
 
 	public String getFechaIndiceFin() {
-		return fechaIndiceFin;
+		return FechaIndiceFin;
 	}
 
 	public void setFechaIndiceFin(String fechaIndiceFin) {
-		this.fechaIndiceFin = fechaIndiceFin;
+		FechaIndiceFin = fechaIndiceFin;
 	}
 
 	public String getFechaIndiceInicio() {
-		return fechaIndiceInicio;
+		return FechaIndiceInicio;
 	}
 
 	public void setFechaIndiceInicio(String fechaIndiceInicio) {
-		this.fechaIndiceInicio = fechaIndiceInicio;
+		FechaIndiceInicio = fechaIndiceInicio;
 	}
 
 	public String getFechaInicio() {
-		return fechaInicio;
+		return FechaInicio;
 	}
 
 	public void setFechaInicio(String fechaInicio) {
-		this.fechaInicio = fechaInicio;
+		FechaInicio = fechaInicio;
 	}
 
 	public String getFechaVencimiento() {
-		return fechaVencimiento;
+		return FechaVencimiento;
 	}
 
 	public void setFechaVencimiento(String fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
+		FechaVencimiento = fechaVencimiento;
 	}
 
 	public String getIdCupon() {
-		return idCupon;
+		return IdCupon;
 	}
 
 	public void setIdCupon(String idCupon) {
-		this.idCupon = idCupon;
+		IdCupon = idCupon;
 	}
 
 	public String getNumeroOperacion() {
-		return numeroOperacion;
+		return NumeroOperacion;
 	}
 
 	public void setNumeroOperacion(String numeroOperacion) {
-		this.numeroOperacion = numeroOperacion;
+		NumeroOperacion = numeroOperacion;
 	}
 
 	public String getReceivedOPayment() {
-		return receivedOPayment;
+		return ReceivedOPayment;
 	}
 
 	public void setReceivedOPayment(String receivedOPayment) {
-		this.receivedOPayment = receivedOPayment;
+		ReceivedOPayment = receivedOPayment;
 	}
 
 	public String getTipoFlujo() {
-		return tipoFlujo;
+		return TipoFlujo;
 	}
 
 	public void setTipoFlujo(String tipoFlujo) {
-		this.tipoFlujo = tipoFlujo;
+		TipoFlujo = tipoFlujo;
 	}
 
 }
