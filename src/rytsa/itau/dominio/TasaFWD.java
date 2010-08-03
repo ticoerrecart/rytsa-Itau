@@ -1,7 +1,13 @@
 package rytsa.itau.dominio;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
@@ -15,7 +21,7 @@ public class TasaFWD {
 
 	private Date fechaVencimientoPlazoFijo;
 
-	private Date fechaPublicacionVencimiento;
+	private TasaFWD tasaParafechaPublicacionVencimiento;
 
 	private Double tasaDWD;
 
@@ -68,11 +74,13 @@ public class TasaFWD {
 		this.setFechaVencimientoPlazoFijo(fecha);
 	}
 
-	public void calcularFechaPublicacionVencimiento() throws Exception {
+	public void calcularFechaPublicacionVencimiento(List<TasaFWD> tasas) throws Exception {
 		if (fechaVencimientoPlazoFijo == null) {
 			throw new Exception("fechaVencimientoPlazoFijo es nula");
 		}
-		this.setFechaPublicacionVencimiento(addDiasHabiles(this.getFechaVencimientoPlazoFijo(), 2));
+		Date fecha = addDiasHabiles(this.getFechaVencimientoPlazoFijo(), 2);
+		TasaFWD tasaFwd = (TasaFWD) CollectionUtils.find(tasas, new BeanPropertyValueEqualsPredicate("fechaPublicacion",fecha));
+		this.setTasaParafechaPublicacionVencimiento(tasaFwd);
 	}
 
 	public void calcularTasaFWD() {
@@ -111,20 +119,21 @@ public class TasaFWD {
 		this.fechaMercado = fechaMercado;
 	}
 
-	public Date getFechaPublicacionVencimiento() {
-		return fechaPublicacionVencimiento;
-	}
-
-	public void setFechaPublicacionVencimiento(Date fechaPublicacionVencimiento) {
-		this.fechaPublicacionVencimiento = fechaPublicacionVencimiento;
-	}
-
 	public Double getTasaDWD() {
 		return tasaDWD;
 	}
 
 	public void setTasaDWD(Double tasaDWD) {
 		this.tasaDWD = tasaDWD;
+	}
+
+	public TasaFWD getTasaParafechaPublicacionVencimiento() {
+		return tasaParafechaPublicacionVencimiento;
+	}
+
+	public void setTasaParafechaPublicacionVencimiento(
+			TasaFWD tasaParafechaPublicacionVencimiento) {
+		this.tasaParafechaPublicacionVencimiento = tasaParafechaPublicacionVencimiento;
 	}
 
 }
