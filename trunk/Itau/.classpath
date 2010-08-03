@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="lib/ESBconFuentes.jar"/>
 	<classpathentry kind="lib" path="lib/sqlitejdbc-v056.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JavaDBF"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-1.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
