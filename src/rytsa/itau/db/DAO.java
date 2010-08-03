@@ -6,12 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import rytsa.itau.db.factory.DatabaseFactory;
-import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import br.com.softsite.sfc.tini.persistence.FieldNotFoundException;
 import br.com.softsite.sfc.tini.persistence.FieldTypeException;
@@ -162,30 +159,50 @@ public class DAO {
 		}
 	}
 
-	public static List<TasaFWD> obtenerFechaAct(java.sql.Date pFecha, Long pPlazo) {
-		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
+	/*	public static TasaFWD obtenerFechaAct(java.sql.Date pFecha, Long pPlazo) {
+	 TasaFWD tasa = null;
+	 ResultSet rs = null;
+	 Connection conn = null;
+	 PreparedStatement ps = null;
+	 try {
+	 conn = DatabaseFactory.getConnection();
+	 ps = conn.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");
+	 ps.setDate(1, pFecha);
+	 ps.setLong(2, pPlazo);
+	 rs = ps.executeQuery();
+	 if (rs.next()) {
+	 tasa = new TasaFWD();
+	 tasa.setFechaPublicacion(pFecha);
+	 tasa.setFactorDeActualizacion(rs.getDouble("F_ACT"));
+	 }
+	 } catch (Exception e) {
+	 // TODO Bloque catch generado automáticamente
+	 e.printStackTrace();
+	 }
+
+	 return tasa;
+
+	 }*/
+
+	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo) throws SQLException,
+			Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
-		try {
-			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");
-			ps.setDate(1, pFecha);
-			ps.setLong(2, pPlazo);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				TasaFWD tasa = new TasaFWD();
-				tasa.setFechaPublicacion(pFecha);
-				tasa.setFactorDeActualizacion(rs.getDouble("F_ACT"));
-				tasasFwd.add(tasa);
-			}
-		} catch (Exception e) {
-			// TODO Bloque catch generado automáticamente
-			e.printStackTrace();
+		Double factorAct = null;
+
+		conn = DatabaseFactory.getConnection();
+		ps = conn.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");
+		ps.setDate(1, pFecha);
+		ps.setLong(2, pPlazo);
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			factorAct = rs.getDouble("F_ACT");
+		} else {
+			throw new Exception("No se pudo obtener el factor de actualización");
 		}
 
-		return tasasFwd;
+		return factorAct;
 
 	}
-
 }
