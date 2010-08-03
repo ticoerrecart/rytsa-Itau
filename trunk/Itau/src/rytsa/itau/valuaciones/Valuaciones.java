@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
@@ -130,22 +129,29 @@ public class Valuaciones {
 			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda,
 			FeriadosResponse pDiasHabiles, Date pFechaProceso) {
 
-		try {
-			List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
-			Double plazo = null;
-			for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
-				//TasaFWD tasaFWD = new TasaFWD();
-				Date fecha = DateUtils.stringToDate(fechaData.getFecha());
-				plazo = Math.floor((fecha.getTime() - pFechaProceso.getTime())
-						/ (1000 * 60 * 60 * 24));
+		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
+		//Double plazo = null;
+		for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
+			try {
 
-				tasasFwd.addAll(DAO.obtenerFechaAct(DateUtils.convertDate(pFechaProceso), plazo
-						.longValue()));
+				TasaFWD tasa = new TasaFWD();
+				//1) Armado de fechas PUBLIC_T + Factor de Actualización (Obtenido de Cupon_4).
+				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils.stringToDate(fechaData
+						.getFecha()));
+				//2) Obtener  fechas de mercado (Fecha “T”)
+				tasa.calcularFechaMercado();
+				//3) Obtener  fechas de Vencimiento Plazos Fijos (Fecha “D”)
+				tasa.calcularFechaVencimientoPzoFijo();
+				tasa.calcularTasaFWD();
+				tasasFwd.add(tasa);
+			} catch (ParseException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
 			}
-		} catch (ParseException e) {
-			// TODO Bloque catch generado automáticamente
-			e.printStackTrace();
-		}
+		}//end for
 
 	}
 
