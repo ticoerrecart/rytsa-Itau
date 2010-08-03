@@ -1,5 +1,6 @@
 package rytsa.itau.db;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -28,7 +29,7 @@ public class DAO {
 	public static void testDBF() {
 		try {
 			Table t = new Table(
-					"C:\\Documents and Settings\\rerrecart\\Mis documentos\\rytsa\\Itau\\DBFs\\curva_4.DBF");
+					"DBFs/curva_4.DBF");
 			System.out.println(t.getNumberOfRecords());
 			for (int i = 0; i < t.getNumberOfRecords(); i++) {
 				t.nextRecord();
@@ -95,8 +96,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
 			String sql = "INSERT INTO Cupon_4 VALUES(?, ?, ?, ?, ?);";
-			t = new Table(
-					"C:\\Documents and Settings\\rerrecart\\Mis documentos\\rytsa\\Itau\\DBFs\\curva_4.DBF");
+			t = new Table("DBFs/curva_4.DBF");
 			int numRecords = t.getNumberOfRecords();
 
 			System.out.println(t.getNumberOfRecords() + " registros");

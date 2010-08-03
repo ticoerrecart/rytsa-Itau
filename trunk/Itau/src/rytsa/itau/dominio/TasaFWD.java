@@ -27,11 +27,9 @@ public class TasaFWD {
 
 	public void calcularFactorDeActualizacion(Date pFechaProceso, Date pFecha) throws SQLException,
 			Exception {
-		Double plazo = Math.floor((pFecha.getTime() - pFechaProceso.getTime())
-				/ (1000 * 60 * 60 * 24));
+		long plazo = DateUtils.diferenciaEntreFechas(pFecha, pFechaProceso);
 		this.setFechaPublicacion(pFecha);
-		this.setFactorDeActualizacion(DAO.obtenerFactorAct(DateUtils.convertDate(pFechaProceso),
-				plazo.longValue()));
+		this.setFactorDeActualizacion(DAO.obtenerFactorAct(DateUtils.convertDate(pFechaProceso), plazo));
 	}
 
 	private boolean esDiaHabil(Date pFecha) {
@@ -85,6 +83,10 @@ public class TasaFWD {
 
 	public void calcularTasaFWD() {
 		
+		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(), this.getTasaParafechaPublicacionVencimiento().getFechaPublicacion());
+		
+		this.setTasaDWD(
+				(((this.getFactorDeActualizacion()/this.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion())-1)*365/N)*100);
 	}
 
 	public Date getFechaVencimientoPlazoFijo() {
