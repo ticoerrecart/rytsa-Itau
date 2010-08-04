@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
@@ -65,8 +66,7 @@ public class Valuaciones {
 		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP();
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP();
 
-		construccionTasasFWD(operacionesSWAP, agendaSWAP,
-				diasHabiles(pFechaProceso), pFechaProceso);
+		construccionTasasFWD(operacionesSWAP, agendaSWAP, diasHabiles(pFechaProceso), pFechaProceso);
 		calculoMTM();
 		/*
 		 * } catch (ESBClientException e) { e.printStackTrace(); } finally { if
@@ -86,7 +86,7 @@ public class Valuaciones {
 		InputStream is = Valuaciones.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml");
 		FeriadosResponse fr = (FeriadosResponse) xs.fromXML(is);
-		
+
 		// TODO acá iría el llamado al WS hasta conseguir a partir de la fecha,
 		// los 5400 (DIAS) hábiles!!!!!!!!!!!
 		/*
@@ -103,8 +103,9 @@ public class Valuaciones {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("RecuperoAgendaCuponesOperacionesSWAPAValuarResponse",
 				RecuperoAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.alias("AgendaCuponOperacioneSWAPAValuarData",
-				AgendaCuponOperacioneSWAPAValuarData.class);
+		xs
+				.alias("AgendaCuponOperacioneSWAPAValuarData",
+						AgendaCuponOperacioneSWAPAValuarData.class);
 		InputStream is = Valuaciones.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/agendaCuponOperacioneSWAPAValuar.xml");
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse salida = (RecuperoAgendaCuponesOperacionesSWAPAValuarResponse) xs
@@ -124,22 +125,20 @@ public class Valuaciones {
 		return salida;
 	}
 
-	private static void construccionTasasFWD(
-			RecuperoOperacionesSWAPAValuarResponse pOperaciones,
+	private static void construccionTasasFWD(RecuperoOperacionesSWAPAValuarResponse pOperaciones,
 			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda,
 			FeriadosResponse pDiasHabiles, Date pFechaProceso) {
 
-	
 		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
 		// Double plazo = null;
-		for (FechaData fechaData :  pDiasHabiles.getFeriadosResult()) {
+		for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
 			try {
 
 				TasaFWD tasa = new TasaFWD();
 				// 1) Armado de fechas PUBLIC_T + Factor de Actualización
 				// (Obtenido de Cupon_4).
-				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils
-						.stringToDate(fechaData.getFecha()));
+				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils.stringToDate(fechaData
+						.getFecha()));
 				// 2) Obtener fechas de mercado (Fecha “T”)
 				tasa.calcularFechaMercado();
 				// 3) Obtener fechas de Vencimiento Plazos Fijos (Fecha “D”)
@@ -154,10 +153,10 @@ public class Valuaciones {
 				e.printStackTrace();
 			}
 		}// end for
-		
+
 		//Tengo q crear 28 Tasas forward mas para calcular las necesarias... porque miramos tasas futuras.
 		//En el arreglo final no las agrego
-		for (TasaFWD tasa : tasasFwd.subList(0, tasasFwd.size()-31)) {
+		for (TasaFWD tasa : tasasFwd.subList(0, tasasFwd.size() - 31)) {
 			try {
 				tasa.calcularFechaPublicacionVencimiento(tasasFwd);
 				tasa.calcularTasaFWD();
@@ -171,6 +170,7 @@ public class Valuaciones {
 			}
 		}
 
+		DAO.crearTasaFWD(tasasFwd, pFechaProceso);
 	}
 
 	public static void calcularMTMParaNdf() {
