@@ -96,6 +96,10 @@ public class DAO {
 		Table t = null;
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
+			String sqlDelete = "DELETE FROM Cupon_4;";//http://www.sqlite.org/lang_delete.html#trucateopt
+			ps = conn.prepareStatement(sqlDelete);
+			ps.executeUpdate();
+
 			String sql = "INSERT INTO Cupon_4 VALUES(?, ?, ?, ?, ?);";
 			t = new Table("DBFs/curva_4.DBF");
 			int numRecords = t.getNumberOfRecords();
@@ -160,31 +164,6 @@ public class DAO {
 		}
 	}
 
-	/*	public static TasaFWD obtenerFechaAct(java.sql.Date pFecha, Long pPlazo) {
-	 TasaFWD tasa = null;
-	 ResultSet rs = null;
-	 Connection conn = null;
-	 PreparedStatement ps = null;
-	 try {
-	 conn = DatabaseFactory.getConnection();
-	 ps = conn.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");
-	 ps.setDate(1, pFecha);
-	 ps.setLong(2, pPlazo);
-	 rs = ps.executeQuery();
-	 if (rs.next()) {
-	 tasa = new TasaFWD();
-	 tasa.setFechaPublicacion(pFecha);
-	 tasa.setFactorDeActualizacion(rs.getDouble("F_ACT"));
-	 }
-	 } catch (Exception e) {
-	 // TODO Bloque catch generado automáticamente
-	 e.printStackTrace();
-	 }
-
-	 return tasa;
-
-	 }*/
-
 	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo) throws SQLException,
 			Exception {
 		ResultSet rs = null;
@@ -213,11 +192,14 @@ public class DAO {
 		Table t = null;
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
-
+			String sqlDelete = "DELETE FROM Tasa_FWD;";//http://www.sqlite.org/lang_delete.html#trucateopt
+			ps = conn.prepareStatement(sqlDelete);
+			ps.executeUpdate();
 			String sql = "INSERT INTO Tasa_FWD VALUES(?, ?, ?, ?);";
 			int i = 1;
-			for (TasaFWD tasa : pTasas) {
+			for (TasaFWD tasa : pTasas.subList(0, pTasas.size() - 31)) {
 				ps = conn.prepareStatement(sql);
+				System.out.println(tasa.getFechaPublicacion() + "-" + tasa.getTasaFWD());
 				ps.setInt(1, i);
 				ps.setDate(2, DateUtils.convertDate(pFechaProceso));
 				ps.setDate(3, DateUtils.convertDate(tasa.getFechaPublicacion()));
