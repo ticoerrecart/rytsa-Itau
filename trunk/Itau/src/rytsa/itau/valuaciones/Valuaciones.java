@@ -154,10 +154,14 @@ public class Valuaciones {
 				e.printStackTrace();
 			}
 		}// end for
-		for (TasaFWD tasa : tasasFwd) {
+		
+		//Tengo q crear 28 Tasas forward mas para calcular las necesarias... porque miramos tasas futuras.
+		//En el arreglo final no las agrego
+		for (TasaFWD tasa : tasasFwd.subList(0, tasasFwd.size()-31)) {
 			try {
 				tasa.calcularFechaPublicacionVencimiento(tasasFwd);
 				tasa.calcularTasaFWD();
+				System.out.println(tasa.getFechaPublicacion() + "->" + tasa.getTasaFWD());
 			} catch (ParseException e) {
 				// TODO Bloque catch generado automáticamente
 				e.printStackTrace();

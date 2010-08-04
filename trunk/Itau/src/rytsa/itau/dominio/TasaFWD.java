@@ -23,7 +23,7 @@ public class TasaFWD {
 
 	private TasaFWD tasaParafechaPublicacionVencimiento;
 
-	private Double tasaDWD;
+	private Double tasaFWD;
 
 	public void calcularFactorDeActualizacion(Date pFechaProceso, Date pFecha) throws SQLException,
 			Exception {
@@ -85,8 +85,8 @@ public class TasaFWD {
 		
 		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(), this.getTasaParafechaPublicacionVencimiento().getFechaPublicacion());
 		
-		this.setTasaDWD(
-				(((this.getFactorDeActualizacion()/this.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion())-1)*365/N)*100);
+		this.setTasaFWD(
+				(((this.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion()/this.getFactorDeActualizacion())-1)*365/N)*100);
 	}
 
 	public Date getFechaVencimientoPlazoFijo() {
@@ -121,12 +121,12 @@ public class TasaFWD {
 		this.fechaMercado = fechaMercado;
 	}
 
-	public Double getTasaDWD() {
-		return tasaDWD;
+	public Double getTasaFWD() {
+		return tasaFWD;
 	}
 
-	public void setTasaDWD(Double tasaDWD) {
-		this.tasaDWD = tasaDWD;
+	public void setTasaFWD(Double tasaFWD) {
+		this.tasaFWD = tasaFWD;
 	}
 
 	public TasaFWD getTasaParafechaPublicacionVencimiento() {
