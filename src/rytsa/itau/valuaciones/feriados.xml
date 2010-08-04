@@ -1,10 +1,6 @@
 <FeriadosResponse>
 	<FeriadosResult>
 		<FechaData>
-			<Fecha>02/03/2010</Fecha>
-			<Habil>0</Habil>
-		</FechaData>
-		<FechaData>
 			<Fecha>03/03/2010</Fecha>
 			<Habil>0</Habil>
 		</FechaData>
