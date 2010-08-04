@@ -1,12 +1,10 @@
 package rytsa.itau.dominio;
 
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 
 import rytsa.itau.db.DAO;
@@ -29,7 +27,8 @@ public class TasaFWD {
 			Exception {
 		long plazo = DateUtils.diferenciaEntreFechas(pFecha, pFechaProceso);
 		this.setFechaPublicacion(pFecha);
-		this.setFactorDeActualizacion(DAO.obtenerFactorAct(DateUtils.convertDate(pFechaProceso), plazo));
+		this.setFactorDeActualizacion(DAO.obtenerFactorAct(DateUtils.convertDate(pFechaProceso),
+				plazo));
 	}
 
 	private boolean esDiaHabil(Date pFecha) {
@@ -77,16 +76,19 @@ public class TasaFWD {
 			throw new Exception("fechaVencimientoPlazoFijo es nula");
 		}
 		Date fecha = addDiasHabiles(this.getFechaVencimientoPlazoFijo(), 2);
-		TasaFWD tasaFwd = (TasaFWD) CollectionUtils.find(tasas, new BeanPropertyValueEqualsPredicate("fechaPublicacion",fecha));
+		TasaFWD tasaFwd = (TasaFWD) CollectionUtils.find(tasas,
+				new BeanPropertyValueEqualsPredicate("fechaPublicacion", fecha));
 		this.setTasaParafechaPublicacionVencimiento(tasaFwd);
 	}
 
 	public void calcularTasaFWD() {
-		
-		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(), this.getTasaParafechaPublicacionVencimiento().getFechaPublicacion());
-		
-		this.setTasaFWD(
-				(((this.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion()/this.getFactorDeActualizacion())-1)*365/N)*100);
+
+		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(), this
+				.getTasaParafechaPublicacionVencimiento().getFechaPublicacion());
+
+		this
+				.setTasaFWD((((this.getFactorDeActualizacion() / this
+						.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion()) - 1) * 365 / N) * 100);
 	}
 
 	public Date getFechaVencimientoPlazoFijo() {
@@ -133,8 +135,7 @@ public class TasaFWD {
 		return tasaParafechaPublicacionVencimiento;
 	}
 
-	public void setTasaParafechaPublicacionVencimiento(
-			TasaFWD tasaParafechaPublicacionVencimiento) {
+	public void setTasaParafechaPublicacionVencimiento(TasaFWD tasaParafechaPublicacionVencimiento) {
 		this.tasaParafechaPublicacionVencimiento = tasaParafechaPublicacionVencimiento;
 	}
 
