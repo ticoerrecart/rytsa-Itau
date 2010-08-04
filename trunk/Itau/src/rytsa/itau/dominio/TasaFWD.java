@@ -87,8 +87,8 @@ public class TasaFWD {
 				.getTasaParafechaPublicacionVencimiento().getFechaPublicacion());
 
 		this
-				.setTasaFWD((((this.getFactorDeActualizacion() / this
-						.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion()) - 1) * 365 / N) * 100);
+				.setTasaFWD((((this.getTasaParafechaPublicacionVencimiento()
+						.getFactorDeActualizacion() / this.getFactorDeActualizacion()) - 1) * 365 / N) * 100);
 	}
 
 	public Date getFechaVencimientoPlazoFijo() {
