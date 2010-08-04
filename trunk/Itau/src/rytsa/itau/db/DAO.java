@@ -1,6 +1,5 @@
 package rytsa.itau.db;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,8 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import rytsa.itau.db.factory.DatabaseFactory;
+import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import br.com.softsite.sfc.tini.persistence.FieldNotFoundException;
 import br.com.softsite.sfc.tini.persistence.FieldTypeException;
@@ -26,44 +27,44 @@ public class DAO {
 		verCupon4Data();
 	}
 
-	public static void testDBF() {
-		try {
-			Table t = new Table(
-					"DBFs/curva_4.DBF");
-			System.out.println(t.getNumberOfRecords());
-			for (int i = 0; i < t.getNumberOfRecords(); i++) {
-				t.nextRecord();
-				try {
-					Integer plazo = t.getFieldInteger("PLAZO");
-					Double tna = t.getFieldDouble("TNA");
-					Double fDesc = t.getFieldDouble("F_DESC");
-					Double fAct = t.getFieldDouble("F_ACT");
-					Date dProc = t.getFieldDate("D_PROC");
-					System.out.println(plazo + " | " + tna + " | " + fDesc + " | " + fAct + " | "
-							+ dProc);
-				} catch (NumberFormatException nfe) {
-					System.err.println(nfe.getMessage());
-				}
+	/*	public static void testDBF() {
+	 try {
+	 Table t = new Table("DBFs/curva_4.DBF");
+	 System.out.println(t.getNumberOfRecords());
+	 for (int i = 0; i < t.getNumberOfRecords(); i++) {
+	 t.nextRecord();
+	 try {
+	 Integer plazo = t.getFieldInteger("PLAZO");
+	 Double tna = t.getFieldDouble("TNA");
+	 Double fDesc = t.getFieldDouble("F_DESC");
+	 Double fAct = t.getFieldDouble("F_ACT");
+	 Date dProc = t.getFieldDate("D_PROC");
+	 System.out.println(plazo + " | " + tna + " | " + fDesc + " | " + fAct + " | "
+	 + dProc);
+	 } catch (NumberFormatException nfe) {
+	 System.err.println(nfe.getMessage());
+	 }
 
-			}
-			t.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TableCorruptException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FieldNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FieldTypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	 }
+	 t.close();
+	 } catch (FileNotFoundException e) {
+	 // TODO Auto-generated catch block
+	 e.printStackTrace();
+	 } catch (IOException e) {
+	 // TODO Auto-generated catch block
+	 e.printStackTrace();
+	 } catch (TableCorruptException e) {
+	 // TODO Auto-generated catch block
+	 e.printStackTrace();
+	 } catch (FieldNotFoundException e) {
+	 // TODO Auto-generated catch block
+	 e.printStackTrace();
+	 } catch (FieldTypeException e) {
+	 // TODO Auto-generated catch block
+	 e.printStackTrace();
+	 }
+	 }
+	 */
 
 	public static void verCupon4Data() {
 		Connection conn = null;
@@ -205,4 +206,40 @@ public class DAO {
 		return factorAct;
 
 	}
+
+	public static void crearTasaFWD(List<TasaFWD> pTasas, Date pFechaProceso) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Table t = null;
+		try {
+			conn = DatabaseFactory.getConnectionForBulk();
+
+			String sql = "INSERT INTO Tasa_FWD VALUES(?, ?, ?, ?);";
+			int i = 1;
+			for (TasaFWD tasa : pTasas) {
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, i);
+				ps.setDate(2, DateUtils.convertDate(pFechaProceso));
+				ps.setDate(3, DateUtils.convertDate(tasa.getFechaPublicacion()));
+				ps.setDouble(4, tasa.getTasaFWD());
+				ps.executeUpdate();
+				i++;
+			}
+
+		} catch (SQLException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} finally {
+			try {
+				DatabaseFactory.closeConnectionForBulk(conn, ps);
+			} catch (SQLException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			}
+		}
+	}
+
 }
