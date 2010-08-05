@@ -1,10 +1,14 @@
 package rytsa.itau.valuaciones;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.easymock.EasyMock;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.TasaFWD;
@@ -15,6 +19,11 @@ import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperoOperacionesSWAPAValuarResponse;
+import ar.com.itau.esb.client.ESBClient;
+import ar.com.itau.esb.client.ESBClientException;
+import ar.com.itau.esb.client.ESBClientFactory;
+import ar.com.itau.esb.client.ESBRequest;
+import ar.com.itau.esb.client.ESBResponse;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -27,7 +36,7 @@ public class Valuaciones {
 
 	private static final int DIAS = 6;// 5400
 
-	private static int modo = 2;
+	private static int modo = 4;
 
 	private static int puerto = 2424;
 
@@ -47,35 +56,51 @@ public class Valuaciones {
 	 * 
 	 */
 	public static void calcularMTMParaSwap(Date pFechaProceso) {
-		/*
-		 * ESBClient client = null; ESBRequest esbRequest = null; ESBResponse
-		 * response = new ESBResponse(); try { //TODO client =
-		 * ESBClientFactory.createInstance(modo, host, puerto); esbRequest =
-		 * client.createRequest("RecuperoOperacionesSWAPAValuar"); //nombre del
-		 * servicio esbRequest.setParameter("FechaProceso", "23/07/2010");
-		 * client.execute(esbRequest, response); String sRtaOperaciones =
-		 * response.getResult();
-		 * 
-		 * esbRequest =
-		 * client.createRequest("RecuperoAgendaCuponesOperacionesSWAPAValuar");
-		 * //nombre del servicio esbRequest.setParameter("FechaProceso",
-		 * "23/07/2010"); client.execute(esbRequest, response); String
-		 * sRtaAgendaCuponesOperaciones = response.getResult();
-		 */
+
+		/*ESBClient client = null;
+		 ESBRequest esbRequest = null;
+		 ESBResponse response = new ESBResponse();
+		 try { //TODO*/
+		/*client = ESBClientFactory.createInstance(modo, host, puerto); 
+		 esbRequest = client.createRequest("RecuperoOperacionesSWAPAValuar"); //nombre del servicio 
+		 esbRequest.setParameter("FechaProceso", pFechaProceso);
+		 client.execute(esbRequest, response); String sRtaOperaciones =
+		 response.getResult();*/
+
+		/*esbRequest =
+		 client.createRequest("RecuperoAgendaCuponesOperacionesSWAPAValuar");
+		 //nombre del servicio esbRequest.setParameter("FechaProceso",
+		 "23/07/2010"); client.execute(esbRequest, response); String
+		 sRtaAgendaCuponesOperaciones = response.getResult();*/
 
 		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP();
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP();
 
-		construccionTasasFWD(operacionesSWAP, agendaSWAP, diasHabiles(pFechaProceso), pFechaProceso);
+		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
 		calculoMTM();
-		/*
-		 * } catch (ESBClientException e) { e.printStackTrace(); } finally { if
-		 * (client != null) { client.close(); } }
-		 */
+
+		/*} catch (ESBClientException e) {
+		 e.printStackTrace();
+		 } finally {
+		 if (client != null) {
+		 client.close();
+		 }
+		 }*/
 	}
 
 	private static void calculoMTM() {
 
+	}
+
+	private static String convertStreamToString(InputStream is) throws Exception {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+		is.close();
+		return sb.toString();
 	}
 
 	private static FeriadosResponse diasHabiles(Date pFechaProceso) {
@@ -83,18 +108,38 @@ public class Valuaciones {
 		xs.alias("FeriadosResponse", FeriadosResponse.class);
 		xs.alias("FechaData", FechaData.class);
 
-		InputStream is = Valuaciones.class
-				.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml");
-		FeriadosResponse fr = (FeriadosResponse) xs.fromXML(is);
-
 		// TODO acá iría el llamado al WS hasta conseguir a partir de la fecha,
 		// los 5400 (DIAS) hábiles!!!!!!!!!!!
-		/*
-		 * esbRequest = client.createRequest("Feriados"); //nombre del servicio
-		 * esbRequest.setParameter("FechaProceso", "23/07/2010");
-		 * client.execute(esbRequest, response); String sRtaFeriados =
-		 * response.getResult();
-		 */
+		FeriadosResponse fr = null;
+		ESBClient client = null;
+		ESBRequest esbRequest = null;
+		ESBResponse response = null;
+		try {
+			//TODO easyMock
+			response = EasyMock.createMock(ESBResponse.class);
+			EasyMock.expect(response.getResult()).andReturn(
+					convertStreamToString(Valuaciones.class
+							.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml")));
+			EasyMock.replay(response);
+			//TODO easyMock
+
+			client = ESBClientFactory.createInstance(modo, host, puerto);
+			esbRequest = client.createRequest("Feriados"); //nombre del servicio 
+			esbRequest.setParameter("FechaProceso", pFechaProceso);
+			//client.execute(esbRequest, response); TODO descomentar
+			String sRtaFeriados = response.getResult();
+
+			fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
+		} catch (ESBClientException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} finally {
+			if (client != null) {
+				client.close();
+			}
+		}
 
 		return fr;
 	}
@@ -125,9 +170,7 @@ public class Valuaciones {
 		return salida;
 	}
 
-	private static void construccionTasasFWD(RecuperoOperacionesSWAPAValuarResponse pOperaciones,
-			RecuperoAgendaCuponesOperacionesSWAPAValuarResponse pAgenda,
-			FeriadosResponse pDiasHabiles, Date pFechaProceso) {
+	private static void construccionTasasFWD(FeriadosResponse pDiasHabiles, Date pFechaProceso) {
 
 		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
 		// Double plazo = null;
