@@ -170,16 +170,20 @@ public class DAO {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Double factorAct = null;
+		try {
+			conn = DatabaseFactory.getConnection();
+			ps = conn.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");
+			ps.setDate(1, pFecha);
+			ps.setLong(2, pPlazo);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				factorAct = rs.getDouble("F_ACT");
+			} else {
+				throw new Exception("No se pudo obtener el factor de actualización");
+			}
 
-		conn = DatabaseFactory.getConnection();
-		ps = conn.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");
-		ps.setDate(1, pFecha);
-		ps.setLong(2, pPlazo);
-		rs = ps.executeQuery();
-		if (rs.next()) {
-			factorAct = rs.getDouble("F_ACT");
-		} else {
-			throw new Exception("No se pudo obtener el factor de actualización");
+		} finally {
+			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 
 		return factorAct;
@@ -189,7 +193,6 @@ public class DAO {
 	public static void crearTasaFWD(List<TasaFWD> pTasas, Date pFechaProceso) {
 		Connection conn = null;
 		PreparedStatement ps = null;
-		Table t = null;
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
 			String sqlDelete = "DELETE FROM Tasa_FWD;";//http://www.sqlite.org/lang_delete.html#trucateopt
