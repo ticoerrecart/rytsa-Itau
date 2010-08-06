@@ -56,36 +56,11 @@ public class Valuaciones {
 	 * 
 	 */
 	public static void calcularMTMParaSwap(Date pFechaProceso) {
-
-		/*ESBClient client = null;
-		 ESBRequest esbRequest = null;
-		 ESBResponse response = new ESBResponse();
-		 try { //TODO*/
-		/*client = ESBClientFactory.createInstance(modo, host, puerto); 
-		 esbRequest = client.createRequest("RecuperoOperacionesSWAPAValuar"); //nombre del servicio 
-		 esbRequest.setParameter("FechaProceso", pFechaProceso);
-		 client.execute(esbRequest, response); String sRtaOperaciones =
-		 response.getResult();*/
-
-		/*esbRequest =
-		 client.createRequest("RecuperoAgendaCuponesOperacionesSWAPAValuar");
-		 //nombre del servicio esbRequest.setParameter("FechaProceso",
-		 "23/07/2010"); client.execute(esbRequest, response); String
-		 sRtaAgendaCuponesOperaciones = response.getResult();*/
-
 		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP(pFechaProceso);
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP(pFechaProceso);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
 		calculoMTM();
-
-		/*} catch (ESBClientException e) {
-		 e.printStackTrace();
-		 } finally {
-		 if (client != null) {
-		 client.close();
-		 }
-		 }*/
 	}
 
 	private static void calculoMTM() {
