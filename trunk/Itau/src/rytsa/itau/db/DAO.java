@@ -90,6 +90,76 @@ public class DAO {
 
 	}
 
+	public static void crearTipoDeCambio() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Table t = null;
+		try {
+			conn = DatabaseFactory.getConnectionForBulk();
+			String sqlDelete = "DELETE FROM Calib_div_h;";//http://www.sqlite.org/lang_delete.html#trucateopt
+			ps = conn.prepareStatement(sqlDelete);
+			ps.executeUpdate();
+
+			String sql = "INSERT INTO Calib_div_h VALUES(?, ?, ?);";
+			t = new Table("DBFs/calib_div_h.DBF");
+			int numRecords = t.getNumberOfRecords();
+
+			System.out.println(t.getNumberOfRecords() + " registros");
+			for (int i = 0; i < numRecords; i++) {
+				t.nextRecord();
+				try {
+					Integer div = t.getFieldInteger("C_DIV");
+					Double price = t.getFieldDouble("PRICE");
+					Date dProc = t.getFieldDate("D_PROC");
+					/*System.out.println(plazo + " | " + tna + " | " + fDesc + " | " + fAct + " | "
+					 + dProc);*/
+					ps = conn.prepareStatement(sql);
+					ps.setInt(1, div);
+					ps.setDouble(2, price);
+					ps.setDate(3, DateUtils.convertDate(dProc));
+					if (i % 100 == 0) {
+						System.out.println(i + " registros procesados");
+					}
+					ps.executeUpdate();
+				} catch (NumberFormatException nfe) {
+					System.err.println(nfe.getMessage());
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TableCorruptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FieldNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FieldTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} finally {
+			try {
+				DatabaseFactory.closeConnectionForBulk(conn, ps);
+				if (t != null) {
+					t.close();
+				}
+			} catch (SQLException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public static void crearCupon4() {
 		Connection conn = null;
 		PreparedStatement ps = null;
