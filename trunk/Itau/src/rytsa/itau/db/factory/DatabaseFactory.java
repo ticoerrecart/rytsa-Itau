@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import rytsa.itau.db.Constantes;
@@ -22,6 +23,15 @@ public abstract class DatabaseFactory {
 		if (pPreparedStatement != null) {
 			pPreparedStatement.close();
 		}
+	}
+
+	public static void closeConnection(Connection pConnection,
+			PreparedStatement pPreparedStatement, ResultSet pRs) throws SQLException {
+		closeConnection(pConnection, pPreparedStatement);
+		if (pRs != null) {
+			pRs.close();
+		}
+
 	}
 
 	public static void closeConnection(Connection pConnection, PreparedStatement pPreparedStatement)

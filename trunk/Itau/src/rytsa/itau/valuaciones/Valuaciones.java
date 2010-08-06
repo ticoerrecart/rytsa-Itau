@@ -73,8 +73,8 @@ public class Valuaciones {
 		 "23/07/2010"); client.execute(esbRequest, response); String
 		 sRtaAgendaCuponesOperaciones = response.getResult();*/
 
-		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP();
-		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP();
+		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP(pFechaProceso);
+		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP(pFechaProceso);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
 		calculoMTM();
@@ -113,21 +113,21 @@ public class Valuaciones {
 		FeriadosResponse fr = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
-		ESBResponse response = null;
+		ESBResponse esbResponse = null;
 		try {
 			//TODO easyMock
-			response = EasyMock.createMock(ESBResponse.class);
-			EasyMock.expect(response.getResult()).andReturn(
+			esbResponse = EasyMock.createMock(ESBResponse.class);
+			EasyMock.expect(esbResponse.getResult()).andReturn(
 					convertStreamToString(Valuaciones.class
 							.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml")));
-			EasyMock.replay(response);
+			EasyMock.replay(esbResponse);
 			//TODO easyMock
 
 			client = ESBClientFactory.createInstance(modo, host, puerto);
 			esbRequest = client.createRequest("Feriados"); //nombre del servicio 
 			esbRequest.setParameter("FechaProceso", pFechaProceso);
 			//client.execute(esbRequest, response); TODO descomentar
-			String sRtaFeriados = response.getResult();
+			String sRtaFeriados = esbResponse.getResult();
 
 			fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
 		} catch (ESBClientException e) {
@@ -144,29 +144,90 @@ public class Valuaciones {
 		return fr;
 	}
 
-	private static RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP() {
+	private static RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("RecuperoAgendaCuponesOperacionesSWAPAValuarResponse",
 				RecuperoAgendaCuponesOperacionesSWAPAValuarResponse.class);
 		xs
 				.alias("AgendaCuponOperacioneSWAPAValuarData",
 						AgendaCuponOperacioneSWAPAValuarData.class);
-		InputStream is = Valuaciones.class
-				.getResourceAsStream("/rytsa/itau/valuaciones/agendaCuponOperacioneSWAPAValuar.xml");
-		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse salida = (RecuperoAgendaCuponesOperacionesSWAPAValuarResponse) xs
-				.fromXML(is);
+
+		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse salida = null;
+		ESBClient client = null;
+		ESBRequest esbRequest = null;
+		ESBResponse esbResponse = null;
+		try {
+			//TODO easyMock
+			esbResponse = EasyMock.createMock(ESBResponse.class);
+			EasyMock
+					.expect(esbResponse.getResult())
+					.andReturn(
+							convertStreamToString(Valuaciones.class
+									.getResourceAsStream("/rytsa/itau/valuaciones/agendaCuponOperacioneSWAPAValuar.xml")));
+			EasyMock.replay(esbResponse);
+			//TODO easyMock
+
+			client = ESBClientFactory.createInstance(modo, host, puerto);
+			esbRequest = client.createRequest("Feriados"); //nombre del servicio 
+			esbRequest.setParameter("RecuperoAgendaCuponesOperacionesSWAPAValuar", pFechaProceso);
+			//client.execute(esbRequest, response); TODO descomentar
+			String sRtaAgendaCupones = esbResponse.getResult();
+
+			salida = (RecuperoAgendaCuponesOperacionesSWAPAValuarResponse) xs
+					.fromXML(sRtaAgendaCupones);
+		} catch (ESBClientException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} finally {
+			if (client != null) {
+				client.close();
+			}
+		}
+
 		return salida;
 	}
 
-	private static RecuperoOperacionesSWAPAValuarResponse operacionesSWAP() {
+	private static RecuperoOperacionesSWAPAValuarResponse operacionesSWAP(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("RecuperoOperacionesSWAPAValuarResponse",
 				RecuperoOperacionesSWAPAValuarResponse.class);
 		xs.alias("OperacionSWAPAValuarData", OperacionSWAPAValuarData.class);
-		InputStream is = Valuaciones.class
-				.getResourceAsStream("/rytsa/itau/valuaciones/operacionesSwapAValuar.xml");
-		RecuperoOperacionesSWAPAValuarResponse salida = (RecuperoOperacionesSWAPAValuarResponse) xs
-				.fromXML(is);
+
+		RecuperoOperacionesSWAPAValuarResponse salida = null;
+		ESBClient client = null;
+		ESBRequest esbRequest = null;
+		ESBResponse esbResponse = null;
+		try {
+			//TODO easyMock
+			esbResponse = EasyMock.createMock(ESBResponse.class);
+			EasyMock
+					.expect(esbResponse.getResult())
+					.andReturn(
+							convertStreamToString(Valuaciones.class
+									.getResourceAsStream("/rytsa/itau/valuaciones/operacionesSwapAValuar.xml")));
+			EasyMock.replay(esbResponse);
+			//TODO easyMock
+
+			client = ESBClientFactory.createInstance(modo, host, puerto);
+			esbRequest = client.createRequest("Feriados"); //nombre del servicio 
+			esbRequest.setParameter("RecuperoOperacionesSWAPAValuar", pFechaProceso);
+			//client.execute(esbRequest, response); TODO descomentar
+			String sRtaOperaciones = esbResponse.getResult();
+
+			salida = (RecuperoOperacionesSWAPAValuarResponse) xs.fromXML(sRtaOperaciones);
+		} catch (ESBClientException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} finally {
+			if (client != null) {
+				client.close();
+			}
+		}
+
 		return salida;
 	}
 
