@@ -43,7 +43,7 @@
               <IdOperacion></IdOperacion>
               <fecha_proceso>02/03/2010</fecha_proceso>
               <MTM>4.17</MTM>
-		<OperacionNDFAValuarData>
+		</OperacionNDFAValuarData>
 		
 		<OperacionNDFAValuarData>
               <NumeroOperacion>2</NumeroOperacion>
@@ -88,7 +88,6 @@
               <IdOperacion></IdOperacion>
               <fecha_proceso>02/03/2010</fecha_proceso>
               <MTM>4.17</MTM>
-		<OperacionNDFAValuarData>
-	<RecuperoOperacionesNDFAValuarResult>
-<RecuperoOperacionesNDFAValuarResponse>
-		
+		</OperacionNDFAValuarData>
+	</RecuperoOperacionesNDFAValuarResult>
+</RecuperoOperacionesNDFAValuarResponse>
