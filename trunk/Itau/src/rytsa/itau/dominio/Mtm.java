@@ -1,4 +1,4 @@
-package rytsa.itau.valuaciones.dto.ndf;
+package rytsa.itau.dominio;
 
 public class Mtm {
 
