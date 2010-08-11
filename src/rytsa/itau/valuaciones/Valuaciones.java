@@ -17,6 +17,8 @@ import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
+import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
+import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
@@ -130,7 +132,7 @@ public class Valuaciones {
 
 			client = ESBClientFactory.createInstance(modo, host, puerto);
 			esbRequest = client.createRequest("Feriados"); // nombre del
-															// servicio
+			// servicio
 			esbRequest.setParameter("FechaProceso", pFechaProceso);
 			// client.execute(esbRequest, response); TODO descomentar
 			String sRtaFeriados = esbResponse.getResult();
@@ -175,8 +177,8 @@ public class Valuaciones {
 
 			client = ESBClientFactory.createInstance(modo, host, puerto);
 			esbRequest = client.createRequest("RecuperoOperacionesNDFAValuar"); // nombre
-																				// del
-																				// servicio
+			// del
+			// servicio
 			esbRequest.setParameter("OperacionesNDFAValuarRequestData",
 					pFechaProceso);
 			// client.execute(esbRequest, response); TODO descomentar
@@ -222,7 +224,7 @@ public class Valuaciones {
 
 			client = ESBClientFactory.createInstance(modo, host, puerto);
 			esbRequest = client.createRequest("Feriados"); // nombre del
-															// servicio
+			// servicio
 			esbRequest.setParameter(
 					"RecuperoAgendaCuponesOperacionesSWAPAValuar",
 					pFechaProceso);
@@ -269,7 +271,7 @@ public class Valuaciones {
 
 			client = ESBClientFactory.createInstance(modo, host, puerto);
 			esbRequest = client.createRequest("Feriados"); // nombre del
-															// servicio
+			// servicio
 			esbRequest.setParameter("RecuperoOperacionesSWAPAValuar",
 					pFechaProceso);
 			// client.execute(esbRequest, response); TODO descomentar
