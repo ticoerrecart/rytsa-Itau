@@ -12,11 +12,11 @@ import java.util.ResourceBundle;
 import org.easymock.EasyMock;
 
 import rytsa.itau.db.DAO;
+import rytsa.itau.dominio.Mtm;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
-import rytsa.itau.valuaciones.dto.ndf.Mtm;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
