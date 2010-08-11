@@ -4,6 +4,7 @@ public class Mtm {
 
 	private Long plazoRemanente;
 	private Double tipoCambioMoneda;
+	private Double tipoCambioMoneda2;
 
 	public Long getPlazoRemanente() {
 		return plazoRemanente;
@@ -19,6 +20,14 @@ public class Mtm {
 
 	public void setTipoCambioMoneda(Double tipoCambioMoneda) {
 		this.tipoCambioMoneda = tipoCambioMoneda;
+	}
+
+	public Double getTipoCambioMoneda2() {
+		return tipoCambioMoneda2;
+	}
+
+	public void setTipoCambioMoneda2(Double tipoCambioMoneda2) {
+		this.tipoCambioMoneda2 = tipoCambioMoneda2;
 	}
 
 }
