@@ -83,6 +83,11 @@ public class Valuaciones {
 				mtm.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(DateUtils
 						.convertDate(pFechaProceso), new Long(codDiv[0])));
 
+				String moneda2 = pBundle.getString("moneda2");
+				codDiv = pBundle.getStringArray(moneda2);
+				mtm.setTipoCambioMoneda2(DAO.obtenerTipoCambioMoneda(DateUtils.convertDate(pFechaProceso), new Long(
+						codDiv[0])));
+
 				listaMtm.add(mtm);
 			}
 		} catch (Exception e) {
