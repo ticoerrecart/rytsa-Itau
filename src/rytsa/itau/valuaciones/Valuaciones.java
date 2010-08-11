@@ -63,7 +63,7 @@ public class Valuaciones {
 		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP(pFechaProceso);
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP(pFechaProceso);
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
-		ResourceBundle bundle = ResourceBundle.getBundle("config.properties");
+		ResourceBundle bundle = ResourceBundle.getBundle("config");
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
 		calculoMTM(pFechaProceso, bundle, operacionesNDF);
