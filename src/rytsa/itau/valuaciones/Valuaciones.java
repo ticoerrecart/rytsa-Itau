@@ -77,18 +77,12 @@ public class Valuaciones {
 			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 					.getRecuperoOperacionesNDFAValuarResult()) {
 				Mtm mtm = new Mtm();
-				mtm.setPlazoRemanente(DateUtils.diferenciaEntreFechas(
-						operacionNDF.getFechaVencimiento(), pFechaProceso));
-				String[] codDiv = pBundle.getStringArray(operacionNDF
-						.getMoneda());
-				mtm.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(DateUtils
-						.convertDate(pFechaProceso), new Long(codDiv[0])));
+				mtm.setPlazoRemanente(DateUtils.diferenciaEntreFechas(operacionNDF
+						.getFechaVencimiento(), pFechaProceso));
 
-				String moneda2 = pBundle.getString("moneda2");
-				codDiv = pBundle.getStringArray(moneda2);
-				mtm.setTipoCambioMoneda2(DAO.obtenerTipoCambioMoneda(DateUtils
-						.convertDate(pFechaProceso), new Long(codDiv[0])));
+				mtm.calcularFwd(pFechaProceso, operacionNDF, pBundle);
 
+				mtm.calcularMtm(operacionNDF);
 				listaMtm.add(mtm);
 			}
 		} catch (Exception e) {
@@ -96,8 +90,7 @@ public class Valuaciones {
 		}
 	}
 
-	private static String convertStreamToString(InputStream is)
-			throws Exception {
+	private static String convertStreamToString(InputStream is) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		StringBuilder sb = new StringBuilder();
 		String line = null;
@@ -122,11 +115,9 @@ public class Valuaciones {
 		try {
 			// TODO easyMock
 			esbResponse = EasyMock.createMock(ESBResponse.class);
-			EasyMock
-					.expect(esbResponse.getResult())
-					.andReturn(
-							convertStreamToString(Valuaciones.class
-									.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml")));
+			EasyMock.expect(esbResponse.getResult()).andReturn(
+					convertStreamToString(Valuaciones.class
+							.getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml")));
 			EasyMock.replay(esbResponse);
 			// TODO easyMock
 
@@ -152,13 +143,11 @@ public class Valuaciones {
 		return fr;
 	}
 
-	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(
-			Date pFechaProceso) {
+	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("RecuperoOperacionesNDFAValuarResponse",
 				RecuperoAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.alias("OperacionNDFAValuarData",
-				AgendaCuponOperacioneSWAPAValuarData.class);
+		xs.alias("OperacionNDFAValuarData", AgendaCuponOperacioneSWAPAValuarData.class);
 
 		RecuperoOperacionesNDFAValuarResponse salida = null;
 		ESBClient client = null;
@@ -179,8 +168,7 @@ public class Valuaciones {
 			esbRequest = client.createRequest("RecuperoOperacionesNDFAValuar"); // nombre
 			// del
 			// servicio
-			esbRequest.setParameter("OperacionesNDFAValuarRequestData",
-					pFechaProceso);
+			esbRequest.setParameter("OperacionesNDFAValuarRequestData", pFechaProceso);
 			// client.execute(esbRequest, response); TODO descomentar
 			String sRta = esbResponse.getResult();
 
@@ -199,13 +187,13 @@ public class Valuaciones {
 		return salida;
 	}
 
-	private static RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP(
-			Date pFechaProceso) {
+	private static RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("RecuperoAgendaCuponesOperacionesSWAPAValuarResponse",
 				RecuperoAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.alias("AgendaCuponOperacioneSWAPAValuarData",
-				AgendaCuponOperacioneSWAPAValuarData.class);
+		xs
+				.alias("AgendaCuponOperacioneSWAPAValuarData",
+						AgendaCuponOperacioneSWAPAValuarData.class);
 
 		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
@@ -225,9 +213,7 @@ public class Valuaciones {
 			client = ESBClientFactory.createInstance(modo, host, puerto);
 			esbRequest = client.createRequest("Feriados"); // nombre del
 			// servicio
-			esbRequest.setParameter(
-					"RecuperoAgendaCuponesOperacionesSWAPAValuar",
-					pFechaProceso);
+			esbRequest.setParameter("RecuperoAgendaCuponesOperacionesSWAPAValuar", pFechaProceso);
 			// client.execute(esbRequest, response); TODO descomentar
 			String sRtaAgendaCupones = esbResponse.getResult();
 
@@ -247,8 +233,7 @@ public class Valuaciones {
 		return salida;
 	}
 
-	private static RecuperoOperacionesSWAPAValuarResponse operacionesSWAP(
-			Date pFechaProceso) {
+	private static RecuperoOperacionesSWAPAValuarResponse operacionesSWAP(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("RecuperoOperacionesSWAPAValuarResponse",
 				RecuperoOperacionesSWAPAValuarResponse.class);
@@ -272,13 +257,11 @@ public class Valuaciones {
 			client = ESBClientFactory.createInstance(modo, host, puerto);
 			esbRequest = client.createRequest("Feriados"); // nombre del
 			// servicio
-			esbRequest.setParameter("RecuperoOperacionesSWAPAValuar",
-					pFechaProceso);
+			esbRequest.setParameter("RecuperoOperacionesSWAPAValuar", pFechaProceso);
 			// client.execute(esbRequest, response); TODO descomentar
 			String sRtaOperaciones = esbResponse.getResult();
 
-			salida = (RecuperoOperacionesSWAPAValuarResponse) xs
-					.fromXML(sRtaOperaciones);
+			salida = (RecuperoOperacionesSWAPAValuarResponse) xs.fromXML(sRtaOperaciones);
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -293,8 +276,7 @@ public class Valuaciones {
 		return salida;
 	}
 
-	private static void construccionTasasFWD(FeriadosResponse pDiasHabiles,
-			Date pFechaProceso) {
+	private static void construccionTasasFWD(FeriadosResponse pDiasHabiles, Date pFechaProceso) {
 
 		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
 		// Double plazo = null;
@@ -304,8 +286,8 @@ public class Valuaciones {
 				TasaFWD tasa = new TasaFWD();
 				// 1) Armado de fechas PUBLIC_T + Factor de Actualizaci�n
 				// (Obtenido de Cupon_4).
-				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils
-						.stringToDate(fechaData.getFecha()));
+				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils.stringToDate(fechaData
+						.getFecha()));
 				// 2) Obtener fechas de mercado (Fecha �T�)
 				tasa.calcularFechaMercado();
 				// 3) Obtener fechas de Vencimiento Plazos Fijos (Fecha �D�)
@@ -328,8 +310,7 @@ public class Valuaciones {
 			try {
 				tasa.calcularFechaPublicacionVencimiento(tasasFwd);
 				tasa.calcularTasaFWD();
-				System.out.println(tasa.getFechaPublicacion() + "->"
-						+ tasa.getTasaFWD());
+				System.out.println(tasa.getFechaPublicacion() + "->" + tasa.getTasaFWD());
 			} catch (ParseException e) {
 				// TODO Bloque catch generado autom�ticamente
 				e.printStackTrace();

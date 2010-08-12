@@ -183,7 +183,7 @@ public class DAO {
 		Double factorAct = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_ACT FROM Curva_A WHERE D_PROC = ? AND PLAZO = ?;");
+			ps = conn.prepareStatement("SELECT F_ACT FROM Curva_4 WHERE D_PROC = ? AND PLAZO = ?;");//TODO no es Cunpon_4???
 			ps.setDate(1, pFecha);
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
@@ -196,6 +196,31 @@ public class DAO {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 		return factorAct;
+
+	}
+
+	public static Double obtenerFactorDesc(java.sql.Date pFecha, Long pPlazo, String pTabla)
+			throws SQLException, Exception {
+		ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Double factorDesc = null;
+		try {
+			conn = DatabaseFactory.getConnection();
+			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla
+					+ " WHERE D_PROC = ? AND PLAZO = ?;");
+			ps.setDate(1, pFecha);
+			ps.setLong(2, pPlazo);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				factorDesc = rs.getDouble("F_DESC");
+			} else {
+				throw new Exception("No se pudo obtener el factor de descuento");
+			}
+		} finally {
+			DatabaseFactory.closeConnection(conn, ps, rs);
+		}
+		return factorDesc;
 
 	}
 
