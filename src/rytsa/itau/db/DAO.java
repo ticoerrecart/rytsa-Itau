@@ -1,5 +1,6 @@
 package rytsa.itau.db;
 
+import java.io.EOFException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.util.ResourceBundle;
 import rytsa.itau.db.factory.DatabaseFactory;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.utils.FileUtils;
 import br.com.softsite.sfc.tini.persistence.Table;
 
 public class DAO {
@@ -29,7 +31,7 @@ public class DAO {
 			t = new Table("DBFs/calib_div_h.DBF");
 			int numRecords = t.getNumberOfRecords();
 
-			System.out.println(t.getNumberOfRecords() + " registros");
+			//System.out.println(t.getNumberOfRecords() + " registros");
 			for (int i = 0; i < numRecords; i++) {
 				t.nextRecord();
 				try {
@@ -44,9 +46,9 @@ public class DAO {
 					ps.setInt(1, div);
 					ps.setDouble(2, price);
 					ps.setDate(3, DateUtils.convertDate(dProc));
-					if (i % 100 == 0) {
-						System.out.println(i + " registros procesados");
-					}
+					/*if (i % 100 == 0) {
+						System.out.println(i + " registros procesados.Calib_div_h");
+					}*/
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
@@ -69,39 +71,73 @@ public class DAO {
 		}
 	}
 
-	public static void crearCurvaA(String codigoPatron) {
-		DAO.crearCurva(codigoPatron, "Curva_A");
-	}
-
-	public static void crearCurvaB(String codigoPatron) {
-		DAO.crearCurva(codigoPatron, "Curva_B");
-	}
-
 	/**
 	 * Crea las curvas en nuestra base local desde lo dbfs. Codigo patron es
-	 * ARP, USD, etc el codigo de moneda Tabla es Curva_A o curva_B de acuerdo
-	 * si es Moneda o Moneda2(Moneda de liquidacion)
+	 * ARP, USD.
 	 */
-	private static void crearCurva(String codigoPatron, String tabla) {
+	public static void crearCurvas() {
+		ResourceBundle codigosPatron = ResourceBundle.getBundle("config");
+		String linea = codigosPatron.getString("codMonedas");
 		Connection conn = null;
 		PreparedStatement ps = null;
-		Table t = null;
 		try {
-
-			ResourceBundle codigosPatron = ResourceBundle
-					.getBundle("config");
-			String linea = codigosPatron.getString(codigoPatron);
-			String dbfPath = linea.split(",")[1];	
 			conn = DatabaseFactory.getConnectionForBulk();
-			String sqlDelete = "DELETE FROM " + tabla + " ;";// http://www.sqlite.org/lang_delete.html#trucateopt
-			ps = conn.prepareStatement(sqlDelete);
-			ps.executeUpdate();
+			for (String moneda : linea.split(",")) {
+				crearCurva(conn, ps, moneda.trim(), codigosPatron);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				DatabaseFactory.closeConnectionForBulk(conn, ps);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void crearTablaSiNoExisteOBorrarla(Connection pConnection,
+			PreparedStatement pPreparedStatement, String pTabla) throws SQLException {
+		ResultSet rs = null;
+		try {
+			pPreparedStatement = pConnection
+					.prepareStatement("SELECT name FROM sqlite_master WHERE name=?;");
+			pPreparedStatement.setString(1, pTabla);
+			rs = pPreparedStatement.executeQuery();
+			if (!rs.next()) {//si no existe la tabla la creo.
+				String sqlCreate = "CREATE TABLE " + pTabla + "(" + "PLAZO NUMERIC NULL,"
+						+ "TNA DOUBLE NULL," + "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
+						+ "D_PROC DATETIME NULL)";
+				pPreparedStatement = pConnection.prepareStatement(sqlCreate);
+				pPreparedStatement.executeUpdate();
+			} else {
+				String sqlDelete = "DELETE FROM " + pTabla + " ;";// http://www.sqlite.org/lang_delete.html#trucateopt
+				pPreparedStatement = pConnection.prepareStatement(sqlDelete);
+				pPreparedStatement.executeUpdate();
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+		}
+	}
+
+	private static void crearCurva(Connection conn, PreparedStatement ps, String codigoPatron,
+			ResourceBundle codigosPatron) throws Exception {
+		Table t = null;
+		String dbfPath = null;
+		try {
+			String linea = codigosPatron.getString(codigoPatron);
+			dbfPath = linea.split(",")[1];
+			t = new Table(dbfPath);
+
+			String tabla = FileUtils.getFileName(dbfPath);
+			crearTablaSiNoExisteOBorrarla(conn, ps, tabla);
 
 			String sql = "INSERT INTO " + tabla + " VALUES(?, ?, ?, ?, ?);";
-			t = new Table(dbfPath);
 			int numRecords = t.getNumberOfRecords();
 
-			System.out.println(t.getNumberOfRecords() + " registros");
+			//System.out.println(t.getNumberOfRecords() + " registros");
 			for (int i = 0; i < numRecords; i++) {
 				t.nextRecord();
 				try {
@@ -120,47 +156,40 @@ public class DAO {
 					ps.setDouble(3, fDesc);
 					ps.setDouble(4, fAct);
 					ps.setDate(5, DateUtils.convertDate(dProc));
-					if (i % 100 == 0) {
-						System.out.println(i + " registros procesados");
-					}
+					/*if (i % 100 == 0) {
+						System.out.println(i + " registros procesados." + tabla);
+					}*/
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
 				}
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (EOFException eofE) {
+			System.err.println("No existe la tabla " + dbfPath);
 		} finally {
-			try {
-				DatabaseFactory.closeConnectionForBulk(conn, ps);
-				if (t != null) {
-					t.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (t != null) {
+				t.close();
 			}
 		}
+
 	}
 
-	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo)
-			throws SQLException, Exception {
+	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo) throws SQLException,
+			Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Double factorAct = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn
-					.prepareStatement("SELECT F_ACT FROM Curva_A WHERE D_PROC = ? AND PLAZO = ?;");
+			ps = conn.prepareStatement("SELECT F_ACT FROM Curva_A WHERE D_PROC = ? AND PLAZO = ?;");
 			ps.setDate(1, pFecha);
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				factorAct = rs.getDouble("F_ACT");
 			} else {
-				throw new Exception(
-						"No se pudo obtener el factor de actualización");
+				throw new Exception("No se pudo obtener el factor de actualización");
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -169,8 +198,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerTipoCambioMoneda(java.sql.Date pFechaProceso,
-			Long codDiv) throws SQLException, Exception {
+	public static Double obtenerTipoCambioMoneda(java.sql.Date pFechaProceso, Long codDiv)
+			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -206,13 +235,10 @@ public class DAO {
 			int i = 1;
 			for (TasaFWD tasa : pTasas.subList(0, pTasas.size() - 31)) {
 				ps = conn.prepareStatement(sql);
-				System.out.println(tasa.getFechaPublicacion() + "-"
-						+ tasa.getTasaFWD());
+				//System.out.println(tasa.getFechaPublicacion() + "-" + tasa.getTasaFWD());
 				ps.setInt(1, i);
 				ps.setDate(2, DateUtils.convertDate(pFechaProceso));
-				ps
-						.setDate(3, DateUtils.convertDate(tasa
-								.getFechaPublicacion()));
+				ps.setDate(3, DateUtils.convertDate(tasa.getFechaPublicacion()));
 				ps.setDouble(4, tasa.getTasaFWD());
 				ps.executeUpdate();
 				i++;

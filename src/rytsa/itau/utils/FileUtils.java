@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-public class FileUtils {
+public abstract class FileUtils {
 
 	public static void copyFile(File in, File out) throws Exception {
 		FileInputStream fis = new FileInputStream(in);
@@ -25,4 +25,8 @@ public class FileUtils {
 		}
 	}
 
+	public static String getFileName(String pPath) {
+		File f = new File(pPath);
+		return f.getName().substring(0, f.getName().lastIndexOf("."));
+	}
 }
