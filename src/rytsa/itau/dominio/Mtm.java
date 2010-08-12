@@ -2,7 +2,6 @@ package rytsa.itau.dominio;
 
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
@@ -25,40 +24,43 @@ public class Mtm {
 
 	private Double mtm;
 
-	public void calcularFwd(Date pFechaProceso, OperacionNDFAValuarData pOperacionNDF,
-			ResourceBundle pBundle) throws NumberFormatException, SQLException, Exception {
-		if (this.getPlazoRemanente() == null) {
-			throw new Exception("plazoRemanente es nulo");
-		}
-		String[] codDivisa1 = pBundle.getString(pOperacionNDF.getMoneda()).split(",");
+	
+	public Mtm(Date pFechaProceso, OperacionNDFAValuarData pOperacionNDF) throws Exception{
 		this.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(DateUtils.convertDate(pFechaProceso),
-				new Long(codDivisa1[0])));
+				DAO.monedas.get(pOperacionNDF.getMoneda())));
 
-		String moneda2 = pBundle.getString("moneda2");
-		String[] codDivisa2 = pBundle.getString(moneda2).split(",");
 		this.setTipoCambioMoneda2(DAO.obtenerTipoCambioMoneda(DateUtils.convertDate(pFechaProceso),
-				new Long(codDivisa2[0])));
+				DAO.monedas.get(pOperacionNDF.getMoneda_de_liquidacion())));
 
-		this.setCurvaMoneda(DAO.obtenerFactorDesc(DateUtils.convertDate(pFechaProceso), this
-				.getPlazoRemanente(), FileUtils.getFileName(codDivisa1[1])));
-
-		this.setCurvaMoneda2(DAO.obtenerFactorDesc(DateUtils.convertDate(pFechaProceso), this
-				.getPlazoRemanente(), FileUtils.getFileName(codDivisa2[1])));
-
-		this.setFwd(this.getTipoCambioMoneda() / this.getTipoCambioMoneda2()
-				* this.getCurvaMoneda() / this.getCurvaMoneda2());
-	}
-
-	public void calcularMtm(OperacionNDFAValuarData pOperacionNDF) throws Exception {
-		if (this.getFwd() == null) {
-			throw new Exception("fwd es nulo");
-		}
 		if (this.getCurvaMoneda2() == null) {
 			throw new Exception("curvaMoneda2 es nulo");
 		}
 		if (this.getTipoCambioMoneda2() == null) {
 			throw new Exception("tipoCambioMoneda2 es nulo");
 		}
+		
+		this.setPlazoRemanente(DateUtils.diferenciaEntreFechas(pOperacionNDF.getFechaVencimiento(), pFechaProceso));
+		
+		if (this.getPlazoRemanente() == null) {
+			throw new Exception("plazoRemanente es nulo");
+		}
+		
+		this.setCurvaMoneda(DAO.obtenerFactorDesc(DateUtils.convertDate(pFechaProceso), this
+				.getPlazoRemanente(), FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMoneda()))));
+
+		this.setCurvaMoneda2(DAO.obtenerFactorDesc(DateUtils.convertDate(pFechaProceso), this
+				.getPlazoRemanente(), FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMoneda_de_liquidacion()))));
+	}
+	
+	
+	public void calcularFwd() throws NumberFormatException, SQLException, Exception {
+
+		this.setFwd( (this.getTipoCambioMoneda() / this.getTipoCambioMoneda2())
+				* (this.getCurvaMoneda() / this.getCurvaMoneda2()));
+	}
+
+	public void calcularMtm(OperacionNDFAValuarData pOperacionNDF) throws Exception {
+
 		//CantidadVN  * (Precio - FWD) * Curva Moneda 2 (Plazo Remanente) * Tipo de Cambio Moneda 2
 		this.setMtm(pOperacionNDF.getCantidadVN() * (pOperacionNDF.getPrecio() - this.getFwd())
 				* this.getCurvaMoneda2() * this.getTipoCambioMoneda2());
@@ -68,7 +70,7 @@ public class Mtm {
 		return plazoRemanente;
 	}
 
-	public void setPlazoRemanente(Long plazoRemanente) {
+	private void setPlazoRemanente(Long plazoRemanente) {
 		this.plazoRemanente = plazoRemanente;
 	}
 

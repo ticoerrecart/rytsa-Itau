@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -17,6 +18,9 @@ import br.com.softsite.sfc.tini.persistence.Table;
 
 public class DAO {
 
+	public static  HashMap<String, Integer> monedas = new HashMap<String, Integer>();
+	public static  HashMap<String, String> files = new HashMap<String, String>();
+	
 	public static void crearTipoDeCambio() {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -131,7 +135,9 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
 			for (String moneda : linea.split(",")) {
-				crearCurva(conn, ps, moneda.trim(), codigosPatron);
+				crearCurva(conn, ps, moneda.trim());
+				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron.getString(moneda.trim()).split(",")[0]));
+				DAO.files.put(moneda.trim(), codigosPatron.getString(moneda.trim()).split(",")[1]);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,16 +178,12 @@ public class DAO {
 		}
 	}
 
-	private static void crearCurva(Connection conn, PreparedStatement ps,
-			String codigoPatron, ResourceBundle codigosPatron) throws Exception {
+	private static void crearCurva(Connection conn, PreparedStatement ps, String codigoPatron) throws Exception {
 		Table t = null;
-		String dbfPath = null;
 		try {
-			String linea = codigosPatron.getString(codigoPatron);
-			dbfPath = linea.split(",")[1];
-			t = new Table(dbfPath);
+			t = new Table(files.get(codigoPatron));
 
-			String tabla = FileUtils.getFileName(dbfPath);
+			String tabla = FileUtils.getFileName(files.get(codigoPatron));
 			crearTablaSiNoExisteOBorrarla(conn, ps, tabla);
 
 			String sql = "INSERT INTO " + tabla + " VALUES(?, ?, ?, ?, ?);";
@@ -216,7 +218,7 @@ public class DAO {
 				}
 			}
 		} catch (EOFException eofE) {
-			System.err.println("No existe la tabla " + dbfPath);
+			System.err.println("No existe la tabla " + files.get(codigoPatron));
 		} finally {
 			if (t != null) {
 				t.close();
@@ -279,8 +281,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerTipoCambioMoneda(java.sql.Date pFechaProceso,
-			Long codDiv) throws SQLException, Exception {
+	public static Double obtenerTipoCambioMoneda(java.sql.Date pFechaProceso, Integer codDiv)
+			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
