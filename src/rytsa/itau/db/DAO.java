@@ -29,7 +29,7 @@ public class DAO {
 
 			String sql = "INSERT INTO Calib_div_h VALUES(?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
-			t = new Table(rb.getString("caliv_div_h"));
+			t = new Table(rb.getString("calib_div_h"));
 			int numRecords = t.getNumberOfRecords();
 
 			// System.out.println(t.getNumberOfRecords() + " registros");
