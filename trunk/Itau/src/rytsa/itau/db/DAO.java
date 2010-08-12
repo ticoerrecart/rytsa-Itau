@@ -135,9 +135,9 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
 			for (String moneda : linea.split(",")) {
-				crearCurva(conn, ps, moneda.trim());
 				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron.getString(moneda.trim()).split(",")[0]));
 				DAO.files.put(moneda.trim(), codigosPatron.getString(moneda.trim()).split(",")[1]);
+				crearCurva(conn, ps, moneda.trim());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
