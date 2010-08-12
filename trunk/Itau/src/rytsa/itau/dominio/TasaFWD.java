@@ -95,7 +95,7 @@ public class TasaFWD {
 		return fechaVencimientoPlazoFijo;
 	}
 
-	public void setFechaVencimientoPlazoFijo(Date fechaVencimientoPlazoFijo) {
+	private void setFechaVencimientoPlazoFijo(Date fechaVencimientoPlazoFijo) {
 		this.fechaVencimientoPlazoFijo = fechaVencimientoPlazoFijo;
 	}
 
@@ -111,7 +111,7 @@ public class TasaFWD {
 		return factorDeActualizacion;
 	}
 
-	public void setFactorDeActualizacion(Double factorDeActualizacion) {
+	private void setFactorDeActualizacion(Double factorDeActualizacion) {
 		this.factorDeActualizacion = factorDeActualizacion;
 	}
 
@@ -119,7 +119,7 @@ public class TasaFWD {
 		return fechaMercado;
 	}
 
-	public void setFechaMercado(Date fechaMercado) {
+	private void setFechaMercado(Date fechaMercado) {
 		this.fechaMercado = fechaMercado;
 	}
 
@@ -127,7 +127,7 @@ public class TasaFWD {
 		return tasaFWD;
 	}
 
-	public void setTasaFWD(Double tasaFWD) {
+	private void setTasaFWD(Double tasaFWD) {
 		this.tasaFWD = tasaFWD;
 	}
 
@@ -135,7 +135,7 @@ public class TasaFWD {
 		return tasaParafechaPublicacionVencimiento;
 	}
 
-	public void setTasaParafechaPublicacionVencimiento(TasaFWD tasaParafechaPublicacionVencimiento) {
+	private void setTasaParafechaPublicacionVencimiento(TasaFWD tasaParafechaPublicacionVencimiento) {
 		this.tasaParafechaPublicacionVencimiento = tasaParafechaPublicacionVencimiento;
 	}
 
