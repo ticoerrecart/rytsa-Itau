@@ -32,7 +32,7 @@ public class DAO {
 			t = new Table(rb.getString("caliv_div_h"));
 			int numRecords = t.getNumberOfRecords();
 
-			//System.out.println(t.getNumberOfRecords() + " registros");
+			// System.out.println(t.getNumberOfRecords() + " registros");
 			for (int i = 0; i < numRecords; i++) {
 				t.nextRecord();
 				try {
@@ -40,16 +40,17 @@ public class DAO {
 					Double price = t.getFieldDouble("PRICE");
 					Date dProc = t.getFieldDate("D_PROC");
 					/*
-					 * System.out.println(plazo + " | " + tna + " | " + fDesc + " | " +
-					 * fAct + " | " + dProc);
+					 * System.out.println(plazo + " | " + tna + " | " + fDesc +
+					 * " | " + fAct + " | " + dProc);
 					 */
 					ps = conn.prepareStatement(sql);
 					ps.setInt(1, div);
 					ps.setDouble(2, price);
 					ps.setDate(3, DateUtils.convertDate(dProc));
-					/*if (i % 100 == 0) {
-					 System.out.println(i + " registros procesados.Calib_div_h");
-					 }*/
+					/*
+					 * if (i % 100 == 0) { System.out.println(i +
+					 * " registros procesados.Calib_div_h"); }
+					 */
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
@@ -57,7 +58,6 @@ public class DAO {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -66,10 +66,57 @@ public class DAO {
 					t.close();
 				}
 			} catch (Exception e) {
-				// TODO Bloque catch generado automáticamente
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static void crearTasasDeBadlar() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Table t = null;
+		try {
+			conn = DatabaseFactory.getConnectionForBulk();
+			String sqlDelete = "DELETE FROM Calib_index_h;";// http://www.sqlite.org/lang_delete.html#trucateopt
+			ps = conn.prepareStatement(sqlDelete);
+			ps.executeUpdate();
+
+			String sql = "INSERT INTO Calib_index_h VALUES(?, ?, ?, ?);";
+			ResourceBundle rb = ResourceBundle.getBundle("config");
+			t = new Table(rb.getString("calib_index_h"));
+			int numRecords = t.getNumberOfRecords();
+
+			for (int i = 0; i < numRecords; i++) {
+				t.nextRecord();
+				try {
+					Integer cIndex = t.getFieldInteger("C_INDEX");
+					Double price = t.getFieldDouble("PRICE");
+					Date dProc = t.getFieldDate("D_PROC");
+					Date dPublic = t.getFieldDate("D_PUBLIC");
+					ps = conn.prepareStatement(sql);
+					ps.setInt(1, cIndex);
+					ps.setDouble(2, price);
+					ps.setDate(3, DateUtils.convertDate(dProc));
+					ps.setDate(3, DateUtils.convertDate(dPublic));
+					ps.executeUpdate();
+				} catch (NumberFormatException nfe) {
+					System.err.println(nfe.getMessage());
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				DatabaseFactory.closeConnectionForBulk(conn, ps);
+				if (t != null) {
+					t.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -98,16 +145,18 @@ public class DAO {
 	}
 
 	private static void crearTablaSiNoExisteOBorrarla(Connection pConnection,
-			PreparedStatement pPreparedStatement, String pTabla) throws SQLException {
+			PreparedStatement pPreparedStatement, String pTabla)
+			throws SQLException {
 		ResultSet rs = null;
 		try {
 			pPreparedStatement = pConnection
 					.prepareStatement("SELECT name FROM sqlite_master WHERE name=?;");
 			pPreparedStatement.setString(1, pTabla);
 			rs = pPreparedStatement.executeQuery();
-			if (!rs.next()) {//si no existe la tabla la creo.
-				String sqlCreate = "CREATE TABLE " + pTabla + "(" + "PLAZO NUMERIC NULL,"
-						+ "TNA DOUBLE NULL," + "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
+			if (!rs.next()) {// si no existe la tabla la creo.
+				String sqlCreate = "CREATE TABLE " + pTabla + "("
+						+ "PLAZO NUMERIC NULL," + "TNA DOUBLE NULL,"
+						+ "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
 						+ "D_PROC DATETIME NULL)";
 				pPreparedStatement = pConnection.prepareStatement(sqlCreate);
 				pPreparedStatement.executeUpdate();
@@ -123,8 +172,8 @@ public class DAO {
 		}
 	}
 
-	private static void crearCurva(Connection conn, PreparedStatement ps, String codigoPatron,
-			ResourceBundle codigosPatron) throws Exception {
+	private static void crearCurva(Connection conn, PreparedStatement ps,
+			String codigoPatron, ResourceBundle codigosPatron) throws Exception {
 		Table t = null;
 		String dbfPath = null;
 		try {
@@ -138,7 +187,7 @@ public class DAO {
 			String sql = "INSERT INTO " + tabla + " VALUES(?, ?, ?, ?, ?);";
 			int numRecords = t.getNumberOfRecords();
 
-			//System.out.println(t.getNumberOfRecords() + " registros");
+			// System.out.println(t.getNumberOfRecords() + " registros");
 			for (int i = 0; i < numRecords; i++) {
 				t.nextRecord();
 				try {
@@ -148,8 +197,8 @@ public class DAO {
 					Double fAct = t.getFieldDouble("F_ACT");
 					Date dProc = t.getFieldDate("D_PROC");
 					/*
-					 * System.out.println(plazo + " | " + tna + " | " + fDesc + " | " +
-					 * fAct + " | " + dProc);
+					 * System.out.println(plazo + " | " + tna + " | " + fDesc +
+					 * " | " + fAct + " | " + dProc);
 					 */
 					ps = conn.prepareStatement(sql);
 					ps.setInt(1, plazo);
@@ -157,9 +206,10 @@ public class DAO {
 					ps.setDouble(3, fDesc);
 					ps.setDouble(4, fAct);
 					ps.setDate(5, DateUtils.convertDate(dProc));
-					/*if (i % 100 == 0) {
-					 System.out.println(i + " registros procesados." + tabla);
-					 }*/
+					/*
+					 * if (i % 100 == 0) { System.out.println(i +
+					 * " registros procesados." + tabla); }
+					 */
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
@@ -175,22 +225,27 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo) throws SQLException,
-			Exception {
+	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo)
+			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Double factorAct = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_ACT FROM Curva_4 WHERE D_PROC = ? AND PLAZO = ?;");//TODO no es Cunpon_4???
+			ps = conn
+					.prepareStatement("SELECT F_ACT FROM Curva_4 WHERE D_PROC = ? AND PLAZO = ?;");// TODO
+			// no
+			// es
+			// Cunpon_4???
 			ps.setDate(1, pFecha);
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				factorAct = rs.getDouble("F_ACT");
 			} else {
-				throw new Exception("No se pudo obtener el factor de actualización");
+				throw new Exception(
+						"No se pudo obtener el factor de actualizaciï¿½n");
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -199,8 +254,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorDesc(java.sql.Date pFecha, Long pPlazo, String pTabla)
-			throws SQLException, Exception {
+	public static Double obtenerFactorDesc(java.sql.Date pFecha, Long pPlazo,
+			String pTabla) throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -224,8 +279,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerTipoCambioMoneda(java.sql.Date pFechaProceso, Long codDiv)
-			throws SQLException, Exception {
+	public static Double obtenerTipoCambioMoneda(java.sql.Date pFechaProceso,
+			Long codDiv) throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -261,23 +316,26 @@ public class DAO {
 			int i = 1;
 			for (TasaFWD tasa : pTasas.subList(0, pTasas.size() - 31)) {
 				ps = conn.prepareStatement(sql);
-				//System.out.println(tasa.getFechaPublicacion() + "-" + tasa.getTasaFWD());
+				// System.out.println(tasa.getFechaPublicacion() + "-" +
+				// tasa.getTasaFWD());
 				ps.setInt(1, i);
 				ps.setDate(2, DateUtils.convertDate(pFechaProceso));
-				ps.setDate(3, DateUtils.convertDate(tasa.getFechaPublicacion()));
+				ps
+						.setDate(3, DateUtils.convertDate(tasa
+								.getFechaPublicacion()));
 				ps.setDouble(4, tasa.getTasaFWD());
 				ps.executeUpdate();
 				i++;
 			}
 
 		} catch (Exception e) {
-			// TODO Bloque catch generado automáticamente
+			// TODO Bloque catch generado automï¿½ticamente
 			e.printStackTrace();
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (SQLException e) {
-				// TODO Bloque catch generado automáticamente
+				// TODO Bloque catch generado automï¿½ticamente
 				e.printStackTrace();
 			}
 		}
