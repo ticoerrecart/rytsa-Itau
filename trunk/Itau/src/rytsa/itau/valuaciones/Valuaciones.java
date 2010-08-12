@@ -85,6 +85,10 @@ public class Valuaciones {
 				mtm.calcularMtm(operacionNDF);
 				listaMtm.add(mtm);
 			}
+			
+			for (Mtm mtm : listaMtm) {
+				//TODO hay que armar la coleccion para el WS InformarNovedadesValuaciones.
+			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
