@@ -3,12 +3,10 @@ package rytsa.itau.valuaciones;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.easymock.EasyMock;
 
 import rytsa.itau.dominio.Mtm;
-import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
@@ -26,22 +24,18 @@ public class ValuacionesNDF extends Valuaciones {
 
 	public static void calcularMTM(Date pFechaProceso) {
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
-		ResourceBundle bundle = ResourceBundle.getBundle("config");
-		calculoMTM(pFechaProceso, bundle, operacionesNDF);
+		calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
-	private static void calculoMTM(Date pFechaProceso, ResourceBundle pBundle,
-			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF) {
+	private static void calculoMTM(Date pFechaProceso, RecuperoOperacionesNDFAValuarResponse pOperacionesNDF) {
 
 		try {
 			List<Mtm> listaMtm = new ArrayList<Mtm>();
 			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 					.getRecuperoOperacionesNDFAValuarResult()) {
-				Mtm mtm = new Mtm();
-				mtm.setPlazoRemanente(DateUtils.diferenciaEntreFechas(operacionNDF
-						.getFechaVencimiento(), pFechaProceso));
+				Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
 
-				mtm.calcularFwd(pFechaProceso, operacionNDF, pBundle);
+				mtm.calcularFwd();
 
 				mtm.calcularMtm(operacionNDF);
 				listaMtm.add(mtm);
