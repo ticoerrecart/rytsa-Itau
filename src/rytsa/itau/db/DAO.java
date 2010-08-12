@@ -28,7 +28,8 @@ public class DAO {
 			ps.executeUpdate();
 
 			String sql = "INSERT INTO Calib_div_h VALUES(?, ?, ?);";
-			t = new Table("DBFs/calib_div_h.DBF");
+			ResourceBundle rb = ResourceBundle.getBundle("config");
+			t = new Table(rb.getString("caliv_div_h"));
 			int numRecords = t.getNumberOfRecords();
 
 			//System.out.println(t.getNumberOfRecords() + " registros");
@@ -47,8 +48,8 @@ public class DAO {
 					ps.setDouble(2, price);
 					ps.setDate(3, DateUtils.convertDate(dProc));
 					/*if (i % 100 == 0) {
-						System.out.println(i + " registros procesados.Calib_div_h");
-					}*/
+					 System.out.println(i + " registros procesados.Calib_div_h");
+					 }*/
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
@@ -157,8 +158,8 @@ public class DAO {
 					ps.setDouble(4, fAct);
 					ps.setDate(5, DateUtils.convertDate(dProc));
 					/*if (i % 100 == 0) {
-						System.out.println(i + " registros procesados." + tabla);
-					}*/
+					 System.out.println(i + " registros procesados." + tabla);
+					 }*/
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
@@ -204,7 +205,7 @@ public class DAO {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Double precio = null;
-		try {// " ("C_DIV" NUMERIC, "PRICE" DOUBLE, "D_PROC" DATETIME)
+		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT PRICE FROM Calib_div_h WHERE D_PROC = ? AND C_DIV = ?;");
