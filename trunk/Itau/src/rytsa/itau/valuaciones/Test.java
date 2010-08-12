@@ -9,6 +9,7 @@ public class Test {
 		try {
 			DAO.crearCurvas();
 			DAO.crearTipoDeCambio();
+			DAO.crearTasasDeBadlar();
 
 			ValuacionesSWAP.calcularMTM(DateUtils.stringToDate("02/03/2010"));
 			ValuacionesNDF.calcularMTM(DateUtils.stringToDate("02/03/2010"));
