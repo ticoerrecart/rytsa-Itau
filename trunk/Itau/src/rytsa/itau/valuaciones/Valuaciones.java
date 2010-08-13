@@ -30,6 +30,6 @@ public abstract class Valuaciones {
 		return sb.toString();
 	}
 
-	public static void calcularMTM(Date pFechaProceso) {
+	public static void calcularMTM(Date pFechaProceso) throws Exception {
 	}
 }

@@ -3,12 +3,14 @@ package rytsa.itau.valuaciones;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.Map;
 
 import org.easymock.EasyMock;
 
 import rytsa.itau.db.DAO;
+import rytsa.itau.dominio.CuponSWAP;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
@@ -28,6 +30,12 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesSWAP extends Valuaciones {
 
+	private static Map<String, OperacionSWAPAValuarData> operacionesParteFija = new HashMap<String, OperacionSWAPAValuarData>();
+
+	private static Map<String, OperacionSWAPAValuarData> operacionesParteVariable = new HashMap<String, OperacionSWAPAValuarData>();
+
+	private static Map<String, List<CuponSWAP>> agendaCuponOperaciones = new HashMap<String, List<CuponSWAP>>();
+
 	/**
 	 * Para ello es necesario obtener las operaciones de swaps y los cupones
 	 * correspondientes de cada SWAP que se obtendr�n desde el sistema de
@@ -41,13 +49,49 @@ public class ValuacionesSWAP extends Valuaciones {
 	 * 
 	 * 
 	 */
-	public static void calcularMTM(Date pFechaProceso) {
-		RecuperoOperacionesSWAPAValuarResponse operacionesSWAP = operacionesSWAP(pFechaProceso);
-		RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP = agendaSWAP(pFechaProceso);
-		ResourceBundle bundle = ResourceBundle.getBundle("config");
+	public static void calcularMTM(Date pFechaProceso) throws Exception {
+		armarOperacionesSWAPParteFijaYVariable(operacionesSWAP(pFechaProceso)
+				.getRecuperoOperacionesSWAPAValuarResult());
+		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
-		//calculoMTM(pFechaProceso, bundle, operacionesNDF);
+		calculoMTM(pFechaProceso);
+	}
+
+	public static void calculoMTM(Date pFechaProceso) {
+
+	}
+
+	private static void armarAgendaCuponOperaciones(
+			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP, Date pFechaProceso)
+			throws Exception {
+		for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
+			//busco la lista
+			List<CuponSWAP> lista = agendaCuponOperaciones.get(agendaCupon.getNumeroOperacion());
+			if (lista == null) {//si la lista no existe la creo
+				lista = new ArrayList<CuponSWAP>();
+			}
+			
+			OperacionSWAPAValuarData parteVariable = operacionesParteVariable.get(agendaCupon
+					.getNumeroOperacion());
+			OperacionSWAPAValuarData parteFija = operacionesParteFija.get(parteVariable
+					.getIdOperacion());
+			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, parteFija, parteVariable);
+
+			lista.add(cuponSWAP);
+			agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);
+		}
+	}
+
+	private static void armarOperacionesSWAPParteFijaYVariable(
+			List<OperacionSWAPAValuarData> pOperacionesSWAP) {
+		for (OperacionSWAPAValuarData operacionSWAP : pOperacionesSWAP) {
+			if (operacionSWAP.getMetodoFixing().equalsIgnoreCase("Tasa Fija")) {
+				operacionesParteFija.put(operacionSWAP.getNumeroOperacion(), operacionSWAP);
+			} else {
+				operacionesParteVariable.put(operacionSWAP.getNumeroOperacion(), operacionSWAP);
+			}
+		}
 	}
 
 	private static FeriadosResponse diasHabiles(Date pFechaProceso) {
@@ -92,7 +136,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		return fr;
 	}
 
-	private static RecuperoAgendaCuponesOperacionesSWAPAValuarResponse agendaSWAP(Date pFechaProceso) {
+	private static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("RecuperoAgendaCuponesOperacionesSWAPAValuarResponse",
 				RecuperoAgendaCuponesOperacionesSWAPAValuarResponse.class);
@@ -135,7 +179,7 @@ public class ValuacionesSWAP extends Valuaciones {
 			}
 		}
 
-		return salida;
+		return salida.getRecuperoAgendaCuponesOperacionesSWAPAValuarResult();
 	}
 
 	private static RecuperoOperacionesSWAPAValuarResponse operacionesSWAP(Date pFechaProceso) {

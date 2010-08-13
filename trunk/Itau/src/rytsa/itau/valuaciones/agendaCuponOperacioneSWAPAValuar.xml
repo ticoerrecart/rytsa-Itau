@@ -1,14 +1,14 @@
 <RecuperoAgendaCuponesOperacionesSWAPAValuarResponse>
 	<RecuperoAgendaCuponesOperacionesSWAPAValuarResult>
 		<AgendaCuponOperacioneSWAPAValuarData>
-			<NumeroOperacion>A01</NumeroOperacion>
+			<NumeroOperacion>A02</NumeroOperacion>
 		    <IdCupon>C01</IdCupon>
 			<TipoFlujo></TipoFlujo>
 			<ReceivedOPayment></ReceivedOPayment>
-			<FechaInicio>10/05/2010</FechaInicio>
-			<FechaVencimiento>25/05/2010</FechaVencimiento>
-			<FechaIndiceInicio>30/05/2010</FechaIndiceInicio>
-		    <FechaIndiceFin>01/06/2010</FechaIndiceFin>
+			<FechaInicio>25/03/2010</FechaInicio>
+			<FechaVencimiento>26/04/2010</FechaVencimiento>
+			<FechaIndiceInicio>22/03/2010</FechaIndiceInicio>
+		    <FechaIndiceFin>22/04/2010</FechaIndiceFin>
 		</AgendaCuponOperacioneSWAPAValuarData>
 		
 		<AgendaCuponOperacioneSWAPAValuarData>
@@ -16,10 +16,32 @@
 		    <IdCupon>C02</IdCupon>
 			<TipoFlujo></TipoFlujo>
 			<ReceivedOPayment></ReceivedOPayment>
-			<FechaInicio>10/05/2010</FechaInicio>
-			<FechaVencimiento>25/05/2010</FechaVencimiento>
-			<FechaIndiceInicio>30/05/2010</FechaIndiceInicio>
-		    <FechaIndiceFin>01/06/2010</FechaIndiceFin>
+			<FechaInicio>27/04/2010</FechaInicio>
+			<FechaVencimiento>27/04/2010</FechaVencimiento>
+			<FechaIndiceInicio>23/04/2010</FechaIndiceInicio>
+		    <FechaIndiceFin>21/05/2010</FechaIndiceFin>
+		</AgendaCuponOperacioneSWAPAValuarData>
+		
+		<AgendaCuponOperacioneSWAPAValuarData>
+			<NumeroOperacion>A02</NumeroOperacion>
+		    <IdCupon>C03</IdCupon>
+			<TipoFlujo></TipoFlujo>
+			<ReceivedOPayment></ReceivedOPayment>
+			<FechaInicio>28/04/2010</FechaInicio>
+			<FechaVencimiento>28/04/2010</FechaVencimiento>
+			<FechaIndiceInicio>26/05/2010</FechaIndiceInicio>
+		    <FechaIndiceFin>24/06/2010</FechaIndiceFin>
+		</AgendaCuponOperacioneSWAPAValuarData>
+		
+		<AgendaCuponOperacioneSWAPAValuarData>
+			<NumeroOperacion>B02</NumeroOperacion>
+		    <IdCupon>C04</IdCupon>
+			<TipoFlujo></TipoFlujo>
+			<ReceivedOPayment></ReceivedOPayment>
+			<FechaInicio>28/04/2010</FechaInicio>
+			<FechaVencimiento>28/04/2010</FechaVencimiento>
+			<FechaIndiceInicio>26/05/2010</FechaIndiceInicio>
+		    <FechaIndiceFin>24/06/2010</FechaIndiceFin>
 		</AgendaCuponOperacioneSWAPAValuarData>
 	</RecuperoAgendaCuponesOperacionesSWAPAValuarResult>
 </RecuperoAgendaCuponesOperacionesSWAPAValuarResponse>

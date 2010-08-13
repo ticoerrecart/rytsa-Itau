@@ -7,7 +7,7 @@
 			<MetodoFixing>Tasa Fija</MetodoFixing>
 			<Moneda></Moneda>
 			<BIBA></BIBA>
-			<TasaFija></TasaFija>
+			<TasaFija>10</TasaFija>
 			<TasaVariable></TasaVariable>
 			<MonedaLiquidacion></MonedaLiquidacion>
 			<TipoOperacion></TipoOperacion>
@@ -114,7 +114,7 @@
 			<MetodoFixing>Tasa Fija</MetodoFixing>
 			<Moneda></Moneda>
 			<BIBA></BIBA>
-			<TasaFija></TasaFija>
+			<TasaFija>10</TasaFija>
 			<TasaVariable></TasaVariable>
 			<MonedaLiquidacion></MonedaLiquidacion>
 			<TipoOperacion></TipoOperacion>
