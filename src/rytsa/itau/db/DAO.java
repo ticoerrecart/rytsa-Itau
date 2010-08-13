@@ -18,9 +18,10 @@ import br.com.softsite.sfc.tini.persistence.Table;
 
 public class DAO {
 
-	public static  HashMap<String, Integer> monedas = new HashMap<String, Integer>();
-	public static  HashMap<String, String> files = new HashMap<String, String>();
-	
+	public static HashMap<String, Integer> monedas = new HashMap<String, Integer>();
+
+	public static HashMap<String, String> files = new HashMap<String, String>();
+
 	public static void crearTipoDeCambio() {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -135,7 +136,8 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
 			for (String moneda : linea.split(",")) {
-				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron.getString(moneda.trim()).split(",")[0]));
+				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron.getString(moneda.trim())
+						.split(",")[0]));
 				DAO.files.put(moneda.trim(), codigosPatron.getString(moneda.trim()).split(",")[1]);
 				crearCurva(conn, ps, moneda.trim());
 			}
@@ -151,8 +153,7 @@ public class DAO {
 	}
 
 	private static void crearTablaSiNoExisteOBorrarla(Connection pConnection,
-			PreparedStatement pPreparedStatement, String pTabla)
-			throws SQLException {
+			PreparedStatement pPreparedStatement, String pTabla) throws SQLException {
 		ResultSet rs = null;
 		try {
 			pPreparedStatement = pConnection
@@ -160,9 +161,8 @@ public class DAO {
 			pPreparedStatement.setString(1, pTabla);
 			rs = pPreparedStatement.executeQuery();
 			if (!rs.next()) {// si no existe la tabla la creo.
-				String sqlCreate = "CREATE TABLE " + pTabla + "("
-						+ "PLAZO NUMERIC NULL," + "TNA DOUBLE NULL,"
-						+ "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
+				String sqlCreate = "CREATE TABLE " + pTabla + "(" + "PLAZO NUMERIC NULL,"
+						+ "TNA DOUBLE NULL," + "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
 						+ "D_PROC DATETIME NULL)";
 				pPreparedStatement = pConnection.prepareStatement(sqlCreate);
 				pPreparedStatement.executeUpdate();
@@ -178,7 +178,8 @@ public class DAO {
 		}
 	}
 
-	private static void crearCurva(Connection conn, PreparedStatement ps, String codigoPatron) throws Exception {
+	private static void crearCurva(Connection conn, PreparedStatement ps, String codigoPatron)
+			throws Exception {
 		Table t = null;
 		try {
 			t = new Table(files.get(codigoPatron));
@@ -227,16 +228,15 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo)
-			throws SQLException, Exception {
+	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo) throws SQLException,
+			Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Double factorAct = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn
-					.prepareStatement("SELECT F_ACT FROM Curva_4 WHERE D_PROC = ? AND PLAZO = ?;");// TODO
+			ps = conn.prepareStatement("SELECT F_ACT FROM Curva_4 WHERE D_PROC = ? AND PLAZO = ?;");// TODO
 			// no
 			// es
 			// Cunpon_4???
@@ -246,8 +246,7 @@ public class DAO {
 			if (rs.next()) {
 				factorAct = rs.getDouble("F_ACT");
 			} else {
-				throw new Exception(
-						"No se pudo obtener el factor de actualizaci�n");
+				throw new Exception("No se pudo obtener el factor de actualizaci�n");
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -256,8 +255,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorDesc(java.sql.Date pFecha, Long pPlazo,
-			String pTabla) throws SQLException, Exception {
+	public static Double obtenerFactorDesc(java.sql.Date pFecha, Long pPlazo, String pTabla)
+			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -322,9 +321,7 @@ public class DAO {
 				// tasa.getTasaFWD());
 				ps.setInt(1, i);
 				ps.setDate(2, DateUtils.convertDate(pFechaProceso));
-				ps
-						.setDate(3, DateUtils.convertDate(tasa
-								.getFechaPublicacion()));
+				ps.setDate(3, DateUtils.convertDate(tasa.getFechaPublicacion()));
 				ps.setDouble(4, tasa.getTasaFWD());
 				ps.executeUpdate();
 				i++;
@@ -343,4 +340,55 @@ public class DAO {
 		}
 	}
 
+	public static Double obtenerPromedioTasasDeBadlar(Date pfInicio, Date pfFin) throws Exception {
+		Double suma = new Double(0);
+		ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Double precio = null;
+		Integer total = null;
+		try {
+			conn = DatabaseFactory.getConnection();
+			ps = conn
+					.prepareStatement("SELECT PRICE FROM Calib_index_h WHERE D_PROC >= ? AND D_PROC <= ?;");
+			ps.setDate(1, DateUtils.convertDate(pfFin));
+			ps.setDate(2, DateUtils.convertDate(pfInicio));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				precio = rs.getDouble("PRICE");
+				suma = suma + precio;
+			}
+			rs.last();
+			total = rs.getRow();
+		} finally {
+			DatabaseFactory.closeConnection(conn, ps, rs);
+		}
+		return suma / total;
+	}
+
+	public static Double obtenerPromedioTasasFWD(Date pfInicio, Date pfFin) throws Exception {
+		Double suma = new Double(0);
+		ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Double tasaFWD = null;
+		Integer total = null;
+		try {
+			conn = DatabaseFactory.getConnection();
+			ps = conn
+					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ?;");
+			ps.setDate(1, DateUtils.convertDate(pfFin));
+			ps.setDate(2, DateUtils.convertDate(pfInicio));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				tasaFWD = rs.getDouble("TASA_FWD");
+				suma = suma + tasaFWD;
+			}
+			rs.last();
+			total = rs.getRow();
+		} finally {
+			DatabaseFactory.closeConnection(conn, ps, rs);
+		}
+		return suma / total;
+	}
 }

@@ -22,14 +22,14 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
 
-	public static void calcularMTM(Date pFechaProceso) {
+	public static void calcularMTM(Date pFechaProceso) throws Exception {
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
 		calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
-	private static void calculoMTM(Date pFechaProceso, RecuperoOperacionesNDFAValuarResponse pOperacionesNDF) {
+	private static void calculoMTM(Date pFechaProceso,
+			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF) throws Exception {
 
-		try {
 			List<Mtm> listaMtm = new ArrayList<Mtm>();
 			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 					.getRecuperoOperacionesNDFAValuarResult()) {
@@ -44,9 +44,6 @@ public class ValuacionesNDF extends Valuaciones {
 			for (Mtm mtm : listaMtm) {
 				//TODO hay que armar la coleccion para el WS InformarNovedadesValuaciones.
 			}
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
 	}
 
 	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(Date pFechaProceso) {
