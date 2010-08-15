@@ -36,6 +36,10 @@ public class ValuacionesSWAP extends Valuaciones {
 
 	private static Map<String, List<CuponSWAP>> agendaCuponOperaciones = new HashMap<String, List<CuponSWAP>>();
 
+	private static Double mtmFija = new Double(0);
+
+	private static Double mtmVariable = new Double(0);
+
 	/**
 	 * Para ello es necesario obtener las operaciones de swaps y los cupones
 	 * correspondientes de cada SWAP que se obtendr�n desde el sistema de
@@ -55,23 +59,30 @@ public class ValuacionesSWAP extends Valuaciones {
 		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
-		calculoMTM(pFechaProceso);
+		calculoMTM();
 	}
 
-	public static void calculoMTM(Date pFechaProceso) {
-
+	public static void calculoMTM() {
+		for (List<CuponSWAP> listaCuponSWAP : agendaCuponOperaciones.values()) {
+			for (CuponSWAP cuponSWAP : listaCuponSWAP) {
+				mtmFija = mtmFija + cuponSWAP.getFraCli();
+				mtmVariable = mtmVariable + cuponSWAP.getFraCliRf();
+			}
+		}
+		
+		//TODO hay que armar la coleccion para el WS InformarNovedadesValuaciones.
 	}
 
 	private static void armarAgendaCuponOperaciones(
 			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP, Date pFechaProceso)
 			throws Exception {
 		for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
-			//busco la lista
+			// busco la lista
 			List<CuponSWAP> lista = agendaCuponOperaciones.get(agendaCupon.getNumeroOperacion());
-			if (lista == null) {//si la lista no existe la creo
+			if (lista == null) {// si la lista no existe la creo
 				lista = new ArrayList<CuponSWAP>();
 			}
-			
+
 			OperacionSWAPAValuarData parteVariable = operacionesParteVariable.get(agendaCupon
 					.getNumeroOperacion());
 			OperacionSWAPAValuarData parteFija = operacionesParteFija.get(parteVariable
