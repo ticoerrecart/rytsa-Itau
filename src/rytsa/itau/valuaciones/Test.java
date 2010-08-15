@@ -7,11 +7,12 @@ public class Test {
 
 	public static void main(String[] args) {
 		try {
+			DAO.crearCupon4();
 			DAO.crearCurvas();
 			DAO.crearTipoDeCambio();
 			DAO.crearTasasDeBadlar();
 
-	//		ValuacionesSWAP.calcularMTM(DateUtils.stringToDate("02/03/2010"));
+			// ValuacionesSWAP.calcularMTM(DateUtils.stringToDate("02/03/2010"));
 			ValuacionesNDF.calcularMTM(DateUtils.stringToDate("02/03/2010"));
 		} catch (Exception e) {
 			e.printStackTrace();
