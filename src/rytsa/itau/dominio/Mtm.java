@@ -24,12 +24,12 @@ public class Mtm {
 
 	private Double mtm;
 
-	
-	public Mtm(Date pFechaProceso, OperacionNDFAValuarData pOperacionNDF) throws Exception{
-		this.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(DateUtils.convertDate(pFechaProceso),
+	public Mtm(Date pFechaProceso, OperacionNDFAValuarData pOperacionNDF)
+			throws Exception {
+		this.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(pFechaProceso,
 				DAO.monedas.get(pOperacionNDF.getMoneda())));
 
-		this.setTipoCambioMoneda2(DAO.obtenerTipoCambioMoneda(DateUtils.convertDate(pFechaProceso),
+		this.setTipoCambioMoneda2(DAO.obtenerTipoCambioMoneda(pFechaProceso,
 				DAO.monedas.get(pOperacionNDF.getMoneda_de_liquidacion())));
 
 		if (this.getCurvaMoneda2() == null) {
@@ -38,31 +38,37 @@ public class Mtm {
 		if (this.getTipoCambioMoneda2() == null) {
 			throw new Exception("tipoCambioMoneda2 es nulo");
 		}
-		
-		this.setPlazoRemanente(DateUtils.diferenciaEntreFechas(pOperacionNDF.getFechaVencimiento(), pFechaProceso));
-		
+
+		this.setPlazoRemanente(DateUtils.diferenciaEntreFechas(pOperacionNDF
+				.getFechaVencimiento(), pFechaProceso));
+
 		if (this.getPlazoRemanente() == null) {
 			throw new Exception("plazoRemanente es nulo");
 		}
-		
-		this.setCurvaMoneda(DAO.obtenerFactorDesc(DateUtils.convertDate(pFechaProceso), this
-				.getPlazoRemanente(), FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMoneda()))));
 
-		this.setCurvaMoneda2(DAO.obtenerFactorDesc(DateUtils.convertDate(pFechaProceso), this
-				.getPlazoRemanente(), FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMoneda_de_liquidacion()))));
+		this.setCurvaMoneda(DAO.obtenerFactorDesc(pFechaProceso, this
+				.getPlazoRemanente(), FileUtils.getFileName(DAO.files
+				.get(pOperacionNDF.getMoneda()))));
+
+		this.setCurvaMoneda2(DAO.obtenerFactorDesc(pFechaProceso, this
+				.getPlazoRemanente(), FileUtils.getFileName(DAO.files
+				.get(pOperacionNDF.getMoneda_de_liquidacion()))));
 	}
-	
-	
-	public void calcularFwd() throws NumberFormatException, SQLException, Exception {
 
-		this.setFwd( (this.getTipoCambioMoneda() / this.getTipoCambioMoneda2())
+	public void calcularFwd() throws NumberFormatException, SQLException,
+			Exception {
+
+		this.setFwd((this.getTipoCambioMoneda() / this.getTipoCambioMoneda2())
 				* (this.getCurvaMoneda() / this.getCurvaMoneda2()));
 	}
 
-	public void calcularMtm(OperacionNDFAValuarData pOperacionNDF) throws Exception {
+	public void calcularMtm(OperacionNDFAValuarData pOperacionNDF)
+			throws Exception {
 
-		//CantidadVN  * (Precio - FWD) * Curva Moneda 2 (Plazo Remanente) * Tipo de Cambio Moneda 2
-		this.setMtm(pOperacionNDF.getCantidadVN() * (pOperacionNDF.getPrecio() - this.getFwd())
+		// CantidadVN * (Precio - FWD) * Curva Moneda 2 (Plazo Remanente) * Tipo
+		// de Cambio Moneda 2
+		this.setMtm(pOperacionNDF.getCantidadVN()
+				* (pOperacionNDF.getPrecio() - this.getFwd())
 				* this.getCurvaMoneda2() * this.getTipoCambioMoneda2());
 	}
 
