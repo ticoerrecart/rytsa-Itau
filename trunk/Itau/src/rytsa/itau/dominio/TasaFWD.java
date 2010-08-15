@@ -23,16 +23,16 @@ public class TasaFWD {
 
 	private Double tasaFWD;
 
-	public void calcularFactorDeActualizacion(Date pFechaProceso, Date pFecha) throws SQLException,
-			Exception {
+	public void calcularFactorDeActualizacion(Date pFechaProceso, Date pFecha)
+			throws SQLException, Exception {
 		long plazo = DateUtils.diferenciaEntreFechas(pFecha, pFechaProceso);
 		this.setFechaPublicacion(pFecha);
-		this.setFactorDeActualizacion(DAO.obtenerFactorAct(DateUtils.convertDate(pFechaProceso),
-				plazo));
+		this.setFactorDeActualizacion(DAO
+				.obtenerFactorAct(pFechaProceso, plazo));
 	}
 
 	private boolean esDiaHabil(Date pFecha) {
-		return true;//TODO acá tendria un llamado al webService
+		return true;// TODO acï¿½ tendria un llamado al webService
 	}
 
 	private Date addDiasHabiles(Date pFecha, int pDays) {
@@ -71,24 +71,28 @@ public class TasaFWD {
 		this.setFechaVencimientoPlazoFijo(fecha);
 	}
 
-	public void calcularFechaPublicacionVencimiento(List<TasaFWD> tasas) throws Exception {
+	public void calcularFechaPublicacionVencimiento(List<TasaFWD> tasas)
+			throws Exception {
 		if (fechaVencimientoPlazoFijo == null) {
 			throw new Exception("fechaVencimientoPlazoFijo es nula");
 		}
 		Date fecha = addDiasHabiles(this.getFechaVencimientoPlazoFijo(), 2);
-		TasaFWD tasaFwd = (TasaFWD) CollectionUtils.find(tasas,
-				new BeanPropertyValueEqualsPredicate("fechaPublicacion", fecha));
+		TasaFWD tasaFwd = (TasaFWD) CollectionUtils
+				.find(tasas, new BeanPropertyValueEqualsPredicate(
+						"fechaPublicacion", fecha));
 		this.setTasaParafechaPublicacionVencimiento(tasaFwd);
 	}
 
 	public void calcularTasaFWD() {
 
-		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(), this
-				.getTasaParafechaPublicacionVencimiento().getFechaPublicacion());
+		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(),
+				this.getTasaParafechaPublicacionVencimiento()
+						.getFechaPublicacion());
 
 		this
 				.setTasaFWD((((this.getTasaParafechaPublicacionVencimiento()
-						.getFactorDeActualizacion() / this.getFactorDeActualizacion()) - 1) * 365 / N) * 100);
+						.getFactorDeActualizacion() / this
+						.getFactorDeActualizacion()) - 1) * 365 / N) * 100);
 	}
 
 	public Date getFechaVencimientoPlazoFijo() {
@@ -135,7 +139,8 @@ public class TasaFWD {
 		return tasaParafechaPublicacionVencimiento;
 	}
 
-	private void setTasaParafechaPublicacionVencimiento(TasaFWD tasaParafechaPublicacionVencimiento) {
+	private void setTasaParafechaPublicacionVencimiento(
+			TasaFWD tasaParafechaPublicacionVencimiento) {
 		this.tasaParafechaPublicacionVencimiento = tasaParafechaPublicacionVencimiento;
 	}
 

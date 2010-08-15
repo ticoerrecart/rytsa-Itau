@@ -280,7 +280,7 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorAct(java.sql.Date pFecha, Long pPlazo)
+	public static Double obtenerFactorAct(Date pFecha, Long pPlazo)
 			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
@@ -290,10 +290,7 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");// TODO
-			// no
-			// es
-			// Cunpon_4???
-			ps.setDate(1, pFecha);
+			ps.setDate(1, DateUtils.convertDate(pFecha));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -309,7 +306,7 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorDesc(java.sql.Date pFecha, Long pPlazo,
+	public static Double obtenerFactorDesc(Date pFecha, Long pPlazo,
 			String pTabla) throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
@@ -319,7 +316,7 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla
 					+ " WHERE D_PROC = ? AND PLAZO = ?;");
-			ps.setDate(1, pFecha);
+			ps.setDate(1, DateUtils.convertDate(pFecha));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -334,7 +331,7 @@ public class DAO {
 
 	}
 
-	public static Double obtenerTipoCambioMoneda(java.sql.Date pFechaProceso,
+	public static Double obtenerTipoCambioMoneda(Date pFechaProceso,
 			Integer codDiv) throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
@@ -344,7 +341,7 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT PRICE FROM Calib_div_h WHERE D_PROC = ? AND C_DIV = ?;");
-			ps.setDate(1, pFechaProceso);
+			ps.setDate(1, DateUtils.convertDate(pFechaProceso));
 			ps.setLong(2, codDiv);
 			rs = ps.executeQuery();
 			if (rs.next()) {
