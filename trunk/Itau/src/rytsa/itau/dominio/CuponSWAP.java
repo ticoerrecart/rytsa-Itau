@@ -26,8 +26,11 @@ public class CuponSWAP {
 
 	private Double fraCli;
 
-	public CuponSWAP(Date pFechaProceso,
-			OperacionSWAPAValuarData pOperacionParteFija,
+	private Double vFutCliRf;
+
+	private Double fraCliRf;
+
+	public CuponSWAP(Date pFechaProceso, OperacionSWAPAValuarData pOperacionParteFija,
 			OperacionSWAPAValuarData pOperacionParteVariable) throws Exception {
 		this.setFechaProceso(pFechaProceso);
 		this.operacionParteFija = pOperacionParteFija;
@@ -37,12 +40,14 @@ public class CuponSWAP {
 		this.calcularPlazoResidual();
 		this.calcularTnaIndex();
 		this.calcularVFutCli();
+		this.calcularFraCli();
+		this.calcularVFutCliRf();
+		this.calcularFraCliRf();
 	}
 
 	public void calcularPlazoResidual() throws ParseException {
-		this.setPlazoResidual(DateUtils.diferenciaEntreFechas(DateUtils
-				.stringToDate(this.getAgendaCupon().getFechaVencimiento()),
-				this.getFechaProceso()));
+		this.setPlazoResidual(DateUtils.diferenciaEntreFechas(DateUtils.stringToDate(this
+				.getAgendaCupon().getFechaVencimiento()), this.getFechaProceso()));
 	}
 
 	public Date getFechaIndiceInicio() throws ParseException {
@@ -62,59 +67,83 @@ public class CuponSWAP {
 	}
 
 	public void calcularTnaIndex() throws Exception {
-		if (this.getFechaIndiceFin().compareTo(this.getFechaProceso()) <= 0) {// todas
-																				// las
-																				// tasas
-																				// son
-																				// anteriores
-																				// (Badlar)
-			this.setTnaIndex(DAO.obtenerPromedioTasasDeBadlar(this
-					.getFechaIndiceInicio(), this.getFechaIndiceFin()));
+		if (this.getFechaIndiceFin().compareTo(this.getFechaProceso()) <= 0) {
+			// todas las tasas son anteriores (Badlar)
+			this.setTnaIndex(DAO.obtenerPromedioTasasDeBadlar(this.getFechaIndiceInicio(), this
+					.getFechaIndiceFin()));
 		} else {
-			if (this.getFechaIndiceInicio().compareTo(this.getFechaProceso()) > 0) {// todas
-																					// las
-																					// tasas
-																					// son
-																					// posteriores
-																					// (FWD)
-				this.setTnaIndex(DAO.obtenerPromedioTasasFWD(this
-						.getFechaIndiceInicio(), this.getFechaIndiceFin()));
+			if (this.getFechaIndiceInicio().compareTo(this.getFechaProceso()) > 0) {
+				// todas las tasas son posteriores (FWD)
+				this.setTnaIndex(DAO.obtenerPromedioTasasFWD(this.getFechaIndiceInicio(), this
+						.getFechaIndiceFin()));
 			} else {
 				// algunas tasas son anteriores (Badlar) y otras son posteriores
 				// (FWD)
-				Double promedio = DAO.obtenerPromedioTasasDeBadlar(this
-						.getFechaIndiceInicio(), this.getFechaProceso());
+				Double promedio = DAO.obtenerPromedioTasasDeBadlar(this.getFechaIndiceInicio(),
+						this.getFechaProceso());
 				promedio = promedio
-						+ DAO.obtenerPromedioTasasFWD(DateUtils.addDays(this
-								.getFechaProceso(), 1), this
-								.getFechaIndiceFin());
+						+ DAO.obtenerPromedioTasasFWD(DateUtils.addDays(this.getFechaProceso(), 1),
+								this.getFechaIndiceFin());
 				this.setTnaIndex(promedio);
 			}
 		}
 	}
 
-	public Double getCantidadVN() {
+	public Double getCantidadVNParteFija() {
 		return this.getOperacionParteFija().getCantidadVN();
 	}
 
-	public Double getTasaFija() {
+	public Double getTasaFijaParteFija() {
 		return new Double(this.getOperacionParteFija().getTasaFija());
 	}
 
-	public Double getBase() {
+	public Double getBaseParteFija() {
 		return new Double(this.getOperacionParteFija().getBase1());
 	}
 
 	public void calcularVFutCli() throws ParseException {
-		this.setVFutCli(this.getCantidadVN()
-				* this.getTasaFija()
-				* (DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(),
-						this.getFechaInicio())) / this.getBase() * 100);
+		this.setVFutCli(this.getCantidadVNParteFija()
+				* this.getTasaFijaParteFija()
+				* (DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(), this
+						.getFechaInicio())) / this.getBaseParteFija() * 100);
 	}
 
 	public void calcularFraCli() throws SQLException, Exception {
-		//FIXME se calculo el FactorDesc con la fecha de Proceso o con la de Inicio del Cupon Parte Fija???
-		this.setFraCli(this.getVFutCli() * DAO.obtenerFactorDesc(this.getFechaProceso(), this.getPlazoResidual(), "Curva_1"));
+		// FIXME se calculo el FactorDesc con la fecha de Proceso o con la de
+		// Inicio del Cupon Parte Fija???
+		this
+				.setFraCli(this.getVFutCli()
+						* DAO.obtenerFactorDesc(this.getFechaProceso(), this.getPlazoResidual(),
+								"Curva_1"));
+	}
+
+	public void calcularFraCliRf() throws SQLException, Exception {
+		// FIXME se calculo el FactorDesc con la fecha de Proceso o con la de
+		// Inicio del Cupon Parte Variable???
+		this
+				.setFraCli(this.getVFutCliRf()
+						* DAO.obtenerFactorDesc(this.getFechaProceso(), this.getPlazoResidual(),
+								"Curva_1"));
+	}
+
+	public Double getCantidadVNParteVariable() {
+		return this.getOperacionParteVariable().getCantidadVN();
+	}
+
+	public Double getTasaFijaParteVariable() {
+		return new Double(this.getOperacionParteVariable().getTasaFija());
+	}
+
+	public Double getBaseParteVariable() {
+		return new Double(this.getOperacionParteVariable().getBase1());
+	}
+
+	public void calcularVFutCliRf() throws ParseException {
+		this.setVFutCliRf(this.getCantidadVNParteVariable()
+				* this.getTnaIndex()
+				* DateUtils
+						.diferenciaEntreFechas(this.getFechaVencimiento(), this.getFechaInicio())
+				/ this.getBaseParteVariable() * 100);
 	}
 
 	public AgendaCuponOperacioneSWAPAValuarData getAgendaCupon() {
@@ -161,8 +190,7 @@ public class CuponSWAP {
 		return operacionParteFija;
 	}
 
-	public void setOperacionParteFija(
-			OperacionSWAPAValuarData operacionParteFija) {
+	public void setOperacionParteFija(OperacionSWAPAValuarData operacionParteFija) {
 		this.operacionParteFija = operacionParteFija;
 	}
 
@@ -170,8 +198,7 @@ public class CuponSWAP {
 		return operacionParteVariable;
 	}
 
-	public void setOperacionParteVariable(
-			OperacionSWAPAValuarData operacionParteVariable) {
+	public void setOperacionParteVariable(OperacionSWAPAValuarData operacionParteVariable) {
 		this.operacionParteVariable = operacionParteVariable;
 	}
 
@@ -183,5 +210,20 @@ public class CuponSWAP {
 		this.fraCli = fraCli;
 	}
 
-	
+	public Double getVFutCliRf() {
+		return vFutCliRf;
+	}
+
+	protected void setVFutCliRf(Double futCliRf) {
+		vFutCliRf = futCliRf;
+	}
+
+	public Double getFraCliRf() {
+		return fraCliRf;
+	}
+
+	protected void setFraCliRf(Double fraCliRf) {
+		this.fraCliRf = fraCliRf;
+	}
+
 }
