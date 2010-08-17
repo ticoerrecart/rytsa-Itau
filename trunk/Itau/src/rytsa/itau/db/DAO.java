@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,18 @@ public class DAO {
 				}
 			}
 
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, 4);
+			ps.setDouble(2, 3.25d);
+			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
+			ps.executeUpdate();
+			
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, 1);
+			ps.setDouble(2, 1d);
+			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
+			ps.executeUpdate();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -100,18 +113,19 @@ public class DAO {
 					Integer cIndex = t.getFieldInteger("C_INDEX");
 					Double price = t.getFieldDouble("PRICE");
 					Date dProc = t.getFieldDate("D_PROC");
-					Date dPublic = t.getFieldDate("D_PUBLIC");
+					//Date dPublic = t.getFieldDate("D_PUBLIC");
 					ps = conn.prepareStatement(sql);
 					ps.setInt(1, cIndex);
 					ps.setDouble(2, price);
 					ps.setDate(3, DateUtils.convertDate(dProc));
-					ps.setDate(3, DateUtils.convertDate(dPublic));
+					//ps.setDate(4, DateUtils.convertDate(dPublic));
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
 				}
 			}
-
+					
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -227,7 +241,7 @@ public class DAO {
 	 */
 	private static void crearTabla(String pNombreTabla, Table pTabla,
 			Connection pConn, PreparedStatement pPs) throws IOException,
-			FieldNotFoundException, FieldTypeException, SQLException {
+			FieldNotFoundException, FieldTypeException, SQLException, ParseException {
 
 		crearTablaSiNoExisteOBorrarla(pConn, pPs, pNombreTabla);
 		String sql = "INSERT INTO " + pNombreTabla + " VALUES(?, ?, ?, ?, ?);";
@@ -261,6 +275,15 @@ public class DAO {
 				System.err.println(nfe.getMessage());
 			}
 		}
+		
+		pPs = pConn.prepareStatement(sql);
+		pPs.setInt(1, 29);
+		pPs.setDouble(2, 10.32922312d);
+		pPs.setDouble(3, 0.9901924071d);
+		pPs.setDouble(4, 1.0099047345d);
+		pPs.setDate(5, DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
+		pPs.executeUpdate();
+		
 	}
 
 	private static void crearCurva(Connection conn, PreparedStatement ps,
@@ -347,7 +370,7 @@ public class DAO {
 			if (rs.next()) {
 				precio = rs.getDouble("PRICE");
 			} else {
-				throw new Exception("No se pudo obtener el Tipo Cambio Moneda");
+				throw new Exception("No se pudo obtener el Tipo Cambio Moneda para el codigo " + codDiv+ " y para la fecha " + pFechaProceso );
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);

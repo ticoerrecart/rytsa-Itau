@@ -9,8 +9,6 @@ import org.easymock.EasyMock;
 import rytsa.itau.dominio.Mtm;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
-import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
-import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -18,6 +16,7 @@ import ar.com.itau.esb.client.ESBRequest;
 import ar.com.itau.esb.client.ESBResponse;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
@@ -33,7 +32,8 @@ public class ValuacionesNDF extends Valuaciones {
 			List<Mtm> listaMtm = new ArrayList<Mtm>();
 			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 					.getRecuperoOperacionesNDFAValuarResult()) {
-				Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
+				//Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
+				Mtm mtm = new Mtm(operacionNDF.getFecha_proceso(), operacionNDF);
 
 				mtm.calcularFwd();
 
@@ -48,9 +48,10 @@ public class ValuacionesNDF extends Valuaciones {
 
 	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(Date pFechaProceso) {
 		XStream xs = new XStream(new DomDriver());
+		xs.registerConverter(new DateConverter("dd/MM/yyyy", new String[0]));
 		xs.alias("RecuperoOperacionesNDFAValuarResponse",
-				RecuperoAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.alias("OperacionNDFAValuarData", AgendaCuponOperacioneSWAPAValuarData.class);
+				RecuperoOperacionesNDFAValuarResponse.class);
+		xs.alias("OperacionNDFAValuarData", OperacionNDFAValuarData.class);
 
 		RecuperoOperacionesNDFAValuarResponse salida = null;
 		ESBClient client = null;
