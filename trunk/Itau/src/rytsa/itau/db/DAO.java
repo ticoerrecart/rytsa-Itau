@@ -16,6 +16,7 @@ import rytsa.itau.db.factory.DatabaseFactory;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.FileUtils;
+import rytsa.itau.valuaciones.Test;
 import br.com.softsite.sfc.tini.persistence.FieldNotFoundException;
 import br.com.softsite.sfc.tini.persistence.FieldTypeException;
 import br.com.softsite.sfc.tini.persistence.Table;
@@ -38,7 +39,7 @@ public class DAO {
 
 			String sql = "INSERT INTO Calib_div_h VALUES(?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
-			t = new Table(rb.getString("calib_div_h"));
+			t = new Table( Test.path + rb.getString("calib_div_h"));
 			int numRecords = t.getNumberOfRecords();
 
 			// System.out.println(t.getNumberOfRecords() + " registros");
@@ -104,7 +105,7 @@ public class DAO {
 
 			String sql = "INSERT INTO Calib_index_h (C_INDEX, PRICE, D_PROC) VALUES(?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
-			t = new Table(rb.getString("calib_index_h"));
+			t = new Table(Test.path + rb.getString("calib_index_h"));
 			int numRecords = t.getNumberOfRecords();
 
 			for (int i = 0; i < numRecords; i++) {
@@ -211,7 +212,7 @@ public class DAO {
 		Table t = null;
 		String nomTabla = "cupon_4";
 		try {
-			t = new Table(dbfPath);
+			t = new Table(Test.path +  dbfPath);
 			//nomTabla = FileUtils.getFileName(dbfPath);
 			conn = DatabaseFactory.getConnectionForBulk();
 			crearTabla(nomTabla, t, conn, ps);
@@ -298,7 +299,7 @@ public class DAO {
 			throws Exception {
 		Table t = null;
 		try {
-			t = new Table(files.get(codigoPatron));
+			t = new Table(Test.path + files.get(codigoPatron));
 			String tabla = FileUtils.getFileName(files.get(codigoPatron));
 			crearTabla(tabla, t, conn, ps);
 		} catch (EOFException eofE) {
