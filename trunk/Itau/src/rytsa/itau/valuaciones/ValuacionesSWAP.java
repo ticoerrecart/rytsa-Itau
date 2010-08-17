@@ -11,6 +11,7 @@ import org.easymock.EasyMock;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.CuponSWAP;
+import rytsa.itau.dominio.Mtm;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
@@ -53,23 +54,24 @@ public class ValuacionesSWAP extends Valuaciones {
 	 * 
 	 * 
 	 */
-	public static void calcularMTM(Date pFechaProceso) throws Exception {
+	public static Mtm calcularMTM(Date pFechaProceso) throws Exception {
 		armarOperacionesSWAPParteFijaYVariable(operacionesSWAP(pFechaProceso)
 				.getRecuperoOperacionesSWAPAValuarResult());
 		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
-		calculoMTM();
+		return calculoMTM();
 	}
 
-	public static void calculoMTM() {
+	public static Mtm calculoMTM() {
 		for (List<CuponSWAP> listaCuponSWAP : agendaCuponOperaciones.values()) {
 			for (CuponSWAP cuponSWAP : listaCuponSWAP) {
 				mtmFija = mtmFija + cuponSWAP.getFraCli();
 				mtmVariable = mtmVariable + cuponSWAP.getFraCliRf();
 			}
+			
 		}
-		
+		return null;
 		//TODO hay que armar la coleccion para el WS InformarNovedadesValuaciones.
 	}
 

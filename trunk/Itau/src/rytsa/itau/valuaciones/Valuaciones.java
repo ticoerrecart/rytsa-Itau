@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 
+import rytsa.itau.dominio.Mtm;
+
 /**
  * @author rerrecart
  * 
@@ -30,6 +32,7 @@ public abstract class Valuaciones {
 		return sb.toString();
 	}
 
-	public static void calcularMTM(Date pFechaProceso) throws Exception {
+	public static Mtm calcularMTM(Date pFechaProceso) throws Exception {
+		return null;	
 	}
 }
