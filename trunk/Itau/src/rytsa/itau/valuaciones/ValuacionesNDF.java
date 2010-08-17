@@ -32,10 +32,7 @@ public class ValuacionesNDF extends Valuaciones {
 			List<Mtm> listaMtm = new ArrayList<Mtm>();
 			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 					.getRecuperoOperacionesNDFAValuarResult()) {
-				//Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
-				Mtm mtm = new Mtm(operacionNDF.getFecha_proceso(), operacionNDF);
-
-				
+				Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
 				listaMtm.add(mtm);
 			}
 
