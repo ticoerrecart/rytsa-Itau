@@ -11,11 +11,11 @@ import org.easymock.EasyMock;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.CuponSWAP;
-import rytsa.itau.dominio.Mtm;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
+import rytsa.itau.valuaciones.dto.ndf.NovedadesValuacionesRequestData;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse;
@@ -54,7 +54,8 @@ public class ValuacionesSWAP extends Valuaciones {
 	 * 
 	 * 
 	 */
-	public static Mtm calcularMTM(Date pFechaProceso) throws Exception {
+	public static List<NovedadesValuacionesRequestData> calcularMTM(Date pFechaProceso)
+			throws Exception {
 		armarOperacionesSWAPParteFijaYVariable(operacionesSWAP(pFechaProceso)
 				.getRecuperoOperacionesSWAPAValuarResult());
 		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
@@ -63,16 +64,25 @@ public class ValuacionesSWAP extends Valuaciones {
 		return calculoMTM();
 	}
 
-	public static Mtm calculoMTM() {
+	public static List<NovedadesValuacionesRequestData> calculoMTM() {
 		for (List<CuponSWAP> listaCuponSWAP : agendaCuponOperaciones.values()) {
 			for (CuponSWAP cuponSWAP : listaCuponSWAP) {
 				mtmFija = mtmFija + cuponSWAP.getFraCli();
 				mtmVariable = mtmVariable + cuponSWAP.getFraCliRf();
 			}
-			
+
 		}
-		return null;
-		//TODO hay que armar la coleccion para el WS InformarNovedadesValuaciones.
+
+		List<NovedadesValuacionesRequestData> listaNovedadesRD = new ArrayList<NovedadesValuacionesRequestData>();
+		NovedadesValuacionesRequestData novedadF = new NovedadesValuacionesRequestData();
+		novedadF.setTotalValuado(mtmFija);
+		NovedadesValuacionesRequestData novedadV = new NovedadesValuacionesRequestData();
+		novedadV.setTotalValuado(mtmVariable);
+
+		listaNovedadesRD.add(novedadF);
+		listaNovedadesRD.add(novedadV);
+
+		return listaNovedadesRD;
 	}
 
 	private static void armarAgendaCuponOperaciones(

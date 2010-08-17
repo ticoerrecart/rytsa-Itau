@@ -24,7 +24,11 @@ public class Mtm {
 
 	private Double mtm;
 
+	private OperacionNDFAValuarData operacionNDF;
+
 	public Mtm(Date pFechaProceso, OperacionNDFAValuarData pOperacionNDF) throws Exception {
+		this.setOperacionNDF(pOperacionNDF);
+
 		this.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(pFechaProceso, DAO.monedas
 				.get(pOperacionNDF.getMoneda())));
 
@@ -53,7 +57,7 @@ public class Mtm {
 
 		this.calcularFwd();
 
-		this.calcularMtm(pOperacionNDF);
+		this.calcularMtm();
 	}
 
 	public void calcularFwd() throws NumberFormatException, SQLException, Exception {
@@ -62,12 +66,13 @@ public class Mtm {
 				* (this.getCurvaMoneda() / this.getCurvaMoneda2()));
 	}
 
-	public void calcularMtm(OperacionNDFAValuarData pOperacionNDF) throws Exception {
+	public void calcularMtm() throws Exception {
 
 		// CantidadVN * (Precio - FWD) * Curva Moneda 2 (Plazo Remanente) * Tipo
 		// de Cambio Moneda 2
-		this.setMtm(pOperacionNDF.getCantidadVN() * (pOperacionNDF.getPrecio() - this.getFwd())
-				* this.getCurvaMoneda2() * this.getTipoCambioMoneda2());
+		this.setMtm(this.getOperacionNDF().getCantidadVN()
+				* (this.getOperacionNDF().getPrecio() - this.getFwd()) * this.getCurvaMoneda2()
+				* this.getTipoCambioMoneda2());
 	}
 
 	public Long getPlazoRemanente() {
@@ -124,6 +129,14 @@ public class Mtm {
 
 	private void setFwd(Double fwd) {
 		this.fwd = fwd;
+	}
+
+	public OperacionNDFAValuarData getOperacionNDF() {
+		return operacionNDF;
+	}
+
+	public void setOperacionNDF(OperacionNDFAValuarData operacionNDF) {
+		this.operacionNDF = operacionNDF;
 	}
 
 }
