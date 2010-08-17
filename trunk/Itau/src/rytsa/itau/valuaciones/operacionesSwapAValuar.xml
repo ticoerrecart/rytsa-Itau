@@ -25,7 +25,7 @@
 			<ContraParte></ContraParte>
 			<NumeroBoleto></NumeroBoleto>
 			<CantidadVN>10.0</CantidadVN>
-			<Base1>	</Base1>
+			<Base1>5	</Base1>
 			<Base2>	</Base2>
 			<RendimientoUltimoPeriodo>15.6</RendimientoUltimoPeriodo>
 			<RendimientoTotalHastaFechaActual>200.2	</RendimientoTotalHastaFechaActual>
@@ -77,7 +77,7 @@
 			<ContraParte></ContraParte>
 			<NumeroBoleto></NumeroBoleto>
 			<CantidadVN>10.0</CantidadVN>
-			<Base1>	</Base1>
+			<Base1>3	</Base1>
 			<Base2>	</Base2>
 			<RendimientoUltimoPeriodo>15.6</RendimientoUltimoPeriodo>
 			<RendimientoTotalHastaFechaActual>200.2	</RendimientoTotalHastaFechaActual>
@@ -132,7 +132,7 @@
 			<ContraParte></ContraParte>
 			<NumeroBoleto></NumeroBoleto>
 			<CantidadVN>10.0</CantidadVN>
-			<Base1>	</Base1>
+			<Base1>6	</Base1>
 			<Base2>	</Base2>
 			<RendimientoUltimoPeriodo>15.6</RendimientoUltimoPeriodo>
 			<RendimientoTotalHastaFechaActual>200.2	</RendimientoTotalHastaFechaActual>
@@ -184,7 +184,7 @@
 			<ContraParte></ContraParte>
 			<NumeroBoleto></NumeroBoleto>
 			<CantidadVN>10.0</CantidadVN>
-			<Base1>	</Base1>
+			<Base1>7	</Base1>
 			<Base2>	</Base2>
 			<RendimientoUltimoPeriodo>15.6</RendimientoUltimoPeriodo>
 			<RendimientoTotalHastaFechaActual>200.2	</RendimientoTotalHastaFechaActual>

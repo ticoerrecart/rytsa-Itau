@@ -30,13 +30,14 @@ public class CuponSWAP {
 
 	private Double fraCliRf;
 
-	public CuponSWAP(Date pFechaProceso, OperacionSWAPAValuarData pOperacionParteFija,
+	public CuponSWAP(Date pFechaProceso, AgendaCuponOperacioneSWAPAValuarData pAgendaCupon,
+			OperacionSWAPAValuarData pOperacionParteFija,
 			OperacionSWAPAValuarData pOperacionParteVariable) throws Exception {
 		this.setFechaProceso(pFechaProceso);
 		this.operacionParteFija = pOperacionParteFija;
 		this.operacionParteVariable = pOperacionParteVariable;
 
-		this.setAgendaCupon(agendaCupon);
+		this.setAgendaCupon(pAgendaCupon);
 		this.calcularPlazoResidual();
 		this.calcularTnaIndex();
 		this.calcularVFutCli();
@@ -45,7 +46,13 @@ public class CuponSWAP {
 		this.calcularFraCliRf();
 	}
 
-	public void calcularPlazoResidual() throws ParseException {
+	public void calcularPlazoResidual() throws Exception {
+		if (this.getAgendaCupon().getFechaVencimiento() == null) {
+			throw new Exception("FechaVencimiento es nula");
+		}
+		if (this.getFechaProceso() == null) {
+			throw new Exception("FechaProceso es nula");
+		}
 		this.setPlazoResidual(DateUtils.diferenciaEntreFechas(DateUtils.stringToDate(this
 				.getAgendaCupon().getFechaVencimiento()), this.getFechaProceso()));
 	}
@@ -67,6 +74,13 @@ public class CuponSWAP {
 	}
 
 	public void calcularTnaIndex() throws Exception {
+		if (this.getFechaIndiceInicio() == null) {
+			throw new Exception("FechaIndiceInicio es nula");
+		}
+		if (this.getFechaIndiceFin() == null) {
+			throw new Exception("FechaIndiceFin es nula");
+		}
+
 		if (this.getFechaIndiceFin().compareTo(this.getFechaProceso()) <= 0) {
 			// todas las tasas son anteriores (Badlar)
 			this.setTnaIndex(DAO.obtenerPromedioTasasDeBadlar(this.getFechaIndiceInicio(), this
@@ -101,7 +115,23 @@ public class CuponSWAP {
 		return new Double(this.getOperacionParteFija().getBase1());
 	}
 
-	public void calcularVFutCli() throws ParseException {
+	public void calcularVFutCli() throws Exception {
+		if (this.getCantidadVNParteFija() == null) {
+			throw new Exception("CantidadVNParteFija es nula");
+		}
+		if (this.getTasaFijaParteFija() == null) {
+			throw new Exception("TasaFijaParteFija es nula");
+		}
+		if (this.getFechaVencimiento() == null) {
+			throw new Exception("FechaVencimiento es nula");
+		}
+		if (this.getFechaInicio() == null) {
+			throw new Exception("FechaInicio es nula");
+		}
+		if (this.getBaseParteFija() == null) {
+			throw new Exception("BaseParteFija es nula");
+		}
+
 		this.setVFutCli(this.getCantidadVNParteFija()
 				* this.getTasaFijaParteFija()
 				* (DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(), this
@@ -109,6 +139,13 @@ public class CuponSWAP {
 	}
 
 	public void calcularFraCli() throws SQLException, Exception {
+		if (this.getVFutCli() == null) {
+			throw new Exception("VFutCli es nula");
+		}
+		if (this.getPlazoResidual() == null) {
+			throw new Exception("PlazoResidual es nula");
+		}
+
 		// FIXME se calculo el FactorDesc con la fecha de Proceso o con la de
 		// Inicio del Cupon Parte Fija???
 		this
@@ -118,10 +155,16 @@ public class CuponSWAP {
 	}
 
 	public void calcularFraCliRf() throws SQLException, Exception {
+		if (this.getVFutCliRf() == null) {
+			throw new Exception("VFutCliRF es nula");
+		}
+		if (this.getPlazoResidual() == null) {
+			throw new Exception("PlazoResidual es nula");
+		}
 		// FIXME se calculo el FactorDesc con la fecha de Proceso o con la de
 		// Inicio del Cupon Parte Variable???
 		this
-				.setFraCli(this.getVFutCliRf()
+				.setFraCliRf(this.getVFutCliRf()
 						* DAO.obtenerFactorDesc(this.getFechaProceso(), this.getPlazoResidual(),
 								"Curva_1"));
 	}
@@ -138,7 +181,19 @@ public class CuponSWAP {
 		return new Double(this.getOperacionParteVariable().getBase1());
 	}
 
-	public void calcularVFutCliRf() throws ParseException {
+	public void calcularVFutCliRf() throws Exception {
+		if (this.getCantidadVNParteVariable() == null) {
+			throw new Exception("CantidadVNParteVariable es nula");
+		}
+		if (this.getTnaIndex() == null) {
+			throw new Exception("TnaIndex es nula");
+		}
+		if (this.getFechaInicio() == null) {
+			throw new Exception("FechaInicio es nula");
+		}
+		if (this.getBaseParteVariable() == null) {
+			throw new Exception("BaseParteVariable es nula");
+		}
 		this.setVFutCliRf(this.getCantidadVNParteVariable()
 				* this.getTnaIndex()
 				* DateUtils
