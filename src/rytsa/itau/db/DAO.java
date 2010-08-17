@@ -102,7 +102,7 @@ public class DAO {
 			ps = conn.prepareStatement(sqlDelete);
 			ps.executeUpdate();
 
-			String sql = "INSERT INTO Calib_index_h VALUES(?, ?, ?, ?);";
+			String sql = "INSERT INTO Calib_index_h VALUES(?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
 			t = new Table(rb.getString("calib_index_h"));
 			int numRecords = t.getNumberOfRecords();
