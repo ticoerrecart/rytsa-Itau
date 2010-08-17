@@ -35,9 +35,7 @@ public class ValuacionesNDF extends Valuaciones {
 				//Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
 				Mtm mtm = new Mtm(operacionNDF.getFecha_proceso(), operacionNDF);
 
-				mtm.calcularFwd();
-
-				mtm.calcularMtm(operacionNDF);
+				
 				listaMtm.add(mtm);
 			}
 
