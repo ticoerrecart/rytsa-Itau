@@ -58,9 +58,9 @@ public class ValuacionesSWAP extends Valuaciones {
 			throws Exception {
 		armarOperacionesSWAPParteFijaYVariable(operacionesSWAP(pFechaProceso)
 				.getRecuperoOperacionesSWAPAValuarResult());
-		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
+		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
 		return calculoMTM();
 	}
 
@@ -99,7 +99,7 @@ public class ValuacionesSWAP extends Valuaciones {
 					.getNumeroOperacion());
 			OperacionSWAPAValuarData parteFija = operacionesParteFija.get(parteVariable
 					.getIdOperacion());
-			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, parteFija, parteVariable);
+			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, agendaCupon, parteFija, parteVariable);
 
 			lista.add(cuponSWAP);
 			agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);

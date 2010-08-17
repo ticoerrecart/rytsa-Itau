@@ -16,8 +16,8 @@ public class Test {
 			DAO.crearTasasDeBadlar();
 
 			List<NovedadesValuacionesRequestData> listaSWAP = ValuacionesSWAP.calcularMTM(DateUtils.stringToDate("02/03/2010"));
-			List<NovedadesValuacionesRequestData> listaNDF = ValuacionesNDF.calcularMTM(DateUtils
-					.stringToDate("03/06/2010"));
+			/*List<NovedadesValuacionesRequestData> listaNDF = ValuacionesNDF.calcularMTM(DateUtils
+					.stringToDate("03/06/2010"));*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
