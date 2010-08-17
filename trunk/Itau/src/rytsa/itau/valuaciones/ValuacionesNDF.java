@@ -47,7 +47,7 @@ public class ValuacionesNDF extends Valuaciones {
 			novedad.setFechaCargaPrecio(mtm.getOperacionNDF().getFechaCargaOperacion());
 			novedad.setMonedaValuacion(mtm.getOperacionNDF().getMoneda());
 			novedad.setPrecio(mtm.getOperacionNDF().getPrecio());
-			novedad.setPlazo(Integer.valueOf(mtm.getOperacionNDF().getPlazo()));
+			novedad.setPlazo(mtm.getPlazoRemanente().intValue());
 			novedad.setTotalValuado(mtm.getMtm());
 			listaNovedadesRD.add(novedad);
 			/*IdOperacion<s:attribute name="IdOperacion" type="s:int" use="required" />
