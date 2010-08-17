@@ -2,137 +2,13 @@
 	<RecuperoOperacionesNDFAValuarResult>
 		<OperacionNDFAValuarData>
               <NumeroOperacion>511532</NumeroOperacion>
-              <Producto></Producto>
-              <Instrumento></Instrumento>
-              <MetodoFixing></MetodoFixing>
               <Moneda>USD</Moneda>
               <Moneda_de_liquidacion>ARP</Moneda_de_liquidacion>
-              <TipoOperacion></TipoOperacion>
-              <FechaCargaOperacion>01/01/2010</FechaCargaOperacion>
-              <FechaInicio>01/01/2010</FechaInicio>
               <FechaVencimiento>02/07/2010</FechaVencimiento>
-              <Banca></Banca>
-              <GestorRiesgoMercado></GestorRiesgoMercado>
-              <Officer></Officer>
-              <Clinum></Clinum>
-              <Raiz></Raiz>
-              <CUIT></CUIT>
-              <ContraParte></ContraParte>
-              <NumeroBoleto></NumeroBoleto>
               <CantidadVN>59771</CantidadVN>
               <Precio>3.498</Precio>
-              <Strike_ref>0</Strike_ref>
-              <PrecioCierreContable>0</PrecioCierreContable>
-              <RdoTotalContable>0</RdoTotalContable>
-              <PrecioCierreContableMesAnterior>0</PrecioCierreContableMesAnterior>
-              <RdoMesContable>0</RdoMesContable>
-              <PrecioCierreAnteriorContable>0</PrecioCierreAnteriorContable>
-              <RdoDiarioContable>0</RdoDiarioContable>
-              <Vigentes>0</Vigentes>
-              <Vencidos>0</Vencidos>
-              <ComprasVigentes>0</ComprasVigentes>
-              <VentasVigentes>0</VentasVigentes>
-              <Dev_total>0</Dev_total>
-              <dev_Cob>0</dev_Cob>
-              <dev_Pag>0</dev_Pag>
-              <Plazo></Plazo>
-              <Dias></Dias>
-              <Rdo_BBA>0</Rdo_BBA>
-              <Rdo_BBA_no_Dev>0</Rdo_BBA_no_Dev>
               <Mercado>MERCADO INTERNO</Mercado>
-              <IdOperacion></IdOperacion>
-              <fecha_proceso>03/06/2010</fecha_proceso>
-              <MTM>0</MTM>
 		</OperacionNDFAValuarData>
-		
-		<OperacionNDFAValuarData>
-              <NumeroOperacion>1</NumeroOperacion>
-              <Producto></Producto>
-              <Instrumento></Instrumento>
-              <MetodoFixing></MetodoFixing>
-              <Moneda>USD</Moneda>
-              <Moneda_de_liquidacion>ARP</Moneda_de_liquidacion>
-              <TipoOperacion></TipoOperacion>
-              <FechaCargaOperacion>10/02/2010</FechaCargaOperacion>
-              <FechaInicio>02/02/2010</FechaInicio>
-              <FechaVencimiento>02/04/2010</FechaVencimiento>
-              <Banca></Banca>
-              <GestorRiesgoMercado></GestorRiesgoMercado>
-              <Officer></Officer>
-              <Clinum></Clinum>
-              <Raiz></Raiz>
-              <CUIT></CUIT>
-              <ContraParte></ContraParte>
-              <NumeroBoleto></NumeroBoleto>
-              <CantidadVN>5</CantidadVN>
-              <Precio>120</Precio>
-              <Strike_ref>2.25</Strike_ref>
-              <PrecioCierreContable>100</PrecioCierreContable>
-              <RdoTotalContable>95</RdoTotalContable>
-              <PrecioCierreContableMesAnterior>70</PrecioCierreContableMesAnterior>
-              <RdoMesContable>16</RdoMesContable>
-              <PrecioCierreAnteriorContable>55</PrecioCierreAnteriorContable>
-              <RdoDiarioContable>12.2</RdoDiarioContable>
-              <Vigentes>2</Vigentes>
-              <Vencidos>1</Vencidos>
-              <ComprasVigentes>3</ComprasVigentes>
-              <VentasVigentes>3</VentasVigentes>
-              <Dev_total>5</Dev_total>
-              <dev_Cob>3</dev_Cob>
-              <dev_Pag>1</dev_Pag>
-              <Plazo></Plazo>
-              <Dias></Dias>
-              <Rdo_BBA>10.75</Rdo_BBA>
-              <Rdo_BBA_no_Dev>9.9</Rdo_BBA_no_Dev>
-              <Mercado>MERCADO INTERNO</Mercado>
-              <IdOperacion></IdOperacion>
-              <fecha_proceso>02/03/2010</fecha_proceso>
-              <MTM>4.17</MTM>
-		</OperacionNDFAValuarData>
-		
-		<OperacionNDFAValuarData>
-              <NumeroOperacion>2</NumeroOperacion>
-              <Producto></Producto>
-              <Instrumento></Instrumento>
-              <MetodoFixing></MetodoFixing>
-              <Moneda>USD</Moneda>
-              <Moneda_de_liquidacion>ARP</Moneda_de_liquidacion>
-              <TipoOperacion></TipoOperacion>
-              <FechaCargaOperacion>10/02/2010</FechaCargaOperacion>
-              <FechaInicio>02/02/2010</FechaInicio>
-              <FechaVencimiento>02/04/2010</FechaVencimiento>
-              <Banca></Banca>
-              <GestorRiesgoMercado></GestorRiesgoMercado>
-              <Officer></Officer>
-              <Clinum></Clinum>
-              <Raiz></Raiz>
-              <CUIT></CUIT>
-              <ContraParte></ContraParte>
-              <NumeroBoleto></NumeroBoleto>
-              <CantidadVN>5</CantidadVN>
-              <Precio>120</Precio>
-              <Strike_ref>2.25</Strike_ref>
-              <PrecioCierreContable>100</PrecioCierreContable>
-              <RdoTotalContable>95</RdoTotalContable>
-              <PrecioCierreContableMesAnterior>70</PrecioCierreContableMesAnterior>
-              <RdoMesContable>16</RdoMesContable>
-              <PrecioCierreAnteriorContable>55</PrecioCierreAnteriorContable>
-              <RdoDiarioContable>12.2</RdoDiarioContable>
-              <Vigentes>2</Vigentes>
-              <Vencidos>1</Vencidos>
-              <ComprasVigentes>3</ComprasVigentes>
-              <VentasVigentes>3</VentasVigentes>
-              <Dev_total>5</Dev_total>
-              <dev_Cob>3</dev_Cob>
-              <dev_Pag>1</dev_Pag>
-              <Plazo></Plazo>
-              <Dias></Dias>
-              <Rdo_BBA>10.75</Rdo_BBA>
-              <Rdo_BBA_no_Dev>9.9</Rdo_BBA_no_Dev>
-              <Mercado>MERCADO INTERNO</Mercado>
-              <IdOperacion></IdOperacion>
-              <fecha_proceso>02/03/2010</fecha_proceso>
-              <MTM>4.17</MTM>
-		</OperacionNDFAValuarData>
+	
 	</RecuperoOperacionesNDFAValuarResult>
 </RecuperoOperacionesNDFAValuarResponse>
