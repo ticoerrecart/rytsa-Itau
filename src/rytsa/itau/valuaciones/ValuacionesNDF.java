@@ -7,6 +7,7 @@ import java.util.List;
 import org.easymock.EasyMock;
 
 import rytsa.itau.dominio.Mtm;
+import rytsa.itau.valuaciones.dto.ndf.NovedadesValuacionesRequestData;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
@@ -21,25 +22,50 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
 
-	public static Mtm calcularMTM(Date pFechaProceso) throws Exception {
+	public static List<NovedadesValuacionesRequestData> calcularMTM(Date pFechaProceso)
+			throws Exception {
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
 		return calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
-	private static Mtm calculoMTM(Date pFechaProceso,
+	private static List<NovedadesValuacionesRequestData> calculoMTM(Date pFechaProceso,
 			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF) throws Exception {
 
-			List<Mtm> listaMtm = new ArrayList<Mtm>();
-			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
-					.getRecuperoOperacionesNDFAValuarResult()) {
-				Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
-				listaMtm.add(mtm);
-			}
+		List<Mtm> listaMtm = new ArrayList<Mtm>();
+		for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
+				.getRecuperoOperacionesNDFAValuarResult()) {
+			Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
+			listaMtm.add(mtm);
+		}
 
-		/*	for (Mtm mtm : listaMtm) {
-				//TODO hay que armar la coleccion para el WS InformarNovedadesValuaciones.
-			}*/
-			return listaMtm.get(0);
+		List<NovedadesValuacionesRequestData> listaNovedadesRD = new ArrayList<NovedadesValuacionesRequestData>();
+		for (Mtm mtm : listaMtm) {
+			//TODO hay que armar la coleccion para el WS InformarNovedadesValuaciones.
+			NovedadesValuacionesRequestData novedad = new NovedadesValuacionesRequestData();
+			novedad.setIdOperacion(mtm.getOperacionNDF().getIdOperacion());
+			novedad.setFecha(mtm.getOperacionNDF().getFecha_proceso());
+			novedad.setFechaCargaPrecio(mtm.getOperacionNDF().getFechaCargaOperacion());
+			novedad.setMonedaValuacion(mtm.getOperacionNDF().getMoneda());
+			novedad.setPrecio(mtm.getOperacionNDF().getPrecio());
+			novedad.setPlazo(Integer.valueOf(mtm.getOperacionNDF().getPlazo()));
+			novedad.setTotalValuado(mtm.getMtm());
+			listaNovedadesRD.add(novedad);
+			/*IdOperacion<s:attribute name="IdOperacion" type="s:int" use="required" />
+			 fecha_proceso<s:attribute name="Fecha" type="s:dateTime" use="required" />
+			 FechaCargaOperacion<s:attribute name="FechaCargaPrecio" type="s:dateTime" use="required" />
+			 Moneda<s:attribute name="MonedaValuacion" type="s:string" />
+			 Precio<s:attribute name="Precio" type="s:decimal" use="required" />
+			 Plazo<s:attribute name="Plazo" type="s:int" use="required" />
+			 <s:attribute name="TotalValuado" type="s:decimal" use="required" />
+			 
+			 <s:attribute name="FechaUltimaValuacion" type="s:dateTime" use="required" />
+			 <s:attribute name="TasaUtilizada" type="s:decimal" use="required" />
+			 <s:attribute name="ValoresNominales" type="s:decimal" use="required" />
+			 <s:attribute name="IdUsuarioCargaSE" type="s:string" />
+			 <s:attribute name="TipoValuacion" type="s:string" />
+			 */
+		}
+		return listaNovedadesRD;
 	}
 
 	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(Date pFechaProceso) {

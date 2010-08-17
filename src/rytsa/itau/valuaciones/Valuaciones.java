@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.List;
 
-import rytsa.itau.dominio.Mtm;
+import rytsa.itau.valuaciones.dto.ndf.NovedadesValuacionesRequestData;
 
 /**
  * @author rerrecart
@@ -32,7 +33,8 @@ public abstract class Valuaciones {
 		return sb.toString();
 	}
 
-	public static Mtm calcularMTM(Date pFechaProceso) throws Exception {
-		return null;	
+	public static List<NovedadesValuacionesRequestData> calcularMTM(Date pFechaProceso)
+			throws Exception {
+		return null;
 	}
 }
