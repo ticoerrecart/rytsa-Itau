@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import rytsa.itau.db.Constantes;
 import rytsa.itau.utils.FileUtils;
+import rytsa.itau.valuaciones.Test;
 
 public abstract class DatabaseFactory {
 
@@ -59,7 +60,7 @@ public abstract class DatabaseFactory {
 		File f = new File(fileName);
 		if (!f.exists()) {
 			new File(directory).mkdirs();
-			File db = new File("DB/rytsa.sqlite");
+			File db = new File(Test.path + "/../DB/rytsa.sqlite");
 			FileUtils.copyFile(db, f);
 		}
 
