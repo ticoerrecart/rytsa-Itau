@@ -3,9 +3,9 @@ package rytsa.itau.valuaciones.dto.swap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecuperoAgendaCuponesOperacionesSWAPAValuarResponse {
+public class RecuperarAgendaCuponesOperacionesSWAPAValuarResponse {
 
-	private List<AgendaCuponOperacioneSWAPAValuarData> RecuperoAgendaCuponesOperacionesSWAPAValuarResult = new ArrayList<AgendaCuponOperacioneSWAPAValuarData>();
+	private List<AgendaCuponOperacioneSWAPAValuarData> RecuperarAgendaCuponesOperacionesSWAPAValuarResult = new ArrayList<AgendaCuponOperacioneSWAPAValuarData>();
 
 	public void addAgendaCuponOperacioneSWAPAValuarData(
 			AgendaCuponOperacioneSWAPAValuarData agendaCuponOperacioneSWAPAValuarData) {
@@ -14,12 +14,12 @@ public class RecuperoAgendaCuponesOperacionesSWAPAValuarResponse {
 	}
 
 	public List<AgendaCuponOperacioneSWAPAValuarData> getRecuperoAgendaCuponesOperacionesSWAPAValuarResult() {
-		return RecuperoAgendaCuponesOperacionesSWAPAValuarResult;
+		return RecuperarAgendaCuponesOperacionesSWAPAValuarResult;
 	}
 
 	public void setRecuperoAgendaCuponesOperacionesSWAPAValuarResult(
 			List<AgendaCuponOperacioneSWAPAValuarData> recuperoAgendaCuponesOperacionesSWAPAValuarResult) {
-		RecuperoAgendaCuponesOperacionesSWAPAValuarResult = recuperoAgendaCuponesOperacionesSWAPAValuarResult;
+		RecuperarAgendaCuponesOperacionesSWAPAValuarResult = recuperoAgendaCuponesOperacionesSWAPAValuarResult;
 	}
 
 }
