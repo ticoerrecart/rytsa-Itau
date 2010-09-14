@@ -26,12 +26,12 @@ public abstract class Valuaciones {
 
 	protected static ResourceBundle resourceBundle;
 
-	public Valuaciones() {
-		this.resourceBundle = ResourceBundle.getBundle("config");
-		this.DIAS = Integer.parseInt(resourceBundle.getString("cantRegistros"));
-		this.MODO = Integer.parseInt(resourceBundle.getString("esb.modo"));
-		this.PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
-		this.HOST = resourceBundle.getString("esb.host");
+	static{
+		resourceBundle = ResourceBundle.getBundle("config");
+		DIAS = Integer.parseInt(resourceBundle.getString("cantRegistros"));
+		MODO = Integer.parseInt(resourceBundle.getString("esb.modo"));
+		PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
+		HOST = resourceBundle.getString("esb.host");
 	}
 
 	protected static String convertStreamToString(InputStream is)
