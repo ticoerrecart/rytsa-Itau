@@ -19,7 +19,7 @@ import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
-
+	
 	public static List<NovedadesValuacionesRequestData> calcularMTM(
 			Date pFechaProceso) throws Exception {
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
