@@ -16,7 +16,6 @@ import rytsa.itau.db.factory.DatabaseFactory;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.FileUtils;
-import rytsa.itau.valuaciones.Test;
 import br.com.softsite.sfc.tini.persistence.FieldNotFoundException;
 import br.com.softsite.sfc.tini.persistence.FieldTypeException;
 import br.com.softsite.sfc.tini.persistence.Table;
@@ -39,7 +38,7 @@ public class DAO {
 
 			String sql = "INSERT INTO Calib_div_h VALUES(?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
-			t = new Table( Test.path + rb.getString("calib_div_h"));
+			t = new Table(rb.getString("calib_div_h"));
 			int numRecords = t.getNumberOfRecords();
 
 			// System.out.println(t.getNumberOfRecords() + " registros");
@@ -67,17 +66,17 @@ public class DAO {
 				}
 			}
 
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, 4);
-			ps.setDouble(2, 3.25d);
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
-			ps.executeUpdate();
-
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, 1);
-			ps.setDouble(2, 1d);
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
-			ps.executeUpdate();
+			/*
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, 4); ps.setDouble(2,
+			 * 3.25d); ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
+			 * ps.executeUpdate();
+			 * 
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, 1); ps.setDouble(2,
+			 * 1d); ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
+			 * ps.executeUpdate();
+			 */
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,7 +104,7 @@ public class DAO {
 
 			String sql = "INSERT INTO Calib_index_h (C_INDEX, PRICE, D_PROC) VALUES(?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
-			t = new Table(Test.path + rb.getString("calib_index_h"));
+			t = new Table(rb.getString("calib_index_h"));
 			int numRecords = t.getNumberOfRecords();
 
 			for (int i = 0; i < numRecords; i++) {
@@ -114,12 +113,12 @@ public class DAO {
 					Integer cIndex = t.getFieldInteger("C_INDEX");
 					Double price = t.getFieldDouble("PRICE");
 					Date dProc = t.getFieldDate("D_PROC");
-					//Date dPublic = t.getFieldDate("D_PUBLIC");
+					// Date dPublic = t.getFieldDate("D_PUBLIC");
 					ps = conn.prepareStatement(sql);
 					ps.setInt(1, cIndex);
 					ps.setDouble(2, price);
 					ps.setDate(3, DateUtils.convertDate(dProc));
-					//ps.setDate(4, DateUtils.convertDate(dPublic));
+					// ps.setDate(4, DateUtils.convertDate(dPublic));
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
 					System.err.println(nfe.getMessage());
@@ -153,9 +152,10 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
 			for (String moneda : linea.split(",")) {
-				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron.getString(moneda.trim())
-						.split(",")[0]));
-				DAO.files.put(moneda.trim(), codigosPatron.getString(moneda.trim()).split(",")[1]);
+				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron
+						.getString(moneda.trim()).split(",")[0]));
+				DAO.files.put(moneda.trim(),
+						codigosPatron.getString(moneda.trim()).split(",")[1]);
 				crearCurva(conn, ps, moneda.trim());
 			}
 		} catch (Exception e) {
@@ -174,7 +174,8 @@ public class DAO {
 	 * Cupon_4)
 	 */
 	private static void crearTablaSiNoExisteOBorrarla(Connection pConnection,
-			PreparedStatement pPreparedStatement, String pTabla) throws SQLException {
+			PreparedStatement pPreparedStatement, String pTabla)
+			throws SQLException {
 		ResultSet rs = null;
 		try {
 			pPreparedStatement = pConnection
@@ -182,8 +183,9 @@ public class DAO {
 			pPreparedStatement.setString(1, pTabla);
 			rs = pPreparedStatement.executeQuery();
 			if (!rs.next()) {// si no existe la tabla la creo.
-				String sqlCreate = "CREATE TABLE " + pTabla + "(" + "PLAZO NUMERIC NULL,"
-						+ "TNA DOUBLE NULL," + "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
+				String sqlCreate = "CREATE TABLE " + pTabla + "("
+						+ "PLAZO NUMERIC NULL," + "TNA DOUBLE NULL,"
+						+ "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
 						+ "D_PROC DATETIME NULL)";
 				pPreparedStatement = pConnection.prepareStatement(sqlCreate);
 				pPreparedStatement.executeUpdate();
@@ -212,8 +214,8 @@ public class DAO {
 		Table t = null;
 		String nomTabla = "cupon_4";
 		try {
-			t = new Table(Test.path +  dbfPath);
-			//nomTabla = FileUtils.getFileName(dbfPath);
+			t = new Table(dbfPath);
+			// nomTabla = FileUtils.getFileName(dbfPath);
 			conn = DatabaseFactory.getConnectionForBulk();
 			crearTabla(nomTabla, t, conn, ps);
 		} catch (EOFException eofE) {
@@ -236,9 +238,10 @@ public class DAO {
 	/*
 	 * Este método crea e inserta en las tablas Curva_x y Cupon_4.
 	 */
-	private static void crearTabla(String pNombreTabla, Table pTabla, Connection pConn,
-			PreparedStatement pPs) throws IOException, FieldNotFoundException, FieldTypeException,
-			SQLException, ParseException {
+	private static void crearTabla(String pNombreTabla, Table pTabla,
+			Connection pConn, PreparedStatement pPs) throws IOException,
+			FieldNotFoundException, FieldTypeException, SQLException,
+			ParseException {
 
 		crearTablaSiNoExisteOBorrarla(pConn, pPs, pNombreTabla);
 		String sql = "INSERT INTO " + pNombreTabla + " VALUES(?, ?, ?, ?, ?);";
@@ -273,33 +276,27 @@ public class DAO {
 			}
 		}
 
-		if (pNombreTabla.equalsIgnoreCase("curva_4")) {
-			pPs = pConn.prepareStatement(sql);
-			pPs.setInt(1, 29);
-			pPs.setDouble(2, 10.32922312d);
-			pPs.setDouble(3, 0.9901924071d);
-			pPs.setDouble(4, 1.0099047345d);
-			pPs.setDate(5, DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
-			pPs.executeUpdate();
-		} else {
-			if (pNombreTabla.equalsIgnoreCase("curva_1")) {
-				pPs = pConn.prepareStatement(sql);
-				pPs.setInt(1, 29);
-				pPs.setDouble(2, 10.32922312d);
-				pPs.setDouble(3, 0.9899924071d);
-				pPs.setDouble(4, 1.0099047345d);
-				pPs.setDate(5, DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
-				pPs.executeUpdate();
-			}
-		}
+		/*
+		 * if (pNombreTabla.equalsIgnoreCase("curva_4")) { pPs =
+		 * pConn.prepareStatement(sql); pPs.setInt(1, 29); pPs.setDouble(2,
+		 * 10.32922312d); pPs.setDouble(3, 0.9901924071d); pPs.setDouble(4,
+		 * 1.0099047345d); pPs.setDate(5,
+		 * DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
+		 * pPs.executeUpdate(); } else { if
+		 * (pNombreTabla.equalsIgnoreCase("curva_1")) { pPs =
+		 * pConn.prepareStatement(sql); pPs.setInt(1, 29); pPs.setDouble(2,
+		 * 10.32922312d); pPs.setDouble(3, 0.9899924071d); pPs.setDouble(4,
+		 * 1.0099047345d); pPs.setDate(5, DateUtils.convertDate(DateUtils
+		 * .stringToDate("03/06/2010"))); pPs.executeUpdate(); } }
+		 */
 
 	}
 
-	private static void crearCurva(Connection conn, PreparedStatement ps, String codigoPatron)
-			throws Exception {
+	private static void crearCurva(Connection conn, PreparedStatement ps,
+			String codigoPatron) throws Exception {
 		Table t = null;
 		try {
-			t = new Table(Test.path + files.get(codigoPatron));
+			t = new Table(files.get(codigoPatron));
 			String tabla = FileUtils.getFileName(files.get(codigoPatron));
 			crearTabla(tabla, t, conn, ps);
 		} catch (EOFException eofE) {
@@ -312,21 +309,24 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorAct(Date pFecha, Long pPlazo) throws SQLException, Exception {
+	public static Double obtenerFactorAct(Date pFecha, Long pPlazo)
+			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Double factorAct = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");// TODO
+			ps = conn
+					.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");// TODO
 			ps.setDate(1, DateUtils.convertDate(pFecha));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				factorAct = rs.getDouble("F_ACT");
 			} else {
-				throw new Exception("No se pudo obtener el factor de actualizaci�n");
+				throw new Exception(
+						"No se pudo obtener el factor de actualizaci�n");
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -335,8 +335,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorDesc(Date pFecha, Long pPlazo, String pTabla)
-			throws SQLException, Exception {
+	public static Double obtenerFactorDesc(Date pFecha, Long pPlazo,
+			String pTabla) throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -360,8 +360,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerTipoCambioMoneda(Date pFechaProceso, Integer codDiv)
-			throws SQLException, Exception {
+	public static Double obtenerTipoCambioMoneda(Date pFechaProceso,
+			Integer codDiv) throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -376,8 +376,9 @@ public class DAO {
 			if (rs.next()) {
 				precio = rs.getDouble("PRICE");
 			} else {
-				throw new Exception("No se pudo obtener el Tipo Cambio Moneda para el codigo "
-						+ codDiv + " y para la fecha " + pFechaProceso);
+				throw new Exception(
+						"No se pudo obtener el Tipo Cambio Moneda para el codigo "
+								+ codDiv + " y para la fecha " + pFechaProceso);
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -408,47 +409,43 @@ public class DAO {
 				i++;
 			}
 
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, i);
-			ps.setDate(2, DateUtils.convertDate(DateUtils.stringToDate("22/03/2010")));
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("22/03/2010")));
-			ps.setDouble(4, 2.2);
-			ps.executeUpdate();
-
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, i);
-			ps.setDate(2, DateUtils.convertDate(DateUtils.stringToDate("20/04/2010")));
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("20/04/2010")));
-			ps.setDouble(4, 2.25);
-			ps.executeUpdate();
-
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, i);
-			ps.setDate(2, DateUtils.convertDate(DateUtils.stringToDate("23/04/2010")));
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("23/04/2010")));
-			ps.setDouble(4, 2.25);
-			ps.executeUpdate();
-
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, i);
-			ps.setDate(2, DateUtils.convertDate(DateUtils.stringToDate("20/05/2010")));
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("20/05/2010")));
-			ps.setDouble(4, 2.25);
-			ps.executeUpdate();
-
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, i);
-			ps.setDate(2, DateUtils.convertDate(DateUtils.stringToDate("26/05/2010")));
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("26/05/2010")));
-			ps.setDouble(4, 2.25);
-			ps.executeUpdate();
-
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, i);
-			ps.setDate(2, DateUtils.convertDate(DateUtils.stringToDate("20/06/2010")));
-			ps.setDate(3, DateUtils.convertDate(DateUtils.stringToDate("20/06/2010")));
-			ps.setDouble(4, 2.25);
-			ps.executeUpdate();
+			/*
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
+			 * DateUtils.convertDate(DateUtils.stringToDate("22/03/2010")));
+			 * ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("22/03/2010")));
+			 * ps.setDouble(4, 2.2); ps.executeUpdate();
+			 * 
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
+			 * DateUtils.convertDate(DateUtils.stringToDate("20/04/2010")));
+			 * ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("20/04/2010")));
+			 * ps.setDouble(4, 2.25); ps.executeUpdate();
+			 * 
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
+			 * DateUtils.convertDate(DateUtils.stringToDate("23/04/2010")));
+			 * ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("23/04/2010")));
+			 * ps.setDouble(4, 2.25); ps.executeUpdate();
+			 * 
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
+			 * DateUtils.convertDate(DateUtils.stringToDate("20/05/2010")));
+			 * ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("20/05/2010")));
+			 * ps.setDouble(4, 2.25); ps.executeUpdate();
+			 * 
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
+			 * DateUtils.convertDate(DateUtils.stringToDate("26/05/2010")));
+			 * ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("26/05/2010")));
+			 * ps.setDouble(4, 2.25); ps.executeUpdate();
+			 * 
+			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
+			 * DateUtils.convertDate(DateUtils.stringToDate("20/06/2010")));
+			 * ps.setDate(3,
+			 * DateUtils.convertDate(DateUtils.stringToDate("20/06/2010")));
+			 * ps.setDouble(4, 2.25); ps.executeUpdate();
+			 */
 		} catch (Exception e) {
 			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
@@ -462,7 +459,8 @@ public class DAO {
 		}
 	}
 
-	public static Double obtenerPromedioTasasDeBadlar(Date pfInicio, Date pfFin) throws Exception {
+	public static Double obtenerPromedioTasasDeBadlar(Date pfInicio, Date pfFin)
+			throws Exception {
 		Double suma = new Double(0);
 		ResultSet rs = null;
 		Connection conn = null;
@@ -488,12 +486,13 @@ public class DAO {
 			return suma / total;
 		} else {
 			throw new Exception(
-					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha " + pfInicio
-							+ " y la fecha " + pfFin);
+					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+							+ pfInicio + " y la fecha " + pfFin);
 		}
 	}
 
-	public static Double obtenerPromedioTasasFWD(Date pfInicio, Date pfFin) throws Exception {
+	public static Double obtenerPromedioTasasFWD(Date pfInicio, Date pfFin)
+			throws Exception {
 		Double suma = new Double(0);
 		ResultSet rs = null;
 		Connection conn = null;
@@ -519,8 +518,8 @@ public class DAO {
 			return suma / total;
 		} else {
 			throw new Exception(
-					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha " + pfInicio
-							+ " y la fecha " + pfFin);
+					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+							+ pfInicio + " y la fecha " + pfFin);
 		}
 	}
 }

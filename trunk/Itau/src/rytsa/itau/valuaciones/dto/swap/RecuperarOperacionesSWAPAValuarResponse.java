@@ -3,7 +3,7 @@ package rytsa.itau.valuaciones.dto.swap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecuperoOperacionesSWAPAValuarResponse {
+public class RecuperarOperacionesSWAPAValuarResponse {
 
 	private List<OperacionSWAPAValuarData> RecuperoOperacionesSWAPAValuarResult = new ArrayList<OperacionSWAPAValuarData>();
 

@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import rytsa.itau.valuaciones.dto.ndf.NovedadesValuacionesRequestData;
 
@@ -14,15 +16,26 @@ import rytsa.itau.valuaciones.dto.ndf.NovedadesValuacionesRequestData;
  */
 public abstract class Valuaciones {
 
-	protected static final int DIAS = 6;// 5400
+	protected static int DIAS;// 5400
 
-	protected static int modo = 4;
+	protected static int MODO;
 
-	protected static int puerto = 2424;
+	protected static int PUERTO;
 
-	protected static String host = "localhost";
+	protected static String HOST;
 
-	protected static String convertStreamToString(InputStream is) throws Exception {
+	protected static ResourceBundle resourceBundle;
+
+	public Valuaciones() {
+		this.resourceBundle = ResourceBundle.getBundle("config");
+		this.DIAS = Integer.parseInt(resourceBundle.getString("cantRegistros"));
+		this.MODO = Integer.parseInt(resourceBundle.getString("esb.modo"));
+		this.PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
+		this.HOST = resourceBundle.getString("esb.host");
+	}
+
+	protected static String convertStreamToString(InputStream is)
+			throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		StringBuilder sb = new StringBuilder();
 		String line = null;
@@ -33,8 +46,27 @@ public abstract class Valuaciones {
 		return sb.toString();
 	}
 
-	public static List<NovedadesValuacionesRequestData> calcularMTM(Date pFechaProceso)
-			throws Exception {
+	public static List<NovedadesValuacionesRequestData> calcularMTM(
+			Date pFechaProceso) throws Exception {
 		return null;
+	}
+
+	/**
+	 * remueve los tags de apertura <soap:Envelope ...> y <soap:Body> y los
+	 * respectivos de cierre
+	 * 
+	 * @param pXml
+	 * @return
+	 */
+	public static String removerHeaderSoap(String pXml) {
+		StringBuffer xml = new StringBuffer();
+		Scanner scanner = new Scanner(pXml);
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			if (line.indexOf("soap:") < 0) {
+				xml.append(line);
+			}
+		}
+		return xml.toString();
 	}
 }
