@@ -1,7 +1,10 @@
 package rytsa.itau.valuaciones;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -44,4 +47,13 @@ public class Test {
 				.calcularMTM(DateUtils.stringToDate(pDate));// "03/06/2010"
 		return listaNDF;
 	}
+	
+	@WebMethod
+	public String testSuma1Dia(String pDate)
+			throws ParseException, Exception {
+		Date d = DateUtils.addDays(DateUtils.stringToDate(pDate), 1);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(d);
+	}
+	
 }
