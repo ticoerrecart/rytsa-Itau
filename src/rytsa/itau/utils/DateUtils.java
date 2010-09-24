@@ -4,6 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public abstract class DateUtils {
 
@@ -55,6 +60,14 @@ public abstract class DateUtils {
 	}
 	
 
+	public static XMLGregorianCalendar getXMLGregorianCalendar(Date date) throws Exception {
+		GregorianCalendar gcal = new GregorianCalendar();
+		gcal.setTime(date);
+		XMLGregorianCalendar xgcal = DatatypeFactory.newInstance()
+				.newXMLGregorianCalendar(gcal);
+		return xgcal;
+	}
+	 
 	
 	
 }
