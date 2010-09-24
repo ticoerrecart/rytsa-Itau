@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import rytsa.itau.dominio.Mtm;
+import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.ndf.NovedadesValuacionesRequestData;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
@@ -13,6 +14,9 @@ import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
 import ar.com.itau.esb.client.ESBRequest;
 import ar.com.itau.esb.client.ESBResponse;
+import client.ws.rytsa.valuaciones.OperacionesNDFAValuarRequestData;
+import client.ws.rytsa.valuaciones.WSValuaciones;
+import client.ws.rytsa.valuaciones.WSValuacionesSoap;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
@@ -22,10 +26,26 @@ public class ValuacionesNDF extends Valuaciones {
 	
 	public static List<NovedadesValuacionesRequestData> calcularMTM(
 			Date pFechaProceso) throws Exception {
-		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
+		
+		RecuperoOperacionesNDFAValuarResponse operacionesNDF = null; 
+		if (USOESB){
+			operacionesNDF = operacionesNDFAValuar(pFechaProceso);
+		} else {
+			WSValuaciones wsValu = new WSValuaciones();
+			WSValuacionesSoap proxy =  wsValu.getWSValuacionesSoap();
+			OperacionesNDFAValuarRequestData request = new OperacionesNDFAValuarRequestData();
+			request.setFechaProceso(DateUtils.getXMLGregorianCalendar(pFechaProceso));
+			List<client.ws.rytsa.valuaciones.ArrayOfOperacionNDFAValuarData.OperacionNDFAValuarData> operaciones =  proxy.recuperarOperacionesNDFAValuar("", request).getOperacionNDFAValuarData();
+			operacionesNDF = ConverorWStoESB.getRecuperoOperacionesNDFAValuarResponse(operaciones);
+		}
+		
+		
 		return calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
+	
+
+	
 	private static List<NovedadesValuacionesRequestData> calculoMTM(
 			Date pFechaProceso,
 			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF)

@@ -23,6 +23,9 @@ public abstract class Valuaciones {
 	protected static int PUERTO;
 
 	protected static String HOST;
+	
+	protected static boolean USOESB;
+	
 
 	protected static ResourceBundle resourceBundle;
 
@@ -32,6 +35,7 @@ public abstract class Valuaciones {
 		MODO = Integer.parseInt(resourceBundle.getString("esb.modo"));
 		PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
 		HOST = resourceBundle.getString("esb.host");
+		USOESB = new Boolean(resourceBundle.getString("esb.activado"));
 	}
 
 	protected static String convertStreamToString(InputStream is)
