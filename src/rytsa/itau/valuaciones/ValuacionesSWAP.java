@@ -19,6 +19,7 @@ import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
+import rytsa.itau.ws.ConversorWStoESB;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -56,8 +57,14 @@ public class ValuacionesSWAP extends Valuaciones {
 	 */
 	public static List<NovedadesValuacionesRequestData> calcularMTM(
 			Date pFechaProceso) throws Exception {
-		armarOperacionesSWAPParteFijaYVariable(operacionesSWAP(pFechaProceso)
-				.getRecuperoOperacionesSWAPAValuarResult());
+		List<OperacionSWAPAValuarData> operaciones = null;
+		if (USOESB) {
+			operaciones = operacionesSWAP(pFechaProceso);
+		} else {
+			operaciones = ConversorWStoESB
+					.getOperacionesSWAPAValuarWS(pFechaProceso);
+		}
+		armarOperacionesSWAPParteFijaYVariable(operaciones);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
 		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
@@ -271,7 +278,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		return salida.getRecuperoAgendaCuponesOperacionesSWAPAValuarResult();
 	}
 
-	private static RecuperarOperacionesSWAPAValuarResponse operacionesSWAP(
+	private static List<OperacionSWAPAValuarData> operacionesSWAP(
 			Date pFechaProceso) {
 		XStream xs = getXStream();
 		RecuperarOperacionesSWAPAValuarResponse salida = null;
@@ -315,7 +322,7 @@ public class ValuacionesSWAP extends Valuaciones {
 			}
 		}
 
-		return salida;
+		return salida.getRecuperoOperacionesSWAPAValuarResult();
 	}
 
 	private static void construccionTasasFWD(FeriadosResponse pDiasHabiles,
