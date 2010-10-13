@@ -212,6 +212,10 @@ public class ValuacionesSWAP extends Valuaciones {
 			esbRequest.setParameter(resourceBundle
 					.getString("servicios.Feriados.paramFechaHasta"),
 					pFechaHasta);
+			esbRequest.setParameter(resourceBundle
+					.getString("servicios.Feriados.paramIdCalendario"),
+					resourceBundle
+							.getString("servicios.Feriados.idCalendarioValue"));
 			client.execute(esbRequest, esbResponse);
 			String sRtaFeriados = removerHeaderSoap(esbResponse.getResult());
 
