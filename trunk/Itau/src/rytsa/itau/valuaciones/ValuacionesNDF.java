@@ -21,21 +21,24 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
 
-	public static List<NovedadesValuacionesRequestData> calcularMTM(Date pFechaProceso)
-			throws Exception {
+	public static List<NovedadesValuacionesRequestData> calcularMTM(
+			Date pFechaProceso) throws Exception {
 
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = null;
 		if (USOESB) {
 			operacionesNDF = operacionesNDFAValuar(pFechaProceso);
 		} else {
-			operacionesNDF = ConversorWStoESB.getOperacionesNDFAValuarWS(pFechaProceso);
+			operacionesNDF = ConversorWStoESB
+					.getOperacionesNDFAValuarWS(pFechaProceso);
 		}
 
 		return calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
-	private static List<NovedadesValuacionesRequestData> calculoMTM(Date pFechaProceso,
-			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF) throws Exception {
+	private static List<NovedadesValuacionesRequestData> calculoMTM(
+			Date pFechaProceso,
+			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF)
+			throws Exception {
 
 		List<Mtm> listaMtm = new ArrayList<Mtm>();
 		for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
@@ -51,7 +54,8 @@ public class ValuacionesNDF extends Valuaciones {
 			NovedadesValuacionesRequestData novedad = new NovedadesValuacionesRequestData();
 			novedad.setIdOperacion(mtm.getOperacionNDF().getIdOperacion());
 			novedad.setFecha(mtm.getOperacionNDF().getFecha_proceso());
-			novedad.setFechaCargaPrecio(mtm.getOperacionNDF().getFechaCargaOperacion());
+			novedad.setFechaCargaPrecio(mtm.getOperacionNDF()
+					.getFechaCargaOperacion());
 			novedad.setMonedaValuacion(mtm.getOperacionNDF().getMoneda());
 			novedad.setPrecio(mtm.getOperacionNDF().getPrecio());
 			novedad.setPlazo(mtm.getPlazoRemanente().intValue());
@@ -80,20 +84,24 @@ public class ValuacionesNDF extends Valuaciones {
 		return listaNovedadesRD;
 	}
 
-	private static XStream getXStream() {
+	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
 		xs.registerConverter(new DateConverter("dd/MM/yyyy", new String[0]));
-		xs.alias(resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuarResponse"),
+		xs.alias(resourceBundle
+				.getString("servicios.RecuperoOperacionesNDFAValuarResponse"),
 				RecuperoOperacionesNDFAValuarResponse.class);
 		xs.alias(resourceBundle.getString("servicios.OperacionNDFAValuarData"),
 				OperacionNDFAValuarData.class);
+		xs.omitField(RecuperoOperacionesNDFAValuarResponse.class, "count");
+
 		return xs;
 	}
 
 	/*
 	 * Recupera las Operaciones NDF a Valuar utilizando ESB.
 	 */
-	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(Date pFechaProceso) {
+	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(
+			Date pFechaProceso) {
 		XStream xs = getXStream();
 
 		RecuperoOperacionesNDFAValuarResponse salida = null;
@@ -110,13 +118,16 @@ public class ValuacionesNDF extends Valuaciones {
 			 * EasyMock.replay(esbResponse); // TODO easyMock
 			 */
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client.createRequest(resourceBundle
-					.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio")); // nombre
+			esbRequest = client
+					.createRequest(resourceBundle
+							.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio")); // nombre
 			// del
 			// servicio
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
-					pFechaProceso);
+			esbRequest
+					.setParameter(
+							resourceBundle
+									.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
+							pFechaProceso);
 			client.execute(esbRequest, esbResponse);
 			String sRta = removerHeaderSoap(esbResponse.getResult());
 
