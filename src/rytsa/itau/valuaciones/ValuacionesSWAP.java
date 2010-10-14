@@ -67,7 +67,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		armarOperacionesSWAPParteFijaYVariable(operaciones);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
-		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
+		armarAgendaCuponOperaciones(agendaSWAP(), pFechaProceso);
 		return calculoMTM();
 	}
 
@@ -128,7 +128,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 	}
 
-	private static XStream getXStream() {
+	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias(resourceBundle.getString("servicios.FeriadosResponse"),
 				FeriadosResponse.class);
@@ -144,9 +144,22 @@ public class ValuacionesSWAP extends Valuaciones {
 				resourceBundle
 						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse"),
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.alias(
+				resourceBundle
+						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuarResult"),
+				List.class);
+
 		xs.alias(resourceBundle
 				.getString("servicios.AgendaCuponOperacioneSWAPAValuarData"),
 				AgendaCuponOperacioneSWAPAValuarData.class);
+		xs.omitField(RecuperarOperacionesSWAPAValuarResponse.class, "count");
+		xs.omitField(
+				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
+				"count");
+		xs.omitField(AgendaCuponOperacioneSWAPAValuarData.class,
+				"FechaConcertacion");
+		xs.omitField(AgendaCuponOperacioneSWAPAValuarData.class, "Cierre");
+
 		return xs;
 	}
 
@@ -234,8 +247,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		return fr;
 	}
 
-	private static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP(
-			Date pFechaProceso) {
+	private static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP() {
 		XStream xs = getXStream();
 		RecuperarAgendaCuponesOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
@@ -257,11 +269,11 @@ public class ValuacionesSWAP extends Valuaciones {
 							.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.nombreServicio")); // nombre
 																													// del
 			// servicio
-			esbRequest
-					.setParameter(
-							resourceBundle
-									.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramFechaProceso"),
-							pFechaProceso);
+			/*
+			 * esbRequest .setParameter( resourceBundle .getString(
+			 * "servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramFechaProceso"
+			 * ), pFechaProceso);
+			 */
 			client.execute(esbRequest, esbResponse);
 			String sRtaAgendaCupones = removerHeaderSoap(esbResponse
 					.getResult());
