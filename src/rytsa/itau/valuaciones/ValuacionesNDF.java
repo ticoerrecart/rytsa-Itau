@@ -85,7 +85,7 @@ public class ValuacionesNDF extends Valuaciones {
 
 	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
-		xs.registerConverter(new DateConverter("dd/MM/yyyy", new String[0]));
+		xs.registerConverter(new DateConverter("yyyy-MM-dd hh:mm:ss.S", new String[0]));
 		xs.alias(resourceBundle
 				.getString("servicios.RecuperoOperacionesNDFAValuarResponse"),
 				RecuperoOperacionesNDFAValuarResponse.class);

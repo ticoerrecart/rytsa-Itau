@@ -126,8 +126,8 @@ public class ConversorWStoESB {
 					.doubleValue());
 			operacionDestino.setRdoDiarioContable(operacionOrigen
 					.getRdoDiarioContab().doubleValue());
-			operacionDestino.setRdoMesContable(operacionOrigen
-					.getRdoMesContab().doubleValue());
+			operacionDestino.setRdoMesContab(operacionOrigen.getRdoMesContab()
+					.doubleValue());
 			operacionDestino.setRdoTotalContab(operacionOrigen
 					.getRdoTotalContab().doubleValue());
 			operacionDestino.setStrikeRef(operacionOrigen.getStrikeRef()
