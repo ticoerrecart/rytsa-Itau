@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RecuperarAgendaCuponesOperacionesSWAPAValuarResponse {
 
-	private List<AgendaCuponOperacioneSWAPAValuarData> RecuperarAgendaCuponesOperacionesSWAPAValuarResult = new ArrayList<AgendaCuponOperacioneSWAPAValuarData>();
+	private List<AgendaCuponOperacioneSWAPAValuarData> Swaps = new ArrayList<AgendaCuponOperacioneSWAPAValuarData>();
 
 	public void addAgendaCuponOperacioneSWAPAValuarData(
 			AgendaCuponOperacioneSWAPAValuarData agendaCuponOperacioneSWAPAValuarData) {
@@ -14,12 +14,12 @@ public class RecuperarAgendaCuponesOperacionesSWAPAValuarResponse {
 	}
 
 	public List<AgendaCuponOperacioneSWAPAValuarData> getRecuperoAgendaCuponesOperacionesSWAPAValuarResult() {
-		return RecuperarAgendaCuponesOperacionesSWAPAValuarResult;
+		return Swaps;
 	}
 
 	public void setRecuperoAgendaCuponesOperacionesSWAPAValuarResult(
 			List<AgendaCuponOperacioneSWAPAValuarData> recuperoAgendaCuponesOperacionesSWAPAValuarResult) {
-		RecuperarAgendaCuponesOperacionesSWAPAValuarResult = recuperoAgendaCuponesOperacionesSWAPAValuarResult;
+		Swaps = recuperoAgendaCuponesOperacionesSWAPAValuarResult;
 	}
 
 }

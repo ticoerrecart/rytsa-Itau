@@ -106,7 +106,7 @@ public class ValuacionesSWAP extends Valuaciones {
 			OperacionSWAPAValuarData parteVariable = operacionesParteVariable
 					.get(agendaCupon.getNumeroOperacion());
 			OperacionSWAPAValuarData parteFija = operacionesParteFija
-					.get(parteVariable.getIdOperacion());
+					.get(parteVariable.getIDOperacion());
 			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, agendaCupon,
 					parteFija, parteVariable);
 
@@ -140,26 +140,24 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.alias(
 				resourceBundle.getString("servicios.OperacionSWAPAValuarData"),
 				OperacionSWAPAValuarData.class);
+		
 		xs.alias(
 				resourceBundle
 						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse"),
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.alias(
+		/*xs.alias(
 				resourceBundle
 						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuarResult"),
-				List.class);
+				List.class);*/
 
 		xs.alias(resourceBundle
 				.getString("servicios.AgendaCuponOperacioneSWAPAValuarData"),
 				AgendaCuponOperacioneSWAPAValuarData.class);
+
 		xs.omitField(RecuperarOperacionesSWAPAValuarResponse.class, "count");
 		xs.omitField(
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
 				"count");
-		xs.omitField(AgendaCuponOperacioneSWAPAValuarData.class,
-				"FechaConcertacion");
-		xs.omitField(AgendaCuponOperacioneSWAPAValuarData.class, "Cierre");
-
 		return xs;
 	}
 

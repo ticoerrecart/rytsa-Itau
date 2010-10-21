@@ -3,30 +3,29 @@ package rytsa.itau.valuaciones.dto.ndf;
 import java.util.Date;
 
 public class OperacionNDFAValuarData {
-
 	private String NumeroOperacion;
 	private String Producto;
 	private String Instrumento;
 	private String MetodoFixing;
 	private String Moneda;
-	private String Moneda_de_liquidacion;
+	private String MonedaLiquidacion;
 	private String TipoOperacion;
-	private Date FechaCargaOperacion;
+	private Date FechaCarga;
 	private Date FechaInicio;
 	private Date FechaVencimiento;
 	private String Banca;
-	private String GestorRiesgoMercado;
+	private String GestorRiesgo;
 	private String Officer;
-	private String Clinum;
+	private String CliNum;
 	private String Raiz;
-	private String CUIT;
-	private String ContraParte;
+	private String Cuit;
+	private String Contraparte;
 	private String NumeroBoleto;
 	private Double CantidadVN;
 	private Double Precio;
-	private Double Strike_ref;
+	private Double StrikeRef;
 	private Double PrecioCierreContable;
-	private Double RdoTotalContable;
+	private Double RdoTotalContab;
 	private Double PrecioCierreContableMesAnterior;
 	private Double RdoMesContable;
 	private Double PrecioCierreAnteriorContable;
@@ -35,17 +34,28 @@ public class OperacionNDFAValuarData {
 	private Double Vencidos;
 	private Double ComprasVigentes;
 	private Double VentasVigentes;
-	private Double Dev_total;
-	private Double dev_Cob;
-	private Double dev_Pag;
+	private Double DevTotal;
+	private Double DevCob;
+	private Double DevPag;
 	private String Plazo;
 	private String Dias;
-	private Double Rdo_BBA;
-	private Double Rdo_BBA_no_Dev;
+	private Double RdoBBA;
+	private Double RdoBBANoDev;
 	private String Mercado;
-	private String IdOperacion;
-	private Date fecha_proceso;
+	private String IDOperacion;
+	private Date FechaProceso;
 	private Double MTM;
+	private String Cuenta;
+	private String Sucursal;
+	private Double Spread;
+	private Double Fondeo;
+	private Double FondeoAcumulado;
+	private Double Margen;
+	private Double PlazoResidual;
+	private Double Monto;
+	private Double Gastos;
+	private Double Comisiones;
+	private Double Neto;
 
 	public String getNumeroOperacion() {
 		return NumeroOperacion;
@@ -87,12 +97,12 @@ public class OperacionNDFAValuarData {
 		Moneda = moneda;
 	}
 
-	public String getMoneda_de_liquidacion() {
-		return Moneda_de_liquidacion;
+	public String getMonedaLiquidacion() {
+		return MonedaLiquidacion;
 	}
 
-	public void setMoneda_de_liquidacion(String moneda_de_liquidacion) {
-		Moneda_de_liquidacion = moneda_de_liquidacion;
+	public void setMonedaLiquidacion(String monedaLiquidacion) {
+		MonedaLiquidacion = monedaLiquidacion;
 	}
 
 	public String getTipoOperacion() {
@@ -103,12 +113,12 @@ public class OperacionNDFAValuarData {
 		TipoOperacion = tipoOperacion;
 	}
 
-	public Date getFechaCargaOperacion() {
-		return FechaCargaOperacion;
+	public Date getFechaCarga() {
+		return FechaCarga;
 	}
 
-	public void setFechaCargaOperacion(Date fechaCargaOperacion) {
-		FechaCargaOperacion = fechaCargaOperacion;
+	public void setFechaCarga(Date fechaCarga) {
+		FechaCarga = fechaCarga;
 	}
 
 	public Date getFechaInicio() {
@@ -135,12 +145,12 @@ public class OperacionNDFAValuarData {
 		Banca = banca;
 	}
 
-	public String getGestorRiesgoMercado() {
-		return GestorRiesgoMercado;
+	public String getGestorRiesgo() {
+		return GestorRiesgo;
 	}
 
-	public void setGestorRiesgoMercado(String gestorRiesgoMercado) {
-		GestorRiesgoMercado = gestorRiesgoMercado;
+	public void setGestorRiesgo(String gestorRiesgo) {
+		GestorRiesgo = gestorRiesgo;
 	}
 
 	public String getOfficer() {
@@ -151,12 +161,12 @@ public class OperacionNDFAValuarData {
 		Officer = officer;
 	}
 
-	public String getClinum() {
-		return Clinum;
+	public String getCliNum() {
+		return CliNum;
 	}
 
-	public void setClinum(String clinum) {
-		Clinum = clinum;
+	public void setCliNum(String cliNum) {
+		CliNum = cliNum;
 	}
 
 	public String getRaiz() {
@@ -167,20 +177,20 @@ public class OperacionNDFAValuarData {
 		Raiz = raiz;
 	}
 
-	public String getCUIT() {
-		return CUIT;
+	public String getCuit() {
+		return Cuit;
 	}
 
-	public void setCUIT(String cuit) {
-		CUIT = cuit;
+	public void setCuit(String cuit) {
+		Cuit = cuit;
 	}
 
-	public String getContraParte() {
-		return ContraParte;
+	public String getContraparte() {
+		return Contraparte;
 	}
 
-	public void setContraParte(String contraParte) {
-		ContraParte = contraParte;
+	public void setContraparte(String contraparte) {
+		Contraparte = contraparte;
 	}
 
 	public String getNumeroBoleto() {
@@ -207,12 +217,12 @@ public class OperacionNDFAValuarData {
 		Precio = precio;
 	}
 
-	public Double getStrike_ref() {
-		return Strike_ref;
+	public Double getStrikeRef() {
+		return StrikeRef;
 	}
 
-	public void setStrike_ref(Double strike_ref) {
-		Strike_ref = strike_ref;
+	public void setStrikeRef(Double strikeRef) {
+		StrikeRef = strikeRef;
 	}
 
 	public Double getPrecioCierreContable() {
@@ -223,12 +233,12 @@ public class OperacionNDFAValuarData {
 		PrecioCierreContable = precioCierreContable;
 	}
 
-	public Double getRdoTotalContable() {
-		return RdoTotalContable;
+	public Double getRdoTotalContab() {
+		return RdoTotalContab;
 	}
 
-	public void setRdoTotalContable(Double rdoTotalContable) {
-		RdoTotalContable = rdoTotalContable;
+	public void setRdoTotalContab(Double rdoTotalContab) {
+		RdoTotalContab = rdoTotalContab;
 	}
 
 	public Double getPrecioCierreContableMesAnterior() {
@@ -297,28 +307,28 @@ public class OperacionNDFAValuarData {
 		VentasVigentes = ventasVigentes;
 	}
 
-	public Double getDev_total() {
-		return Dev_total;
+	public Double getDevTotal() {
+		return DevTotal;
 	}
 
-	public void setDev_total(Double dev_total) {
-		Dev_total = dev_total;
+	public void setDevTotal(Double devTotal) {
+		DevTotal = devTotal;
 	}
 
-	public Double getDev_Cob() {
-		return dev_Cob;
+	public Double getDevCob() {
+		return DevCob;
 	}
 
-	public void setDev_Cob(Double dev_Cob) {
-		this.dev_Cob = dev_Cob;
+	public void setDevCob(Double devCob) {
+		DevCob = devCob;
 	}
 
-	public Double getDev_Pag() {
-		return dev_Pag;
+	public Double getDevPag() {
+		return DevPag;
 	}
 
-	public void setDev_Pag(Double dev_Pag) {
-		this.dev_Pag = dev_Pag;
+	public void setDevPag(Double devPag) {
+		DevPag = devPag;
 	}
 
 	public String getPlazo() {
@@ -337,20 +347,20 @@ public class OperacionNDFAValuarData {
 		Dias = dias;
 	}
 
-	public Double getRdo_BBA() {
-		return Rdo_BBA;
+	public Double getRdoBBA() {
+		return RdoBBA;
 	}
 
-	public void setRdo_BBA(Double rdo_BBA) {
-		Rdo_BBA = rdo_BBA;
+	public void setRdoBBA(Double rdoBBA) {
+		RdoBBA = rdoBBA;
 	}
 
-	public Double getRdo_BBA_no_Dev() {
-		return Rdo_BBA_no_Dev;
+	public Double getRdoBBANoDev() {
+		return RdoBBANoDev;
 	}
 
-	public void setRdo_BBA_no_Dev(Double rdo_BBA_no_Dev) {
-		Rdo_BBA_no_Dev = rdo_BBA_no_Dev;
+	public void setRdoBBANoDev(Double rdoBBANoDev) {
+		RdoBBANoDev = rdoBBANoDev;
 	}
 
 	public String getMercado() {
@@ -361,28 +371,115 @@ public class OperacionNDFAValuarData {
 		Mercado = mercado;
 	}
 
-	public String getIdOperacion() {
-		return IdOperacion;
+	public String getIDOperacion() {
+		return IDOperacion;
 	}
 
-	public void setIdOperacion(String idOperacion) {
-		IdOperacion = idOperacion;
+	public void setIDOperacion(String iDOperacion) {
+		IDOperacion = iDOperacion;
 	}
 
-	public Date getFecha_proceso() {
-		return fecha_proceso;
+	public Date getFechaProceso() {
+		return FechaProceso;
 	}
 
-	public void setFecha_proceso(Date fecha_proceso) {
-		this.fecha_proceso = fecha_proceso;
+	public void setFechaProceso(Date fechaProceso) {
+		FechaProceso = fechaProceso;
 	}
 
 	public Double getMTM() {
 		return MTM;
 	}
 
-	public void setMTM(Double mtm) {
-		MTM = mtm;
+	public void setMTM(Double mTM) {
+		MTM = mTM;
 	}
 
+	public String getCuenta() {
+		return Cuenta;
+	}
+
+	public void setCuenta(String cuenta) {
+		Cuenta = cuenta;
+	}
+
+	public String getSucursal() {
+		return Sucursal;
+	}
+
+	public void setSucursal(String sucursal) {
+		Sucursal = sucursal;
+	}
+
+	public Double getSpread() {
+		return Spread;
+	}
+
+	public void setSpread(Double spread) {
+		Spread = spread;
+	}
+
+	public Double getFondeo() {
+		return Fondeo;
+	}
+
+	public void setFondeo(Double fondeo) {
+		Fondeo = fondeo;
+	}
+
+	public Double getFondeoAcumulado() {
+		return FondeoAcumulado;
+	}
+
+	public void setFondeoAcumulado(Double fondeoAcumulado) {
+		FondeoAcumulado = fondeoAcumulado;
+	}
+
+	public Double getMargen() {
+		return Margen;
+	}
+
+	public void setMargen(Double margen) {
+		Margen = margen;
+	}
+
+	public Double getPlazoResidual() {
+		return PlazoResidual;
+	}
+
+	public void setPlazoResidual(Double plazoResidual) {
+		PlazoResidual = plazoResidual;
+	}
+
+	public Double getMonto() {
+		return Monto;
+	}
+
+	public void setMonto(Double monto) {
+		Monto = monto;
+	}
+
+	public Double getGastos() {
+		return Gastos;
+	}
+
+	public void setGastos(Double gastos) {
+		Gastos = gastos;
+	}
+
+	public Double getComisiones() {
+		return Comisiones;
+	}
+
+	public void setComisiones(Double comisiones) {
+		Comisiones = comisiones;
+	}
+
+	public Double getNeto() {
+		return Neto;
+	}
+
+	public void setNeto(Double neto) {
+		Neto = neto;
+	}
 }

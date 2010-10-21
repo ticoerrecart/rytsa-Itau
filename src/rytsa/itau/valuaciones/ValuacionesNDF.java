@@ -52,10 +52,9 @@ public class ValuacionesNDF extends Valuaciones {
 			// TODO hay que armar la coleccion para el WS
 			// InformarNovedadesValuaciones.
 			NovedadesValuacionesRequestData novedad = new NovedadesValuacionesRequestData();
-			novedad.setIdOperacion(mtm.getOperacionNDF().getIdOperacion());
-			novedad.setFecha(mtm.getOperacionNDF().getFecha_proceso());
-			novedad.setFechaCargaPrecio(mtm.getOperacionNDF()
-					.getFechaCargaOperacion());
+			novedad.setIdOperacion(mtm.getOperacionNDF().getIDOperacion());
+			novedad.setFecha(mtm.getOperacionNDF().getFechaProceso());
+			novedad.setFechaCargaPrecio(mtm.getOperacionNDF().getFechaCarga());
 			novedad.setMonedaValuacion(mtm.getOperacionNDF().getMoneda());
 			novedad.setPrecio(mtm.getOperacionNDF().getPrecio());
 			novedad.setPlazo(mtm.getPlazoRemanente().intValue());

@@ -76,35 +76,34 @@ public class ConversorWStoESB {
 			operacionDestino.setBanca(operacionOrigen.getBanca());
 			operacionDestino.setCantidadVN(operacionOrigen.getCantidadVN()
 					.doubleValue());
-			operacionDestino.setClinum(operacionOrigen.getCliNum());
+			operacionDestino.setCliNum(operacionOrigen.getCliNum());
 			operacionDestino.setComprasVigentes(operacionOrigen
 					.getComprasVigentes().doubleValue());
-			operacionDestino.setContraParte(operacionOrigen.getContraParte());
-			operacionDestino.setCUIT(operacionOrigen.getCuit());
-			operacionDestino.setDev_Cob(operacionOrigen.getDevCob()
+			operacionDestino.setContraparte(operacionOrigen.getContraParte());
+			operacionDestino.setCuit(operacionOrigen.getCuit());
+			operacionDestino.setDevCob(operacionOrigen.getDevCob()
 					.doubleValue());
-			operacionDestino.setDev_Pag(operacionOrigen.getDevPag()
+			operacionDestino.setDevPag(operacionOrigen.getDevPag()
 					.doubleValue());
-			operacionDestino.setDev_total(operacionOrigen.getDevTotal()
+			operacionDestino.setDevTotal(operacionOrigen.getDevTotal()
 					.doubleValue());
 			operacionDestino.setDias(String.valueOf(operacionOrigen.getDias()));
-			operacionDestino.setFecha_proceso(operacionOrigen.getFechaProceso()
+			operacionDestino.setFechaProceso(operacionOrigen.getFechaProceso()
 					.toGregorianCalendar().getTime());
-			operacionDestino.setFechaCargaOperacion(operacionOrigen
-					.getFechaCarga().toGregorianCalendar().getTime());
+			operacionDestino.setFechaCarga(operacionOrigen.getFechaCarga()
+					.toGregorianCalendar().getTime());
 			operacionDestino.setFechaInicio(operacionOrigen.getFechaInicio()
 					.toGregorianCalendar().getTime());
 			operacionDestino.setFechaVencimiento(operacionOrigen
 					.getFechaVencimiento().toGregorianCalendar().getTime());
-			operacionDestino.setGestorRiesgoMercado(operacionOrigen
-					.getGestorRiesgo());
-			operacionDestino.setIdOperacion(String.valueOf(operacionOrigen
+			operacionDestino.setGestorRiesgo(operacionOrigen.getGestorRiesgo());
+			operacionDestino.setIDOperacion(String.valueOf(operacionOrigen
 					.getIDOperacion()));
 			// operacionDestino.setInstrumento(
 			operacionDestino.setMercado(operacionOrigen.getMercado());
 			operacionDestino.setMetodoFixing(operacionOrigen.getMetodoFixing());
 			operacionDestino.setMoneda(operacionOrigen.getMoneda());
-			operacionDestino.setMoneda_de_liquidacion(operacionOrigen
+			operacionDestino.setMonedaLiquidacion(operacionOrigen
 					.getMonedaLiquidacion());
 			operacionDestino.setMTM(operacionOrigen.getMTM().doubleValue());
 			operacionDestino.setNumeroBoleto(String.valueOf(operacionOrigen
@@ -121,17 +120,17 @@ public class ConversorWStoESB {
 			// operacionDestino.setPrecioCierreContableMesAnterior(
 			operacionDestino.setProducto(operacionOrigen.getProducto());
 			operacionDestino.setRaiz(operacionOrigen.getRaiz());
-			operacionDestino.setRdo_BBA(operacionOrigen.getRdoBBA()
+			operacionDestino.setRdoBBA(operacionOrigen.getRdoBBA()
 					.doubleValue());
-			operacionDestino.setRdo_BBA_no_Dev(operacionOrigen.getRdoBBANoDev()
+			operacionDestino.setRdoBBANoDev(operacionOrigen.getRdoBBANoDev()
 					.doubleValue());
 			operacionDestino.setRdoDiarioContable(operacionOrigen
 					.getRdoDiarioContab().doubleValue());
 			operacionDestino.setRdoMesContable(operacionOrigen
 					.getRdoMesContab().doubleValue());
-			operacionDestino.setRdoTotalContable(operacionOrigen
+			operacionDestino.setRdoTotalContab(operacionOrigen
 					.getRdoTotalContab().doubleValue());
-			operacionDestino.setStrike_ref(operacionOrigen.getStrikeRef()
+			operacionDestino.setStrikeRef(operacionOrigen.getStrikeRef()
 					.doubleValue());
 			operacionDestino.setTipoOperacion(operacionOrigen
 					.getTipoOperacion());
@@ -169,17 +168,15 @@ public class ConversorWStoESB {
 			OperacionSWAPAValuarData operacionDestino = new OperacionSWAPAValuarData();
 			operacionDestino.setBanca(operacionOrigen.getBanca());
 			operacionDestino
-					.setBase1(String.valueOf(operacionOrigen.getBase1()));
-			operacionDestino
-					.setBase2(String.valueOf(operacionOrigen.getBase2()));
-			operacionDestino.setBIBA(operacionOrigen.getBIBAPaga());
+					.setBase(String.valueOf(operacionOrigen.getBase1()));
+			operacionDestino.setBIBAPaga(operacionOrigen.getBIBAPaga());
 			operacionDestino.setCantidadVN(operacionOrigen.getCantidadVN()
 					.doubleValue());
-			operacionDestino.setClinum(operacionOrigen.getCliNum());
+			operacionDestino.setCliNum(operacionOrigen.getCliNum());
 			operacionDestino.setComprasVigentes(operacionOrigen
 					.getComprasVigentes().doubleValue());
-			operacionDestino.setContraParte(operacionOrigen.getContraparte());
-			operacionDestino.setCUIT(operacionOrigen.getCuit());
+			operacionDestino.setContraparte(operacionOrigen.getContraparte());
+			operacionDestino.setCuit(operacionOrigen.getCuit());
 			operacionDestino.setDevCob(operacionOrigen.getDevCob()
 					.doubleValue());
 			operacionDestino.setDevPag(operacionOrigen.getDevPag()
@@ -188,7 +185,7 @@ public class ConversorWStoESB {
 					.doubleValue());
 			operacionDestino.setDias(operacionOrigen.getDias());
 			operacionDestino.setEstrategia(operacionOrigen.getEstrategia());
-			operacionDestino.setFechaCargaOperacion(DateUtils
+			operacionDestino.setFechaCarga(DateUtils
 					.dateToString(operacionOrigen.getFechaCarga()
 							.toGregorianCalendar().getTime()));
 			operacionDestino.setFechaInicio(DateUtils
@@ -202,9 +199,8 @@ public class ConversorWStoESB {
 							.toGregorianCalendar().getTime()));
 			operacionDestino.setFrencuencia(String.valueOf(operacionOrigen
 					.getFrecuencia()));
-			operacionDestino.setGestorRiesgoMercado(operacionOrigen
-					.getGestorRiesgo());
-			operacionDestino.setIdOperacion(String.valueOf(operacionOrigen
+			operacionDestino.setGestorRiesgo(operacionOrigen.getGestorRiesgo());
+			operacionDestino.setIDOperacion(String.valueOf(operacionOrigen
 					.getIdOperacion()));
 			operacionDestino.setInstrumento(operacionOrigen.getInstrumento());
 			operacionDestino.setMetodoFixing(operacionOrigen.getMetodoFixing());
@@ -219,7 +215,7 @@ public class ConversorWStoESB {
 					.getNumeroBoleto()));
 			operacionDestino.setNumeroOperacion(String.valueOf(operacionOrigen
 					.getNumeroOperacion()));
-			operacionDestino.setOfficier(operacionOrigen.getOfficer());
+			operacionDestino.setOfficer(operacionOrigen.getOfficer());
 			operacionDestino
 					.setPlazo(String.valueOf(operacionOrigen.getPlazo()));
 			operacionDestino.setPrecio(operacionOrigen.getPrecio()
@@ -244,7 +240,7 @@ public class ConversorWStoESB {
 					.getRolTotalContable().doubleValue());
 			operacionDestino.setStrikeRef(operacionOrigen.getStrikeRef()
 					.doubleValue());
-			operacionDestino.setSWAPsVigentesTasaFija(operacionOrigen
+			operacionDestino.setSwapVigentesTasaFija(operacionOrigen
 					.getSwapVigentesTasaFija().doubleValue());
 			operacionDestino.setTasaFija(String.valueOf(operacionOrigen
 					.getTasaFija()));

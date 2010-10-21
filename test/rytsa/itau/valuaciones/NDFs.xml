@@ -1,0 +1,780 @@
+<response originId="itau-j_2357.0" user="SYSTEM" code="OPNDF_PATRON_CONSULTA">
+	<count>15</count>
+	<NDF>
+		<Operacion>
+			<NumeroOperacion>146</NumeroOperacion>
+			<Producto>Futuro Tasas P</Producto>
+			<MetodoFixing>BADLAR</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>39</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>10.0</Precio>
+			<StrikeRef>10.0</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>2</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>147</NumeroOperacion>
+			<Producto>Futuro Tasas P</Producto>
+			<MetodoFixing>BADLAR</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>COMPRA</TipoOperacion>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>40</NumeroBoleto>
+			<CantidadVN>1.0E7</CantidadVN>
+			<Precio>10.0</Precio>
+			<StrikeRef>10.0</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>3</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>149</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>42</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>3.9</Precio>
+			<StrikeRef>3.9</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>5</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>150</NumeroOperacion>
+			<Producto>OCT EURO</Producto>
+			<MetodoFixing>RIC</MetodoFixing>
+			<Moneda>EUR</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-29 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>43</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>5.4</Precio>
+			<StrikeRef>5.4</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>6</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-18.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>151</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>COMPRA</TipoOperacion>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>44</NumeroBoleto>
+			<CantidadVN>1.0E7</CantidadVN>
+			<Precio>4.1</Precio>
+			<StrikeRef>4.1</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>7</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>152</NumeroOperacion>
+			<Producto>OCT EURO</Producto>
+			<MetodoFixing>RIC</MetodoFixing>
+			<Moneda>EUR</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>COMPRA</TipoOperacion>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-29 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>45</NumeroBoleto>
+			<CantidadVN>1.0E7</CantidadVN>
+			<Precio>5.6</Precio>
+			<StrikeRef>5.6</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>8</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-18.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>166</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>46</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>3.99</Precio>
+			<StrikeRef>3.99</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>28</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP22101</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>167</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>47</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>3.99</Precio>
+			<StrikeRef>3.99</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>30</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP22101</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>168</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>48</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>3.99</Precio>
+			<StrikeRef>3.99</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>31</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP22101</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>169</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>49</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>4.0</Precio>
+			<StrikeRef>4.0</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>32</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP22101</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>170</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-29 00:00:00.0</FechaVencimiento>
+			<Banca>Itau BBA</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>Administrador</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>50</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>3.99</Precio>
+			<StrikeRef>3.99</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>33</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-18.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>171</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>51</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<Precio>3.9</Precio>
+			<StrikeRef>3.9</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>34</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP22101</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>172</NumeroOperacion>
+			<Producto>OCT Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>COMPRA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca>
+			</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>52</NumeroBoleto>
+			<CantidadVN>1.0E7</CantidadVN>
+			<Precio>3.9</Precio>
+			<StrikeRef>3.9</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>MAE</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>35</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>MEP00259</Cuenta>
+			<Sucursal>
+			</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-140.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>173</NumeroOperacion>
+			<Producto>OTC Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>COMPRA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-14 00:00:00.0</FechaVencimiento>
+			<Banca>Itau BBA</Banca>
+			<GestorRiesgo>Trading</GestorRiesgo>
+			<Officer>Administrador</Officer>
+			<CliNum>216492</CliNum>
+			<Raiz>0340764</Raiz>
+			<Cuit>30604731018</Cuit>
+			<Contraparte>BANCO COMAFI</Contraparte>
+			<NumeroBoleto>0</NumeroBoleto>
+			<CantidadVN>1500000.0</CantidadVN>
+			<Precio>3.98</Precio>
+			<StrikeRef>4.0</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>Mercado Interno</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>36</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>Cta.Int.$</Cuenta>
+			<Sucursal>2025</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-3.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>175</NumeroOperacion>
+			<Producto>OTC Dolar</Producto>
+			<MetodoFixing>Com A-3500</MetodoFixing>
+			<Moneda>USD</Moneda>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>VENTA</TipoOperacion>
+			<FechaCarga>2010-10-12 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-12 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-14 00:00:00.0</FechaVencimiento>
+			<Banca>Itau BBA</Banca>
+			<GestorRiesgo>Banking</GestorRiesgo>
+			<Officer>Administrador</Officer>
+			<CliNum>216492</CliNum>
+			<Raiz>0340764</Raiz>
+			<Cuit>30604731018</Cuit>
+			<Contraparte>BANCO COMAFI</Contraparte>
+			<NumeroBoleto>0</NumeroBoleto>
+			<CantidadVN>-1500000.0</CantidadVN>
+			<Precio>3.98</Precio>
+			<StrikeRef>5.0</StrikeRef>
+			<RdoTotalContab>0.0</RdoTotalContab>
+			<RdoMesContab>0.0</RdoMesContab>
+			<Plazo>0</Plazo>
+			<Dias>0</Dias>
+			<RdoBBA>0.0</RdoBBA>
+			<RdoBBANoDev>0.0</RdoBBANoDev>
+			<Mercado>Mercado Interno</Mercado>
+			<Vigentes>0.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<ComprasVigentes>0.0</ComprasVigentes>
+			<VentasVigentes>0.0</VentasVigentes>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<IDOperacion>38</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<MTM>0.0</MTM>
+			<Cuenta>Cta.Int.$</Cuenta>
+			<Sucursal>2025</Sucursal>
+			<Spread>0.0</Spread>
+			<Fondeo>0.0</Fondeo>
+			<FondeoAcumulado>0.0</FondeoAcumulado>
+			<Margen>0.0</Margen>
+			<PlazoResidual>-3.0</PlazoResidual>
+			<Monto>0.0</Monto>
+			<Gastos>0.0</Gastos>
+			<Comisiones>0.0</Comisiones>
+			<Neto>0.0</Neto>
+		</Operacion>
+	</NDF>
+</response>

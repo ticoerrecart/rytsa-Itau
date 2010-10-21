@@ -1,10 +1,9 @@
 package rytsa.itau.valuaciones.dto.swap;
 
 public class AgendaCuponOperacioneSWAPAValuarData {
-
 	public String NumeroOperacion;
 
-	public String IdCupon;
+	public String idCupon;
 
 	public String TipoFlujo;
 
@@ -12,11 +11,15 @@ public class AgendaCuponOperacioneSWAPAValuarData {
 
 	public String FechaInicio;
 
-	public String FechaVencimiento;
+	public String fechavencimiento;
 
 	public String FechaIndiceInicio;
 
 	public String FechaIndiceFin;
+
+	public String FechaConcertacion;
+
+	public String Cierre;
 
 	public AgendaCuponOperacioneSWAPAValuarData() {
 	}
@@ -45,20 +48,20 @@ public class AgendaCuponOperacioneSWAPAValuarData {
 		FechaInicio = fechaInicio;
 	}
 
-	public String getFechaVencimiento() {
-		return FechaVencimiento;
+	public String getFechavencimiento() {
+		return fechavencimiento;
 	}
 
-	public void setFechaVencimiento(String fechaVencimiento) {
-		FechaVencimiento = fechaVencimiento;
+	public void setFechavencimiento(String fechavencimiento) {
+		this.fechavencimiento = fechavencimiento;
 	}
 
 	public String getIdCupon() {
-		return IdCupon;
+		return idCupon;
 	}
 
 	public void setIdCupon(String idCupon) {
-		IdCupon = idCupon;
+		this.idCupon = idCupon;
 	}
 
 	public String getNumeroOperacion() {
@@ -85,4 +88,19 @@ public class AgendaCuponOperacioneSWAPAValuarData {
 		TipoFlujo = tipoFlujo;
 	}
 
+	public String getFechaConcertacion() {
+		return FechaConcertacion;
+	}
+
+	public void setFechaConcertacion(String fechaConcertacion) {
+		FechaConcertacion = fechaConcertacion;
+	}
+
+	public String getCierre() {
+		return Cierre;
+	}
+
+	public void setCierre(String cierre) {
+		Cierre = cierre;
+	}
 }

@@ -1,0 +1,29 @@
+<response originId="itau-j_2430.0" user="SYSTEM" code="CUPONES_PATRON_CONSULTA">
+	<count>2</count>
+	<Swaps>
+		<Cupon>
+			<NumeroOperacion>18</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 15:19:55.837</FechaConcertacion>
+			<Cierre>2010-10-12 00:00:00.0</Cierre>
+			<idCupon>461</idCupon>
+			<TipoFlujo>Fijo</TipoFlujo>
+			<ReceivedOPayment>Received</ReceivedOPayment>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-15 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-08 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-15 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>19</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 15:19:55.837</FechaConcertacion>
+			<Cierre>2010-10-12 00:00:00.0</Cierre>
+			<idCupon>466</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>Payment</ReceivedOPayment>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-15 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-06 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-13 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+	</Swaps>
+</response>
