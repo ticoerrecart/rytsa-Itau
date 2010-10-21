@@ -27,7 +27,7 @@ public class OperacionNDFAValuarData {
 	private Double PrecioCierreContable;
 	private Double RdoTotalContab;
 	private Double PrecioCierreContableMesAnterior;
-	private Double RdoMesContable;
+	private Double RdoMesContab;
 	private Double PrecioCierreAnteriorContable;
 	private Double RdoDiarioContable;
 	private Double Vigentes;
@@ -250,12 +250,12 @@ public class OperacionNDFAValuarData {
 		PrecioCierreContableMesAnterior = precioCierreContableMesAnterior;
 	}
 
-	public Double getRdoMesContable() {
-		return RdoMesContable;
+	public Double getRdoMesContab() {
+		return RdoMesContab;
 	}
 
-	public void setRdoMesContable(Double rdoMesContable) {
-		RdoMesContable = rdoMesContable;
+	public void setRdoMesContab(Double rdoMesContab) {
+		RdoMesContab = rdoMesContab;
 	}
 
 	public Double getPrecioCierreAnteriorContable() {

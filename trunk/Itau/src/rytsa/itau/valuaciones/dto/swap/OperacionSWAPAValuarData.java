@@ -23,7 +23,7 @@ public class OperacionSWAPAValuarData {
 
 	private String TipoOperacion;
 
-	private String Frencuencia;
+	private String Frecuencia;
 
 	private String FechaCarga;
 
@@ -199,11 +199,11 @@ public class OperacionSWAPAValuarData {
 	}
 
 	public String getFrencuencia() {
-		return Frencuencia;
+		return Frecuencia;
 	}
 
 	public void setFrencuencia(String frencuencia) {
-		Frencuencia = frencuencia;
+		Frecuencia = frencuencia;
 	}
 
 	public String getFechaCarga() {
