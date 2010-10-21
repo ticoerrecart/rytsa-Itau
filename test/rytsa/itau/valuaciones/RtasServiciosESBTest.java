@@ -1,11 +1,9 @@
 package rytsa.itau.valuaciones;
 
 import java.io.InputStream;
-import java.util.List;
 
 import junit.framework.TestCase;
-import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
-import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
+import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
 
 import com.thoughtworks.xstream.XStream;
@@ -30,7 +28,7 @@ public class RtasServiciosESBTest extends TestCase {
 		XStream xs = valuacionesNDF.getXStream();
 		InputStream is = RtasServiciosESBTest.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/NDFs.xml");
-		List<OperacionNDFAValuarData> lista = (List<OperacionNDFAValuarData>) xs
+		RecuperoOperacionesNDFAValuarResponse salida = (RecuperoOperacionesNDFAValuarResponse) xs
 				.fromXML(is);
 	}
 
@@ -39,7 +37,7 @@ public class RtasServiciosESBTest extends TestCase {
 		XStream xs = valuacionesSWAP.getXStream();
 		InputStream is = RtasServiciosESBTest.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/Swaps.xml");
-		List<OperacionSWAPAValuarData> lista = (List<OperacionSWAPAValuarData>) xs
+		RecuperarAgendaCuponesOperacionesSWAPAValuarResponse salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
 				.fromXML(is);
 	}
 }
