@@ -33,7 +33,7 @@ public class Mtm {
 				.get(pOperacionNDF.getMoneda())));
 
 		this.setTipoCambioMoneda2(DAO.obtenerTipoCambioMoneda(pFechaProceso, DAO.monedas
-				.get(pOperacionNDF.getMoneda_de_liquidacion())));
+				.get(pOperacionNDF.getMonedaLiquidacion())));
 
 		if (this.getTipoCambioMoneda() == null) {
 			throw new Exception("tipoCambioMoneda es nulo");
@@ -53,7 +53,7 @@ public class Mtm {
 				FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMoneda()))));
 
 		this.setCurvaMoneda2(DAO.obtenerFactorDesc(pFechaProceso, this.getPlazoRemanente(),
-				FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMoneda_de_liquidacion()))));
+				FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMonedaLiquidacion()))));
 
 		this.calcularFwd();
 

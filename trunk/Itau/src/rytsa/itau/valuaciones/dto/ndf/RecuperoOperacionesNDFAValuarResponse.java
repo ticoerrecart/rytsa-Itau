@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RecuperoOperacionesNDFAValuarResponse {
 
-	private List<OperacionNDFAValuarData> RecuperoOperacionesNDFAValuarResult = new ArrayList<OperacionNDFAValuarData>();
+	private List<OperacionNDFAValuarData> NDF = new ArrayList<OperacionNDFAValuarData>();
 
 	public void addOperacionNDFAValuarData(
 			OperacionNDFAValuarData pOperacionNDFAValuarData) {
@@ -14,12 +14,12 @@ public class RecuperoOperacionesNDFAValuarResponse {
 	}
 
 	public List<OperacionNDFAValuarData> getRecuperoOperacionesNDFAValuarResult() {
-		return RecuperoOperacionesNDFAValuarResult;
+		return NDF;
 	}
 
 	public void setRecuperoOperacionesNDFAValuarResult(
 			List<OperacionNDFAValuarData> recuperoOperacionesNDFAValuarResult) {
-		RecuperoOperacionesNDFAValuarResult = recuperoOperacionesNDFAValuarResult;
+		NDF = recuperoOperacionesNDFAValuarResult;
 	}
 
 }
