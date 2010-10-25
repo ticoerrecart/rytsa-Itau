@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.Mtm;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
@@ -13,8 +12,6 @@ import rytsa.itau.valuaciones.dto.RequestData;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
-import rytsa.itau.ws.ConversorWStoESB;
-import sun.security.action.GetLongAction;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -31,14 +28,8 @@ public class ValuacionesNDF extends Valuaciones {
 			Date pFechaProceso) throws Exception {
 
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = null;
-		if (USOESB) {
-			operacionesNDF = operacionesNDFAValuar(pFechaProceso);
-		} else {
-			operacionesNDF = ConversorWStoESB
-					.getOperacionesNDFAValuarWS(pFechaProceso);
-		}
+		operacionesNDF = operacionesNDFAValuar(pFechaProceso);
 
-		
 		return calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
@@ -50,9 +41,9 @@ public class ValuacionesNDF extends Valuaciones {
 		List<Mtm> listaMtm = new ArrayList<Mtm>();
 		for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 				.getRecuperoOperacionesNDFAValuarResult()) {
-			if (mercadoValido(operacionNDF.getMercado())){
+			if (mercadoValido(operacionNDF.getMercado())) {
 				Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
-				listaMtm.add(mtm);	
+				listaMtm.add(mtm);
 			}
 		}
 
@@ -64,17 +55,20 @@ public class ValuacionesNDF extends Valuaciones {
 			rd.setCodigo("MTMAC");
 			rd.setCodUsuario("FOX");
 			rd.setCorrida("1");
-			rd.setFecha(DateUtils.dateToString(mtm.getOperacionNDF().getFechaProceso() ,Valuaciones.DATE_MASK_NOVEDADES));
+			rd.setFecha(DateUtils.dateToString(mtm.getOperacionNDF()
+					.getFechaProceso(), Valuaciones.DATE_MASK_NOVEDADES));
 			rd.setIdOperacion(mtm.getOperacionNDF().getIDOperacion());
 			rd.setMonedaValuacion(1);
-			//rd.setMTM(100.0);
+			// rd.setMTM(100.0);
 			informar.addRequestData(rd);
-			
+
 		}
 		informar.setCodFormula("MTMAC");
-		informar.setFechaProceso(DateUtils.dateToString(listaMtm.get(0).getOperacionNDF().getFechaProceso() ,Valuaciones.DATE_MASK_NOVEDADES));
-		
-		XStream xs =  ValuacionesNDF.getXStream();
+		informar.setFechaProceso(DateUtils.dateToString(listaMtm.get(0)
+				.getOperacionNDF().getFechaProceso(),
+				Valuaciones.DATE_MASK_NOVEDADES));
+
+		XStream xs = ValuacionesNDF.getXStream();
 		String xml = xs.toXML(informar);
 		xml = xml.replace("\n", "");
 		String resutl = informarValuaciones(xml);
@@ -82,15 +76,12 @@ public class ValuacionesNDF extends Valuaciones {
 		return informar;
 	}
 
-	
-	
-	
 	private static boolean mercadoValido(String pMercado) {
 		String mercados = resourceBundle.getString("mercados.validos");
 		String[] ms = mercados.split(",");
-		
-		for (String mercado: ms){
-			if (mercado.equalsIgnoreCase(pMercado)){
+
+		for (String mercado : ms) {
+			if (mercado.equalsIgnoreCase(pMercado)) {
 				return true;
 			}
 		}
@@ -99,7 +90,8 @@ public class ValuacionesNDF extends Valuaciones {
 
 	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
-		xs.registerConverter(new DateConverter("yyyy-MM-dd hh:mm:ss.S", new String[0]));
+		xs.registerConverter(new DateConverter("yyyy-MM-dd hh:mm:ss.S",
+				new String[0]));
 		xs.alias(resourceBundle
 				.getString("servicios.RecuperoOperacionesNDFAValuarResponse"),
 				RecuperoOperacionesNDFAValuarResponse.class);
@@ -110,14 +102,18 @@ public class ValuacionesNDF extends Valuaciones {
 				SeguridadResponse.class);
 		xs.omitField(SeguridadResponse.class, "cod-retorno");
 		xs.omitField(SeguridadResponse.class, "mensajes");
-		xs.alias(resourceBundle
-				.getString("servicios.LoginSesionResponseData"),
+		xs.alias(resourceBundle.getString("servicios.LoginSesionResponseData"),
 				LoginSesionResponseData.class);
+		xs
+				.alias(
+						resourceBundle
+								.getString("servicios.informarNovedades.InformarNovedadesValuacionesXmlRequest"),
+						InformarNovedadesValuacionesXmlRequest.class);
 		xs.alias(resourceBundle
-				.getString("servicios.informarNovedades.InformarNovedadesValuacionesXmlRequest"), InformarNovedadesValuacionesXmlRequest.class);
-		xs.alias(resourceBundle
-				.getString("servicios.informarNovedades.requestData"), RequestData.class);
-		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class, "requestDataList");
+				.getString("servicios.informarNovedades.requestData"),
+				RequestData.class);
+		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
+				"requestDataList");
 		return xs;
 	}
 
@@ -133,25 +129,15 @@ public class ValuacionesNDF extends Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
-			/*
-			 * TODO easyMock esbResponse =
-			 * EasyMock.createMock(ESBResponse.class);
-			 * EasyMock.expect(esbResponse.getResult()) .andReturn(
-			 * convertStreamToString(Valuaciones.class .getResourceAsStream(
-			 * "/rytsa/itau/valuaciones/operacionesNDFAValuar.xml")));
-			 * EasyMock.replay(esbResponse); // TODO easyMock
-			 */
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client
 					.createRequest(resourceBundle
-							.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio")); // nombre
-			// del
-			// servicio
+							.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio"));
 			esbRequest
 					.setParameter(
 							resourceBundle
 									.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
-							DateUtils.dateToString(pFechaProceso,DATE_MASK));
+							DateUtils.dateToString(pFechaProceso, DATE_MASK));
 			client.execute(esbRequest, esbResponse);
 			String sRta = removerHeaderSoap(esbResponse.getResult());
 

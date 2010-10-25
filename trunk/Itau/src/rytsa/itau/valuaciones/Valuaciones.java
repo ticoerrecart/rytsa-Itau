@@ -31,8 +31,6 @@ public abstract class Valuaciones {
 
 	protected static String HOST;
 
-	protected static boolean USOESB;
-
 	protected static String DATE_MASK;
 	
 	protected static String DATE_MASK_NOVEDADES;
@@ -45,7 +43,6 @@ public abstract class Valuaciones {
 		MODO = Integer.parseInt(resourceBundle.getString("esb.modo"));
 		PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
 		HOST = resourceBundle.getString("esb.host");
-		USOESB = new Boolean(resourceBundle.getString("esb.activado"));
 		DATE_MASK = "dd-MM-yyyy";
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
 	}
