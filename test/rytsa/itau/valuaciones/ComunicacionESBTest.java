@@ -49,7 +49,7 @@ public class ComunicacionESBTest extends TestCase {
 
 	public void testCalcularMTMSwap() throws Exception {
 		Test t = new Test(
-				"C:\\Documents and Settings\\AM430154\\workspace1\\Itau\\DB");
+				"E:\\DESARROLLO\\Workspace\\Itau\\DB");
 		t.calcularMTMSwap("18/10/2010");
 
 	}
