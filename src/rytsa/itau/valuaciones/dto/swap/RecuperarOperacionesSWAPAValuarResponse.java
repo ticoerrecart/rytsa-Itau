@@ -5,19 +5,19 @@ import java.util.List;
 
 public class RecuperarOperacionesSWAPAValuarResponse {
 
-	private List<OperacionSWAPAValuarData> RecuperoOperacionesSWAPAValuarResult = new ArrayList<OperacionSWAPAValuarData>();
+	private List<OperacionSWAPAValuarData> Swaps = new ArrayList<OperacionSWAPAValuarData>();
 
 	public void addOperacionSWAPAValuarData(OperacionSWAPAValuarData operacionSWAPAValuarData){
 		this.getRecuperoOperacionesSWAPAValuarResult().add(operacionSWAPAValuarData);
 	}
 	
 	public List<OperacionSWAPAValuarData> getRecuperoOperacionesSWAPAValuarResult() {
-		return RecuperoOperacionesSWAPAValuarResult;
+		return Swaps;
 	}
 
 	public void setRecuperoOperacionesSWAPAValuarResult(
 			List<OperacionSWAPAValuarData> recuperoOperacionesSWAPAValuarResult) {
-		RecuperoOperacionesSWAPAValuarResult = recuperoOperacionesSWAPAValuarResult;
+		Swaps = recuperoOperacionesSWAPAValuarResult;
 	}
 
 }

@@ -12,9 +12,11 @@ import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.CuponSWAP;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.valuaciones.dto.DisponibilizacionFeriadosXmlRequestData;
 import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
-import rytsa.itau.valuaciones.dto.ndf.NovedadesValuacionesRequestData;
+import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
+import rytsa.itau.valuaciones.dto.RequestData;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
@@ -55,7 +57,7 @@ public class ValuacionesSWAP extends Valuaciones {
 	 * 
 	 * 
 	 */
-	public static List<NovedadesValuacionesRequestData> calcularMTM(
+	public static InformarNovedadesValuacionesXmlRequest calcularMTM(
 			Date pFechaProceso) throws Exception {
 		List<OperacionSWAPAValuarData> operaciones = null;
 		if (USOESB) {
@@ -71,7 +73,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		return calculoMTM();
 	}
 
-	public static List<NovedadesValuacionesRequestData> calculoMTM() {
+	public static InformarNovedadesValuacionesXmlRequest calculoMTM() {
 		for (List<CuponSWAP> listaCuponSWAP : agendaCuponOperaciones.values()) {
 			for (CuponSWAP cuponSWAP : listaCuponSWAP) {
 				mtmFija = mtmFija + cuponSWAP.getFraCli();
@@ -80,14 +82,14 @@ public class ValuacionesSWAP extends Valuaciones {
 
 		}
 
-		List<NovedadesValuacionesRequestData> listaNovedadesRD = new ArrayList<NovedadesValuacionesRequestData>();
-		NovedadesValuacionesRequestData novedadF = new NovedadesValuacionesRequestData();
-		novedadF.setTotalValuado(mtmFija);
-		NovedadesValuacionesRequestData novedadV = new NovedadesValuacionesRequestData();
-		novedadV.setTotalValuado(mtmVariable);
+		InformarNovedadesValuacionesXmlRequest listaNovedadesRD = new InformarNovedadesValuacionesXmlRequest();
+		RequestData novedadF = new RequestData();
+		novedadF.setMTM(mtmFija);
+		RequestData novedadV = new RequestData();
+		novedadV.setMTM(mtmVariable);
 
-		listaNovedadesRD.add(novedadF);
-		listaNovedadesRD.add(novedadV);
+		listaNovedadesRD.addRequestData(novedadF);
+		listaNovedadesRD.addRequestData(novedadV);
 
 		return listaNovedadesRD;
 	}
@@ -128,7 +130,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 	}
 
-	public static XStream getXStream() {
+	public static XStream getXStreamOperacionesYFeriados() {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias(resourceBundle.getString("servicios.FeriadosResponse"),
 				FeriadosResponse.class);
@@ -140,27 +142,30 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.alias(
 				resourceBundle.getString("servicios.OperacionSWAPAValuarData"),
 				OperacionSWAPAValuarData.class);
+		xs.omitField(RecuperarOperacionesSWAPAValuarResponse.class, "count");
 		
+		xs.alias("DisponibilizacionFeriadosXmlRequestData",DisponibilizacionFeriadosXmlRequestData.class);
+		
+		return xs;
+	}
+
+	
+	public static XStream getXStreamAgenda() {
+		XStream xs = new XStream(new DomDriver());
 		xs.alias(
 				resourceBundle
 						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuarResponse"),
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		/*xs.alias(
-				resourceBundle
-						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuarResult"),
-				List.class);*/
-
 		xs.alias(resourceBundle
 				.getString("servicios.AgendaCuponOperacioneSWAPAValuarData"),
 				AgendaCuponOperacioneSWAPAValuarData.class);
-
-		xs.omitField(RecuperarOperacionesSWAPAValuarResponse.class, "count");
 		xs.omitField(
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
 				"count");
 		return xs;
 	}
 
+	
 	/**
 	 * Busca los dias que obtiene del properties. 5400.
 	 * 
@@ -194,8 +199,11 @@ public class ValuacionesSWAP extends Valuaciones {
 	}
 
 	private static FeriadosResponse getDias(Date pFechaDesde, Date pFechaHasta) {
-		XStream xs = getXStream();
+		XStream xs = getXStreamOperacionesYFeriados();
 
+		
+		String idSession = Valuaciones.getIdSession();
+		
 		// TODO ac� ir�a el llamado al WS hasta conseguir a partir de la
 		// fecha,
 		// los 5400 (DIAS) h�biles!!!!!!!!!!!
@@ -204,29 +212,19 @@ public class ValuacionesSWAP extends Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
-			/*
-			 * TODO easyMock esbResponse =
-			 * EasyMock.createMock(ESBResponse.class);
-			 * EasyMock.expect(esbResponse.getResult()) .andReturn(
-			 * convertStreamToString(Valuaciones.class
-			 * .getResourceAsStream("/rytsa/itau/valuaciones/feriados.xml")));
-			 * EasyMock.replay(esbResponse); // TODO easyMock
-			 */
+			DisponibilizacionFeriadosXmlRequestData d = new DisponibilizacionFeriadosXmlRequestData();
+			d.setFechaIni(DateUtils.dateToString(pFechaDesde, Valuaciones.DATE_MASK));
+			d.setFechaFin(DateUtils.dateToString(pFechaHasta, Valuaciones.DATE_MASK));
+			d.setIdCalendario("1");
+			String xml = xs.toXML(d);
+			xml = xml.replace("\n", "");
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client.createRequest(resourceBundle
-					.getString("servicios.Feriados.nombreServicio")); // nombre
-																		// del
-			// servicio
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramFechaDesde"),
-					pFechaDesde);
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramFechaHasta"),
-					pFechaHasta);
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramIdCalendario"),
-					resourceBundle
-							.getString("servicios.Feriados.idCalendarioValue"));
+					.getString("servicios.Feriados.nombreServicio")); 
+			
+			esbRequest.setParameter("IdSesion",idSession);
+			esbRequest.setParameter("XmlRequest","<DisponibilizacionFeriadosXmlRequestData><IdCalendario>1</IdCalendario><FechaIni>2010-10-13</FechaIni><FechaFin>2011-1-31</FechaFin></DisponibilizacionFeriadosXmlRequestData>");
+			
 			client.execute(esbRequest, esbResponse);
 			String sRtaFeriados = removerHeaderSoap(esbResponse.getResult());
 
@@ -246,7 +244,7 @@ public class ValuacionesSWAP extends Valuaciones {
 	}
 
 	private static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP() {
-		XStream xs = getXStream();
+		XStream xs = getXStreamAgenda();
 		RecuperarAgendaCuponesOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
@@ -294,7 +292,7 @@ public class ValuacionesSWAP extends Valuaciones {
 
 	private static List<OperacionSWAPAValuarData> operacionesSWAP(
 			Date pFechaProceso) {
-		XStream xs = getXStream();
+		XStream xs = getXStreamOperacionesYFeriados();
 		RecuperarOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
@@ -319,7 +317,7 @@ public class ValuacionesSWAP extends Valuaciones {
 					.setParameter(
 							resourceBundle
 									.getString("servicios.RecuperoOperacionesSWAPAValuar.paramFechaProceso"),
-							pFechaProceso);
+									DateUtils.dateToString(pFechaProceso,DATE_MASK));
 			client.execute(esbRequest, esbResponse);
 			String sRtaOperaciones = removerHeaderSoap(esbResponse.getResult());
 
