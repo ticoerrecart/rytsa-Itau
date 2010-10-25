@@ -60,7 +60,7 @@ public class ValuacionesSWAP extends Valuaciones {
 			Date pFechaProceso) throws Exception {
 		List<OperacionSWAPAValuarData> operaciones = null;
 		operaciones = operacionesSWAP(pFechaProceso);
-	
+
 		armarOperacionesSWAPParteFijaYVariable(operaciones);
 
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
@@ -83,8 +83,25 @@ public class ValuacionesSWAP extends Valuaciones {
 		RequestData novedadV = new RequestData();
 		novedadV.setMTM(mtmVariable);
 
+		/*
+		 * TODO COMPLETAR CAMPOS rd.setCodigo("MTMAC"); rd.setCodUsuario("FOX");
+		 * rd.setCorrida("1");
+		 * rd.setFecha(DateUtils.dateToString(mtm.getOperacionNDF()
+		 * .getFechaProceso(), Valuaciones.DATE_MASK_NOVEDADES));
+		 * rd.setIdOperacion(mtm.getOperacionNDF().getIDOperacion());
+		 * rd.setMonedaValuacion(1);
+		 */
 		listaNovedadesRD.addRequestData(novedadF);
 		listaNovedadesRD.addRequestData(novedadV);
+
+		// listaNovedadesRD.setCodFormula("MTMAC");
+		// listaNovedadesRD.setFechaProceso();
+
+		XStream xs = ValuacionesSWAP.getXStreamInformarNovedades();
+		String xml = xs.toXML(listaNovedadesRD);
+		xml = xml.replace("\n", "");
+		String resutl = informarValuaciones(xml);
+		System.out.println(resutl);
 
 		return listaNovedadesRD;
 	}
@@ -142,6 +159,21 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.alias("DisponibilizacionFeriadosXmlRequestData",
 				DisponibilizacionFeriadosXmlRequestData.class);
 
+		return xs;
+	}
+
+	public static XStream getXStreamInformarNovedades() {
+		XStream xs = new XStream(new DomDriver());
+		xs
+				.alias(
+						resourceBundle
+								.getString("servicios.informarNovedades.InformarNovedadesValuacionesXmlRequest"),
+						InformarNovedadesValuacionesXmlRequest.class);
+		xs.alias(resourceBundle
+				.getString("servicios.informarNovedades.requestData"),
+				RequestData.class);
+		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
+				"requestDataList");
 		return xs;
 	}
 
