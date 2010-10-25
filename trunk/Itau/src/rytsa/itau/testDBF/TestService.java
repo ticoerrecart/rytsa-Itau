@@ -21,7 +21,7 @@ public class TestService {
 		ESBResponse response = new ESBResponse();
 
 		
-			client = ESBClientFactory.createInstance(4,"132.145.190.216" , Integer.valueOf(2424));
+			client = ESBClientFactory.createInstance(4,"esb_int" , Integer.valueOf(3424));
 		
 		esbRequest = client.createRequest("WS_ESB_FILES"); // nombre del
 															// servicio

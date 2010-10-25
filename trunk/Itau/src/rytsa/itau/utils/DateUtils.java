@@ -25,6 +25,12 @@ public abstract class DateUtils {
 		return convertedDate;
 	}
 
+	public static String dateToString(Date pFecha, String mask) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(mask);
+		String convertedDate = dateFormat.format(pFecha);
+		return convertedDate;
+	}
+	
 	public static java.sql.Date convertDate(Date pFecha) {
 		return new java.sql.Date(pFecha.getTime());
 	}
