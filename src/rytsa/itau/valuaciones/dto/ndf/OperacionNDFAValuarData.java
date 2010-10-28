@@ -5,7 +5,7 @@ import java.util.Date;
 public class OperacionNDFAValuarData {
 	private String NumeroOperacion;
 	private String Producto;
-	private String Instrumento;
+//	private String Instrumento;
 	private String MetodoFixing;
 	private String Moneda;
 	private String MonedaLiquidacion;
@@ -24,12 +24,17 @@ public class OperacionNDFAValuarData {
 	private Double CantidadVN;
 	private Double Precio;
 	private Double StrikeRef;
-	private Double PrecioCierreContable;
+//	private Double PrecioCierreContable;
 	private Double RdoTotalContab;
-	private Double PrecioCierreContableMesAnterior;
+//	private Double PrecioCierreContableMesAnterior;
 	private Double RdoMesContab;
-	private Double PrecioCierreAnteriorContable;
-	private Double RdoDiarioContable;
+//	private Double PrecioCierreAnteriorContable;
+	private Double RdoDiarioContab;
+	private String Plazo;
+	private String Dias;
+	private Double RdoBBA;
+	private Double RdoBBANoDev;
+	private String Mercado;
 	private Double Vigentes;
 	private Double Vencidos;
 	private Double ComprasVigentes;
@@ -37,11 +42,6 @@ public class OperacionNDFAValuarData {
 	private Double DevTotal;
 	private Double DevCob;
 	private Double DevPag;
-	private String Plazo;
-	private String Dias;
-	private Double RdoBBA;
-	private Double RdoBBANoDev;
-	private String Mercado;
 	private String IDOperacion;
 	private Date FechaProceso;
 	private Double MTM;
@@ -72,7 +72,7 @@ public class OperacionNDFAValuarData {
 	public void setProducto(String producto) {
 		Producto = producto;
 	}
-
+/*
 	public String getInstrumento() {
 		return Instrumento;
 	}
@@ -80,7 +80,7 @@ public class OperacionNDFAValuarData {
 	public void setInstrumento(String instrumento) {
 		Instrumento = instrumento;
 	}
-
+*/
 	public String getMetodoFixing() {
 		return MetodoFixing;
 	}
@@ -224,7 +224,7 @@ public class OperacionNDFAValuarData {
 	public void setStrikeRef(Double strikeRef) {
 		StrikeRef = strikeRef;
 	}
-
+/*
 	public Double getPrecioCierreContable() {
 		return PrecioCierreContable;
 	}
@@ -232,7 +232,7 @@ public class OperacionNDFAValuarData {
 	public void setPrecioCierreContable(Double precioCierreContable) {
 		PrecioCierreContable = precioCierreContable;
 	}
-
+*/
 	public Double getRdoTotalContab() {
 		return RdoTotalContab;
 	}
@@ -240,7 +240,7 @@ public class OperacionNDFAValuarData {
 	public void setRdoTotalContab(Double rdoTotalContab) {
 		RdoTotalContab = rdoTotalContab;
 	}
-
+/*
 	public Double getPrecioCierreContableMesAnterior() {
 		return PrecioCierreContableMesAnterior;
 	}
@@ -249,7 +249,7 @@ public class OperacionNDFAValuarData {
 			Double precioCierreContableMesAnterior) {
 		PrecioCierreContableMesAnterior = precioCierreContableMesAnterior;
 	}
-
+*/
 	public Double getRdoMesContab() {
 		return RdoMesContab;
 	}
@@ -257,7 +257,7 @@ public class OperacionNDFAValuarData {
 	public void setRdoMesContab(Double rdoMesContab) {
 		RdoMesContab = rdoMesContab;
 	}
-
+/*
 	public Double getPrecioCierreAnteriorContable() {
 		return PrecioCierreAnteriorContable;
 	}
@@ -266,13 +266,13 @@ public class OperacionNDFAValuarData {
 			Double precioCierreAnteriorContable) {
 		PrecioCierreAnteriorContable = precioCierreAnteriorContable;
 	}
-
+*/
 	public Double getRdoDiarioContable() {
-		return RdoDiarioContable;
+		return RdoDiarioContab;
 	}
 
 	public void setRdoDiarioContable(Double rdoDiarioContable) {
-		RdoDiarioContable = rdoDiarioContable;
+		RdoDiarioContab = rdoDiarioContable;
 	}
 
 	public Double getVigentes() {
