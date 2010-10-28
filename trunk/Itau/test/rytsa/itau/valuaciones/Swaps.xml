@@ -1,41 +1,132 @@
-<response originId="itau-j_2377.0" user="SYSTEM" code="OPSWAPS_PATRON_CONSULTA">
-	<count>2</count>
+<response originId="IBA1344_1193.0" user="AM430154" code="OPERACIONES_SWAPS_PATRON_LISTADO">
+	<count>9</count>
 	<Swaps>
 		<Operacion>
-			<NumeroOperacion>162</NumeroOperacion>
-			<Producto>OTC SWAPS F-V BADLAR</Producto>
-			<Mercado>INTER</Mercado>
-			<MetodoFixing>Tasa Fija</MetodoFixing>
+			<NumeroOperacion>145</NumeroOperacion>
+			<Producto>Swaps Badlar</Producto>
+			<Mercado>MAE</Mercado>
+			<MetodoFixing>BADLAR</MetodoFixing>
 			<Moneda>ARP</Moneda>
-			<BIBAPaga>Tasa Variable</BIBAPaga>
-			<TasaFija>16.5</TasaFija>
-			<TasaVariable>
-			</TasaVariable>
+			<BIBAPaga>Tasa Fija</BIBAPaga>
+			<TasaFija>0.0</TasaFija>
+			<TasaVariable>D - MTM SWAPS BADLAR (MAE)</TasaVariable>
 			<MonedaLiquidacion>ARP</MonedaLiquidacion>
-			<TipoOperacion>C</TipoOperacion>
-			<Frecuencia>7</Frecuencia>
+			<TipoOperacion>V</TipoOperacion>
+			<Frecuencia>0</Frecuencia>
 			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
 			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
-			<FechaVencimiento>2010-10-15 00:00:00.0</FechaVencimiento>
-			<Banca>Itau BBA</Banca>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca></Banca>
 			<GestorRiesgo>TRD</GestorRiesgo>
-			<Officer>ADMINISTRADOR</Officer>
-			<CliNum>000480</CliNum>
-			<Raiz>0000202</Raiz>
-			<Cuenta>40000202100</Cuenta>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuenta>200259</Cuenta>
 			<Sucursal>TESORERIA</Sucursal>
-			<Cuit>33660517109</Cuit>
-			<Contraparte>MARIA ALEJANDRA ZAMBONI</Contraparte>
-			<NumeroBoleto>0</NumeroBoleto>
-			<CantidadVN>1.0E7</CantidadVN>
-			<SwapVigentesTasaFija>1.0E7</SwapVigentesTasaFija>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>38</NumeroBoleto>
+			<CantidadVN>-5000000.0</CantidadVN>
+			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
 			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
-			<Precio>16.5</Precio>
+			<Precio>18.0</Precio>
 			<MTMPayment>0.0</MTMPayment>
 			<MTMReceived>0.0</MTMReceived>
 			<Base>365</Base>
-			<StrikeRef>16.5</StrikeRef>
-			<Plazo>7</Plazo>
+			<StrikeRef>18.0</StrikeRef>
+			<Plazo>143</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>-5000000.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>1</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>0</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>148</NumeroOperacion>
+			<Producto>Swaps Badlar</Producto>
+			<Mercado>MAE</Mercado>
+			<MetodoFixing>BADLAR</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Variable</BIBAPaga>
+			<TasaFija>0.0</TasaFija>
+			<TasaVariable>D - MTM SWAPS BADLAR (MAE)</TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>C</TipoOperacion>
+			<Frecuencia>0</Frecuencia>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca></Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuenta>200259</Cuenta>
+			<Sucursal>TESORERIA</Sucursal>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>41</NumeroBoleto>
+			<CantidadVN>5000000.0</CantidadVN>
+			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
+			<Precio>19.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>19.0</StrikeRef>
+			<Plazo>143</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>5000000.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>4</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>0</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>188</NumeroOperacion>
+			<Producto>Swaps Badlar</Producto>
+			<Mercado>MAE</Mercado>
+			<MetodoFixing>BADLAR</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Variable</BIBAPaga>
+			<TasaFija>0.0</TasaFija>
+			<TasaVariable>D - MTM SWAPS BADLAR (MAE)</TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>C</TipoOperacion>
+			<Frecuencia>0</Frecuencia>
+			<FechaCarga>2010-10-14 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-14 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca></Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuenta>200259</Cuenta>
+			<Sucursal>TESORERIA</Sucursal>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>58</NumeroBoleto>
+			<CantidadVN>1.0E7</CantidadVN>
+			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
+			<Precio>18.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>18.0</StrikeRef>
+			<Plazo>137</Plazo>
 			<RdoMesContab>0.0</RdoMesContab>
 			<RdoDiarioContab>0.0</RdoDiarioContab>
 			<Vigentes>1.0E7</Vigentes>
@@ -44,12 +135,242 @@
 			<DevCob>0.0</DevCob>
 			<DevPag>0.0</DevPag>
 			<RdoBBA>0.0</RdoBBA>
-			<IDOperacion>18</IDOperacion>
-			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
-			<idoperacionrelacionada>19</idoperacionrelacionada>
+			<IDOperacion>67</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>0</idoperacionrelacionada>
 		</Operacion>
 		<Operacion>
-			<NumeroOperacion>163</NumeroOperacion>
+			<NumeroOperacion>189</NumeroOperacion>
+			<Producto>Swaps Badlar</Producto>
+			<Mercado>MAE</Mercado>
+			<MetodoFixing>BADLAR</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Fija</BIBAPaga>
+			<TasaFija>0.0</TasaFija>
+			<TasaVariable>D - MTM SWAPS BADLAR (MAE)</TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>V</TipoOperacion>
+			<Frecuencia>0</Frecuencia>
+			<FechaCarga>2010-10-14 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-14 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca></Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuenta>222101</Cuenta>
+			<Sucursal>TESORERIA</Sucursal>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>59</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
+			<Precio>18.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>18.0</StrikeRef>
+			<Plazo>137</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>-1.0E7</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>68</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>0</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>214</NumeroOperacion>
+			<Producto>Swaps Badlar</Producto>
+			<Mercado>MAE</Mercado>
+			<MetodoFixing>BADLAR</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Fija</BIBAPaga>
+			<TasaFija>0.0</TasaFija>
+			<TasaVariable>D - MTM SWAPS BADLAR (MAE)</TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>V</TipoOperacion>
+			<Frecuencia>0</Frecuencia>
+			<FechaCarga>2010-10-18 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2011-02-28 00:00:00.0</FechaVencimiento>
+			<Banca></Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>SIOPEL</Officer>
+			<CliNum>000018</CliNum>
+			<Raiz>0319585</Raiz>
+			<Cuenta>222101</Cuenta>
+			<Sucursal>TESORERIA</Sucursal>
+			<Cuit>30500001735</Cuit>
+			<Contraparte>BANCO GALICIA</Contraparte>
+			<NumeroBoleto>69</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
+			<Precio>18.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>18.0</StrikeRef>
+			<Plazo>133</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>-1.0E7</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>140</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>0</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>222</NumeroOperacion>
+			<Producto>OTC SWAPS F-V BADLAR</Producto>
+			<Mercado>INTER</Mercado>
+			<MetodoFixing>Tasa Variable</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Fija</BIBAPaga>
+			<TasaFija>0.0</TasaFija>
+			<TasaVariable>D - MTM SWAPS BADLAR MERCADO INTERNO (MAE)</TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>C</TipoOperacion>
+			<Frecuencia>1</Frecuencia>
+			<FechaCarga>2010-10-18 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-28 00:00:00.0</FechaVencimiento>
+			<Banca>Itau BBA</Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>ADMINISTRADOR</Officer>
+			<CliNum>721664</CliNum>
+			<Raiz>0000244</Raiz>
+			<Cuenta>40000244100</Cuenta>
+			<Sucursal>IBBA</Sucursal>
+			<Cuit>30681490465</Cuit>
+			<Contraparte>ROGERIO OCHO MALDONADO</Contraparte>
+			<NumeroBoleto>0</NumeroBoleto>
+			<CantidadVN>100000.0</CantidadVN>
+			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>100000.0</SwapVigentesTasaVariable>
+			<Precio>1.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>9.0</StrikeRef>
+			<Plazo>10</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>100000.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>151</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>152</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>223</NumeroOperacion>
+			<Producto>OTC SWAPS F-V BADLAR</Producto>
+			<Mercado>INTER</Mercado>
+			<MetodoFixing>Tasa Fija</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Fija</BIBAPaga>
+			<TasaFija>9.0</TasaFija>
+			<TasaVariable></TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>V</TipoOperacion>
+			<Frecuencia>1</Frecuencia>
+			<FechaCarga>2010-10-18 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-28 00:00:00.0</FechaVencimiento>
+			<Banca>Itau BBA</Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>ADMINISTRADOR</Officer>
+			<CliNum>721664</CliNum>
+			<Raiz>0000244</Raiz>
+			<Cuenta>40000244100</Cuenta>
+			<Sucursal>IBBA</Sucursal>
+			<Cuit>30681490465</Cuit>
+			<Contraparte>ROGERIO OCHO MALDONADO</Contraparte>
+			<NumeroBoleto>0</NumeroBoleto>
+			<CantidadVN>-101000.0</CantidadVN>
+			<SwapVigentesTasaFija>-101000.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
+			<Precio>9.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>9.0</StrikeRef>
+			<Plazo>10</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>-101000.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>152</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>151</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>226</NumeroOperacion>
+			<Producto>OTC SWAPS F-V BADLAR</Producto>
+			<Mercado>INTER</Mercado>
+			<MetodoFixing>Tasa Fija</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Variable</BIBAPaga>
+			<TasaFija>10.0</TasaFija>
+			<TasaVariable></TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>C</TipoOperacion>
+			<Frecuencia>0</Frecuencia>
+			<FechaCarga>2010-10-18 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-28 00:00:00.0</FechaVencimiento>
+			<Banca>Pequeña y Medianas</Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>ADMINISTRADOR</Officer>
+			<CliNum>000480</CliNum>
+			<Raiz>0000202</Raiz>
+			<Cuenta>40000202100</Cuenta>
+			<Sucursal>BA V.D PARQUE</Sucursal>
+			<Cuit>33660517109</Cuit>
+			<Contraparte>MARIA ALEJANDRA ZAMBONI</Contraparte>
+			<NumeroBoleto>0</NumeroBoleto>
+			<CantidadVN>100000.0</CantidadVN>
+			<SwapVigentesTasaFija>100000.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
+			<Precio>10.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>9.75</StrikeRef>
+			<Plazo>10</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>100000.0</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>156</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>157</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>227</NumeroOperacion>
 			<Producto>OTC SWAPS F-V BADLAR</Producto>
 			<Mercado>INTER</Mercado>
 			<MetodoFixing>Tasa Variable</MetodoFixing>
@@ -59,40 +380,40 @@
 			<TasaVariable>D - MTM SWAPS BADLAR MERCADO INTERNO (MAE)</TasaVariable>
 			<MonedaLiquidacion>ARP</MonedaLiquidacion>
 			<TipoOperacion>V</TipoOperacion>
-			<Frecuencia>7</Frecuencia>
-			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
-			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
-			<FechaVencimiento>2010-10-15 00:00:00.0</FechaVencimiento>
-			<Banca>Itau BBA</Banca>
+			<Frecuencia>0</Frecuencia>
+			<FechaCarga>2010-10-18 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-28 00:00:00.0</FechaVencimiento>
+			<Banca>Pequeña y Medianas</Banca>
 			<GestorRiesgo>TRD</GestorRiesgo>
 			<Officer>ADMINISTRADOR</Officer>
 			<CliNum>000480</CliNum>
 			<Raiz>0000202</Raiz>
 			<Cuenta>40000202100</Cuenta>
-			<Sucursal>TESORERIA</Sucursal>
+			<Sucursal>BA V.D PARQUE</Sucursal>
 			<Cuit>33660517109</Cuit>
 			<Contraparte>MARIA ALEJANDRA ZAMBONI</Contraparte>
 			<NumeroBoleto>0</NumeroBoleto>
-			<CantidadVN>-1.0E7</CantidadVN>
+			<CantidadVN>-10000.0</CantidadVN>
 			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
-			<SwapVigentesTasaVariable>-1.0E7</SwapVigentesTasaVariable>
+			<SwapVigentesTasaVariable>-10000.0</SwapVigentesTasaVariable>
 			<Precio>1.0</Precio>
 			<MTMPayment>0.0</MTMPayment>
 			<MTMReceived>0.0</MTMReceived>
 			<Base>365</Base>
-			<StrikeRef>16.5</StrikeRef>
-			<Plazo>7</Plazo>
+			<StrikeRef>9.75</StrikeRef>
+			<Plazo>10</Plazo>
 			<RdoMesContab>0.0</RdoMesContab>
 			<RdoDiarioContab>0.0</RdoDiarioContab>
-			<Vigentes>-1.0E7</Vigentes>
+			<Vigentes>-10000.0</Vigentes>
 			<Vencidos>0.0</Vencidos>
 			<DevTotal>0.0</DevTotal>
 			<DevCob>0.0</DevCob>
 			<DevPag>0.0</DevPag>
 			<RdoBBA>0.0</RdoBBA>
-			<IDOperacion>19</IDOperacion>
-			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
-			<idoperacionrelacionada>18</idoperacionrelacionada>
+			<IDOperacion>157</IDOperacion>
+			<FechaProceso>2010-10-18 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>156</idoperacionrelacionada>
 		</Operacion>
 	</Swaps>
 </response>

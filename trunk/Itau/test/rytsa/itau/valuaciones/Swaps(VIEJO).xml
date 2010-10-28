@@ -1,0 +1,98 @@
+<response originId="itau-j_2377.0" user="SYSTEM" code="OPSWAPS_PATRON_CONSULTA">
+	<count>2</count>
+	<Swaps>
+		<Operacion>
+			<NumeroOperacion>162</NumeroOperacion>
+			<Producto>OTC SWAPS F-V BADLAR</Producto>
+			<Mercado>INTER</Mercado>
+			<MetodoFixing>Tasa Fija</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Variable</BIBAPaga>
+			<TasaFija>16.5</TasaFija>
+			<TasaVariable>
+			</TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>C</TipoOperacion>
+			<Frecuencia>7</Frecuencia>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-15 00:00:00.0</FechaVencimiento>
+			<Banca>Itau BBA</Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>ADMINISTRADOR</Officer>
+			<CliNum>000480</CliNum>
+			<Raiz>0000202</Raiz>
+			<Cuenta>40000202100</Cuenta>
+			<Sucursal>TESORERIA</Sucursal>
+			<Cuit>33660517109</Cuit>
+			<Contraparte>MARIA ALEJANDRA ZAMBONI</Contraparte>
+			<NumeroBoleto>0</NumeroBoleto>
+			<CantidadVN>1.0E7</CantidadVN>
+			<SwapVigentesTasaFija>1.0E7</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>0.0</SwapVigentesTasaVariable>
+			<Precio>16.5</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>16.5</StrikeRef>
+			<Plazo>7</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>1.0E7</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>18</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>19</idoperacionrelacionada>
+		</Operacion>
+		<Operacion>
+			<NumeroOperacion>163</NumeroOperacion>
+			<Producto>OTC SWAPS F-V BADLAR</Producto>
+			<Mercado>INTER</Mercado>
+			<MetodoFixing>Tasa Variable</MetodoFixing>
+			<Moneda>ARP</Moneda>
+			<BIBAPaga>Tasa Variable</BIBAPaga>
+			<TasaFija>0.0</TasaFija>
+			<TasaVariable>D - MTM SWAPS BADLAR MERCADO INTERNO (MAE)</TasaVariable>
+			<MonedaLiquidacion>ARP</MonedaLiquidacion>
+			<TipoOperacion>V</TipoOperacion>
+			<Frecuencia>7</Frecuencia>
+			<FechaCarga>2010-10-08 00:00:00.0</FechaCarga>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<FechaVencimiento>2010-10-15 00:00:00.0</FechaVencimiento>
+			<Banca>Itau BBA</Banca>
+			<GestorRiesgo>TRD</GestorRiesgo>
+			<Officer>ADMINISTRADOR</Officer>
+			<CliNum>000480</CliNum>
+			<Raiz>0000202</Raiz>
+			<Cuenta>40000202100</Cuenta>
+			<Sucursal>TESORERIA</Sucursal>
+			<Cuit>33660517109</Cuit>
+			<Contraparte>MARIA ALEJANDRA ZAMBONI</Contraparte>
+			<NumeroBoleto>0</NumeroBoleto>
+			<CantidadVN>-1.0E7</CantidadVN>
+			<SwapVigentesTasaFija>0.0</SwapVigentesTasaFija>
+			<SwapVigentesTasaVariable>-1.0E7</SwapVigentesTasaVariable>
+			<Precio>1.0</Precio>
+			<MTMPayment>0.0</MTMPayment>
+			<MTMReceived>0.0</MTMReceived>
+			<Base>365</Base>
+			<StrikeRef>16.5</StrikeRef>
+			<Plazo>7</Plazo>
+			<RdoMesContab>0.0</RdoMesContab>
+			<RdoDiarioContab>0.0</RdoDiarioContab>
+			<Vigentes>-1.0E7</Vigentes>
+			<Vencidos>0.0</Vencidos>
+			<DevTotal>0.0</DevTotal>
+			<DevCob>0.0</DevCob>
+			<DevPag>0.0</DevPag>
+			<RdoBBA>0.0</RdoBBA>
+			<IDOperacion>19</IDOperacion>
+			<FechaProceso>2010-10-12 00:00:00.0</FechaProceso>
+			<idoperacionrelacionada>18</idoperacionrelacionada>
+		</Operacion>
+	</Swaps>
+</response>
