@@ -1,0 +1,377 @@
+﻿<response originId="IBA1344_1224.0" user="AM430154" code="CUPONES_PATRON_LISTADO">
+	<count>31</count>
+	<Swaps>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-18 16:35:45.057</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2302</idCupon>
+			<TipoFlujo>Fijo</TipoFlujo>
+			<ReceivedOPayment>Received</ReceivedOPayment>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-16 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-18 16:35:45.057</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2311</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>Payment</ReceivedOPayment>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-16 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 15:35:26.007</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2887</idCupon>
+			<TipoFlujo>Fijo</TipoFlujo>
+			<ReceivedOPayment>Received</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-17 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 15:35:26.007</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2897</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>Payment</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-17 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 16:18:45.697</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>3466</idCupon>
+			<TipoFlujo>Fijo</TipoFlujo>
+			<ReceivedOPayment>Payment</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-17 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 16:18:45.697</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>3476</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>Received</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-17 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 15:26:47.6</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2867</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>Payment</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-17 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 15:26:47.6</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2877</idCupon>
+			<TipoFlujo>Fijo</TipoFlujo>
+			<ReceivedOPayment>Received</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-17 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 17:25:47.96</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>3486</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>Payment</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-19 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-31 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>0</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 17:25:47.96</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>3494</idCupon>
+			<TipoFlujo>Fijo</TipoFlujo>
+			<ReceivedOPayment>Received</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-31 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-19 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-31 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>1</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:36.637</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-11-08 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-11-08 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-11-08 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>1</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:36.637</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-11-08 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-12-09 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-12-09 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-12-09 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>1</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:36.637</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>3</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-12-09 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-01-10 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-01-10 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-01-10 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>1</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:36.637</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>4</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2011-01-10 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-02-08 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-02-08 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-02-08 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>4</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:45.12</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>204</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-11-08 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-11-08 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-11-08 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>4</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:45.12</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>205</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-11-08 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-12-09 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-12-09 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-12-09 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>4</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:45.12</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>206</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-12-09 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-01-10 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-01-10 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-01-10 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>4</NumeroOperacion>
+			<FechaConcertacion>2010-10-08 11:21:45.12</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>207</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2011-01-10 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-02-08 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-02-08 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-02-08 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>67</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:03.963</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1397</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-10-14 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-11-15 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-11-15 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-11-15 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>67</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:03.963</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1398</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-11-15 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-12-14 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-12-14 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-12-14 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>67</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:03.963</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1399</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-12-14 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-01-14 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-01-14 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-01-14 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>67</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:03.963</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1400</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2011-01-14 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-02-14 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-02-14 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-02-14 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>68</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:08.54</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1402</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-10-14 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-11-15 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-11-15 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-11-15 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>68</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:08.54</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1403</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-11-15 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-12-14 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-12-14 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-12-14 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>68</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:08.54</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1404</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-12-14 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-01-14 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-01-14 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-01-14 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>68</NumeroOperacion>
+			<FechaConcertacion>2010-10-14 12:40:08.54</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>1405</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2011-01-14 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-02-14 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-02-14 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-02-14 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>140</NumeroOperacion>
+			<FechaConcertacion>2010-10-18 14:56:15.273</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2165</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-10-18 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-11-18 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-11-18 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-11-18 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>140</NumeroOperacion>
+			<FechaConcertacion>2010-10-18 14:56:15.273</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2166</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-11-18 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-12-20 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-12-20 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-12-20 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>140</NumeroOperacion>
+			<FechaConcertacion>2010-10-18 14:56:15.273</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2167</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-12-20 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-01-18 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-01-18 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-01-18 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>140</NumeroOperacion>
+			<FechaConcertacion>2010-10-18 14:56:15.273</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2168</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2011-01-18 00:00:00.0</FechaInicio>
+			<fechavencimiento>2011-02-18 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2011-02-18 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2011-02-18 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+		<Cupon>
+			<NumeroOperacion>193</NumeroOperacion>
+			<FechaConcertacion>2010-10-19 16:10:08.32</FechaConcertacion>
+			<Cierre>2010-10-20 00:00:00.0</Cierre>
+			<idCupon>2907</idCupon>
+			<TipoFlujo>Variable</TipoFlujo>
+			<ReceivedOPayment>No informado</ReceivedOPayment>
+			<FechaInicio>2010-10-19 00:00:00.0</FechaInicio>
+			<fechavencimiento>2010-10-29 00:00:00.0</fechavencimiento>
+			<FechaIndiceInicio>2010-10-29 00:00:00.0</FechaIndiceInicio>
+			<FechaIndiceFin>2010-10-29 00:00:00.0</FechaIndiceFin>
+		</Cupon>
+	</Swaps>
+</response>
