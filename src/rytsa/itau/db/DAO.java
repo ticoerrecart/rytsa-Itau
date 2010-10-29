@@ -326,7 +326,8 @@ public class DAO {
 				factorAct = rs.getDouble("F_ACT");
 			} else {
 				throw new Exception(
-						"No se pudo obtener el factor de actualizaciï¿½n");
+						"No se pudo obtener el factor de actualización para la fecha "
+								+ pFecha + " y el plazo " + pPlazo);
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -351,7 +352,10 @@ public class DAO {
 			if (rs.next()) {
 				factorDesc = rs.getDouble("F_DESC");
 			} else {
-				throw new Exception("No se pudo obtener el factor de descuento");
+				throw new Exception(
+						"No se pudo obtener el factor de descuento para la fecha "
+								+ pFecha + ", plazo " + pPlazo + " y tabla "
+								+ pTabla);
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
