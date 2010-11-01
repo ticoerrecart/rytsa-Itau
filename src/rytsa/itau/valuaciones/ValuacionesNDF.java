@@ -49,7 +49,6 @@ public class ValuacionesNDF extends Valuaciones {
 
 		InformarNovedadesValuacionesXmlRequest informar = new InformarNovedadesValuacionesXmlRequest();
 		for (Mtm mtm : listaMtm) {
-			// TODO hay que armar la coleccion para el WS
 			// InformarNovedadesValuaciones.
 			RequestData rd = new RequestData();
 			rd.setCodigo("MTMAC");
@@ -59,7 +58,7 @@ public class ValuacionesNDF extends Valuaciones {
 					.getFechaProceso(), Valuaciones.DATE_MASK_NOVEDADES));
 			rd.setIdOperacion(mtm.getOperacionNDF().getIDOperacion());
 			rd.setMonedaValuacion(1);
-			// rd.setMTM(100.0);
+			rd.setMTM(mtm.getMtm());
 			informar.addRequestData(rd);
 
 		}
@@ -104,11 +103,10 @@ public class ValuacionesNDF extends Valuaciones {
 		xs.omitField(SeguridadResponse.class, "mensajes");
 		xs.alias(resourceBundle.getString("servicios.LoginSesionResponseData"),
 				LoginSesionResponseData.class);
-		xs
-				.alias(
-						resourceBundle
-								.getString("servicios.informarNovedades.InformarNovedadesValuacionesXmlRequest"),
-						InformarNovedadesValuacionesXmlRequest.class);
+		xs.alias(
+				resourceBundle
+						.getString("servicios.informarNovedades.InformarNovedadesValuacionesXmlRequest"),
+				InformarNovedadesValuacionesXmlRequest.class);
 		xs.alias(resourceBundle
 				.getString("servicios.informarNovedades.requestData"),
 				RequestData.class);
