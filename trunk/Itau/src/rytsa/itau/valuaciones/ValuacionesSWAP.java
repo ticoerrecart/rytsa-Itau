@@ -155,7 +155,8 @@ public class ValuacionesSWAP extends Valuaciones {
 				resourceBundle.getString("servicios.OperacionSWAPAValuarData"),
 				OperacionSWAPAValuarData.class);
 		xs.omitField(RecuperarOperacionesSWAPAValuarResponse.class, "count");
-
+		xs.omitField(FeriadosResponse.class, "cod-retorno");
+		xs.omitField(FeriadosResponse.class, "mensajes");
 		xs.alias(
 				resourceBundle
 						.getString("servicios.DisponibilizacionFeriadosXmlRequestData"),
@@ -211,7 +212,7 @@ public class ValuacionesSWAP extends Valuaciones {
 					.iterator();
 			while (itr.hasNext() && diasHabiles < DIAS) {
 				FechaData fechaData = itr.next();
-				if (fechaData.getHabil() == 0) {// si es habil
+				if (!fechaData.getEsFeriado()) {// si es habil
 					fr.addFechaData(fechaData);
 					diasHabiles++;
 				}

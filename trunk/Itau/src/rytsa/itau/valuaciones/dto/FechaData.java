@@ -4,7 +4,7 @@ public class FechaData {
 
 	private String Fecha;
 
-	private Integer Habil;
+	private Boolean EsFeriado;
 
 	public String getFecha() {
 		return Fecha;
@@ -14,12 +14,16 @@ public class FechaData {
 		Fecha = fecha;
 	}
 
-	public Integer getHabil() {
-		return Habil;
+	public Boolean getEsFeriado() {
+		return EsFeriado;
 	}
 
-	public void setHabil(Integer habil) {
-		Habil = habil;
+	public void setEsFeriado(Boolean esFeriado) {
+		EsFeriado = esFeriado;
+	}
+
+	public void setEsFeriado(String esFeriado) {
+		EsFeriado = Boolean.parseBoolean(esFeriado);
 	}
 
 }
