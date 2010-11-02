@@ -238,14 +238,15 @@ public class ValuacionesSWAP extends Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
-			DisponibilizacionFeriadosXmlRequestData d = new DisponibilizacionFeriadosXmlRequestData();
-			d.setFechaIni(DateUtils.dateToString(pFechaDesde,
-					Valuaciones.DATE_MASK));
-			d.setFechaFin(DateUtils.dateToString(pFechaHasta,
-					Valuaciones.DATE_MASK));
-			d.setIdCalendario("1");
-			String xml = xs.toXML(d);
-			xml = xml.replace("\n", "");
+			/*
+			 * DisponibilizacionFeriadosXmlRequestData d = new
+			 * DisponibilizacionFeriadosXmlRequestData();
+			 * d.setFechaIni(DateUtils.dateToString(pFechaDesde,
+			 * Valuaciones.DATE_MASK));
+			 * d.setFechaFin(DateUtils.dateToString(pFechaHasta,
+			 * Valuaciones.DATE_MASK)); d.setIdCalendario("1"); String xml =
+			 * xs.toXML(d);
+			 */
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client.createRequest(resourceBundle
 					.getString("servicios.Feriados.nombreServicio"));
@@ -258,9 +259,11 @@ public class ValuacionesSWAP extends Valuaciones {
 			feriadosXml.setFechaFin(pFechaHasta);
 			feriadosXml.setIdCalendario(resourceBundle
 					.getString("servicios.Feriados.idCalendarioValue"));
+
+			String xml = xs.toXML(feriadosXml);
+			xml = xml.replace("\n", "");
 			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramXmlRequest"), xs
-					.toXML(feriadosXml));
+					.getString("servicios.Feriados.paramXmlRequest"), xml);
 
 			client.execute(esbRequest, esbResponse);
 			String sRtaFeriados = removerHeaderSoap(esbResponse.getResult());
