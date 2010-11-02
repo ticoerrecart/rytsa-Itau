@@ -5,17 +5,17 @@ import java.util.List;
 
 public class FeriadosResponse {
 
-	private List<FechaData> FeriadosResult = new ArrayList<FechaData>();
+	private List<FechaData> ArrayOfDisponibilizacionFeriadosXmlResponseData = new ArrayList<FechaData>();
 
 	public void addFechaData(FechaData fechaData) {
 		this.getFeriadosResult().add(fechaData);
 	}
 
 	public List<FechaData> getFeriadosResult() {
-		return FeriadosResult;
+		return ArrayOfDisponibilizacionFeriadosXmlResponseData;
 	}
 
 	public void setFeriadosResult(List<FechaData> feriadosResult) {
-		FeriadosResult = feriadosResult;
+		ArrayOfDisponibilizacionFeriadosXmlResponseData = feriadosResult;
 	}
 }
