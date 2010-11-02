@@ -238,15 +238,6 @@ public class ValuacionesSWAP extends Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
-			/*
-			 * DisponibilizacionFeriadosXmlRequestData d = new
-			 * DisponibilizacionFeriadosXmlRequestData();
-			 * d.setFechaIni(DateUtils.dateToString(pFechaDesde,
-			 * Valuaciones.DATE_MASK));
-			 * d.setFechaFin(DateUtils.dateToString(pFechaHasta,
-			 * Valuaciones.DATE_MASK)); d.setIdCalendario("1"); String xml =
-			 * xs.toXML(d);
-			 */
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client.createRequest(resourceBundle
 					.getString("servicios.Feriados.nombreServicio"));
