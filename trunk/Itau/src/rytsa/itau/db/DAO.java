@@ -318,7 +318,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC = ? AND PLAZO = ?;");// TODO
+					.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(pFecha));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
@@ -344,8 +344,7 @@ public class DAO {
 		Double factorDesc = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla
-					+ " WHERE D_PROC = ? AND PLAZO = ?;");
+			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla + " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(pFecha));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
@@ -373,7 +372,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT PRICE FROM Calib_div_h WHERE D_PROC = ? AND C_DIV = ?;");
+					.prepareStatement("SELECT PRICE FROM Calib_div_h WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(pFechaProceso));
 			ps.setLong(2, codDiv);
 			rs = ps.executeQuery();
