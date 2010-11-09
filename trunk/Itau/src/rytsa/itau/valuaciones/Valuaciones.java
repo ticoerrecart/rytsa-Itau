@@ -3,6 +3,7 @@ package rytsa.itau.valuaciones;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -37,6 +38,8 @@ public abstract class Valuaciones {
 
 	protected static ResourceBundle resourceBundle;
 
+	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
 	static {
 		resourceBundle = ResourceBundle.getBundle("config");
 		DIAS = Integer.parseInt(resourceBundle.getString("cantRegistros"));
@@ -71,7 +74,7 @@ public abstract class Valuaciones {
 	 * @param pXml
 	 * @return
 	 */
-	public static String removerHeaderSoap(String pXml) {
+	/*public static String removerHeaderSoap(String pXml) {
 		StringBuffer xml = new StringBuffer();
 		Scanner scanner = new Scanner(pXml);
 		while (scanner.hasNextLine()) {
@@ -82,7 +85,7 @@ public abstract class Valuaciones {
 		}
 		return xml.toString();
 	}
-
+*/
 	protected static String getIdSession() {
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
