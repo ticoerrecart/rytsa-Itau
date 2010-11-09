@@ -1,0 +1,34 @@
+﻿<respuesta originId="IBA1344_1514.0" code="WS_FERIADOS_PATRON_LISTADO">
+	<cod-retorno>00</cod-retorno>
+	<mensajes />
+	<ArrayOfDisponibilizacionFeriadosXmlResponseData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/">
+		<DisponibilizacionFeriadosXmlResponseData>
+			<Fecha>10/13/2010</Fecha>
+			<EsFeriado>false</EsFeriado>
+		</DisponibilizacionFeriadosXmlResponseData>
+		<DisponibilizacionFeriadosXmlResponseData>
+			<Fecha>10/14/2010</Fecha>
+			<EsFeriado>false</EsFeriado>
+		</DisponibilizacionFeriadosXmlResponseData>
+		<DisponibilizacionFeriadosXmlResponseData>
+			<Fecha>10/15/2010</Fecha>
+			<EsFeriado>false</EsFeriado>
+		</DisponibilizacionFeriadosXmlResponseData>
+		<DisponibilizacionFeriadosXmlResponseData>
+			<Fecha>10/16/2010</Fecha>
+			<EsFeriado>true</EsFeriado>
+		</DisponibilizacionFeriadosXmlResponseData>
+		<DisponibilizacionFeriadosXmlResponseData>
+			<Fecha>10/17/2010</Fecha>
+			<EsFeriado>true</EsFeriado>
+		</DisponibilizacionFeriadosXmlResponseData>
+		<DisponibilizacionFeriadosXmlResponseData>
+			<Fecha>10/18/2010</Fecha>
+			<EsFeriado>false</EsFeriado>
+		</DisponibilizacionFeriadosXmlResponseData>
+		<DisponibilizacionFeriadosXmlResponseData>
+			<Fecha>10/19/2010</Fecha>
+			<EsFeriado>false</EsFeriado>
+		</DisponibilizacionFeriadosXmlResponseData>
+	</ArrayOfDisponibilizacionFeriadosXmlResponseData>
+</respuesta>
