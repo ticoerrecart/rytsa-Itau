@@ -8,17 +8,14 @@ public class FeriadosResponse {
 	private List<FechaData> ArrayOfDisponibilizacionFeriadosXmlResponseData = new ArrayList<FechaData>();
 
 	public void addFechaData(FechaData fechaData) {
-		this.getArrayOfDisponibilizacionFeriadosXmlResponseData().add(fechaData);
+		this.getFeriadosResult().add(fechaData);
 	}
 
-	public List<FechaData> getArrayOfDisponibilizacionFeriadosXmlResponseData() {
+	public List<FechaData> getFeriadosResult() {
 		return ArrayOfDisponibilizacionFeriadosXmlResponseData;
 	}
 
-	public void setArrayOfDisponibilizacionFeriadosXmlResponseData(
-			List<FechaData> arrayOfDisponibilizacionFeriadosXmlResponseData) {
-		ArrayOfDisponibilizacionFeriadosXmlResponseData = arrayOfDisponibilizacionFeriadosXmlResponseData;
+	public void setFeriadosResult(List<FechaData> feriadosResult) {
+		ArrayOfDisponibilizacionFeriadosXmlResponseData = feriadosResult; 
 	}
-
-
 }

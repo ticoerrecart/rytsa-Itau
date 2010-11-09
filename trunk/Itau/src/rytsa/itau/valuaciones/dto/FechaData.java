@@ -2,9 +2,9 @@ package rytsa.itau.valuaciones.dto;
 
 public class FechaData {
 
-	private String Fecha;
+	private String Fecha; 
 
-	private boolean EsFeriado;
+	private Boolean EsFeriado;
 
 	public String getFecha() {
 		return Fecha;
@@ -14,14 +14,16 @@ public class FechaData {
 		Fecha = fecha;
 	}
 
-	public boolean isEsFeriado() {
+	public Boolean getEsFeriado() {
 		return EsFeriado;
 	}
 
-	public void setEsFeriado(boolean esFeriado) {
+	public void setEsFeriado(Boolean esFeriado) {
 		EsFeriado = esFeriado;
 	}
 
-
+	public void setEsFeriado(String esFeriado) {
+		EsFeriado = Boolean.parseBoolean(esFeriado);
+	}
 
 }
