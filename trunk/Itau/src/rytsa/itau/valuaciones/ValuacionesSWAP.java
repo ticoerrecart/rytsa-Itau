@@ -12,12 +12,12 @@ import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.CuponSWAP;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.valuaciones.dto.DisponibilizacionFeriadosXmlRequestData;
 import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 import rytsa.itau.valuaciones.dto.RequestData;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
-import rytsa.itau.valuaciones.dto.swap.DisponibilizacionFeriadosXmlRequestData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
@@ -208,11 +208,11 @@ public class ValuacionesSWAP extends Valuaciones {
 		while (diasHabiles < DIAS) {
 			fechaHasta = DateUtils.addDays(fechaDesde, DIAS * 2);
 			FeriadosResponse feriadosResponse = getDias(fechaDesde, fechaHasta);
-			Iterator<FechaData> itr = feriadosResponse.getFeriadosResult()
+			Iterator<FechaData> itr = feriadosResponse.getArrayOfDisponibilizacionFeriadosXmlResponseData()
 					.iterator();
 			while (itr.hasNext() && diasHabiles < DIAS) {
 				FechaData fechaData = itr.next();
-				if (!fechaData.getEsFeriado()) {// si es habil
+				if (!fechaData.isEsFeriado()) {// si es habil
 					fr.addFechaData(fechaData);
 					diasHabiles++;
 				}
@@ -239,26 +239,24 @@ public class ValuacionesSWAP extends Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
+			DisponibilizacionFeriadosXmlRequestData d = new DisponibilizacionFeriadosXmlRequestData();
+			d.setFechaIni(DateUtils.dateToString(pFechaDesde,
+					Valuaciones.DATE_MASK_NOVEDADES));
+			d.setFechaFin(DateUtils.dateToString(pFechaHasta,
+					Valuaciones.DATE_MASK_NOVEDADES));
+			d.setIdCalendario("1");
+			String xml = xs.toXML(d);
+			xml = xml.replace("\n", "");
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client.createRequest(resourceBundle
 					.getString("servicios.Feriados.nombreServicio"));
 
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramIdSession"), idSession);
-
-			DisponibilizacionFeriadosXmlRequestData feriadosXml = new DisponibilizacionFeriadosXmlRequestData();
-			feriadosXml.setFechaIni(pFechaDesde);
-			feriadosXml.setFechaFin(pFechaHasta);
-			feriadosXml.setIdCalendario(resourceBundle
-					.getString("servicios.Feriados.idCalendarioValue"));
-
-			String xml = xs.toXML(feriadosXml);
-			xml = xml.replace("\n", "");
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramXmlRequest"), xml);
+			esbRequest.setParameter("IdSesion", idSession);
+			esbRequest.setParameter("XmlRequest",xml);
+			/*				"XmlRequest","<DisponibilizacionFeriadosXmlRequestData><IdCalendario>1</IdCalendario><FechaIni>2010-10-13</FechaIni><FechaFin>2011-01-01</FechaFin></DisponibilizacionFeriadosXmlRequestData>");*/
 
 			client.execute(esbRequest, esbResponse);
-			String sRtaFeriados = removerHeaderSoap(esbResponse.getResult());
+			String sRtaFeriados = esbResponse.getResult();
 
 			fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
 		} catch (ESBClientException e) {
@@ -293,8 +291,7 @@ public class ValuacionesSWAP extends Valuaciones {
 			 * ), pFechaProceso);
 			 */
 			client.execute(esbRequest, esbResponse);
-			String sRtaAgendaCupones = removerHeaderSoap(esbResponse
-					.getResult());
+			String sRtaAgendaCupones = esbResponse.getResult();
 
 			salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
 					.fromXML(sRtaAgendaCupones);
@@ -330,7 +327,7 @@ public class ValuacionesSWAP extends Valuaciones {
 									.getString("servicios.RecuperoOperacionesSWAPAValuar.paramFechaProceso"),
 							DateUtils.dateToString(pFechaProceso, DATE_MASK));
 			client.execute(esbRequest, esbResponse);
-			String sRtaOperaciones = removerHeaderSoap(esbResponse.getResult());
+			String sRtaOperaciones = esbResponse.getResult();
 
 			salida = (RecuperarOperacionesSWAPAValuarResponse) xs
 					.fromXML(sRtaOperaciones);
@@ -353,7 +350,7 @@ public class ValuacionesSWAP extends Valuaciones {
 
 		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
 		// Double plazo = null;
-		for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
+		for (FechaData fechaData : pDiasHabiles.getArrayOfDisponibilizacionFeriadosXmlResponseData()) {
 			try {
 
 				TasaFWD tasa = new TasaFWD();
@@ -383,7 +380,7 @@ public class ValuacionesSWAP extends Valuaciones {
 			try {
 				tasa.calcularFechaPublicacionVencimiento(tasasFwd);
 				tasa.calcularTasaFWD();
-				System.out.println(tasa.getFechaPublicacion() + "->"
+				System.out.println(Valuaciones.sdf.format(tasa.getFechaPublicacion()) + "->"
 						+ tasa.getTasaFWD());
 			} catch (ParseException e) {
 				// TODO Bloque catch generado autom�ticamente

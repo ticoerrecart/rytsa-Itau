@@ -137,7 +137,7 @@ public class ValuacionesNDF extends Valuaciones {
 									.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
 							DateUtils.dateToString(pFechaProceso, DATE_MASK));
 			client.execute(esbRequest, esbResponse);
-			String sRta = removerHeaderSoap(esbResponse.getResult());
+			String sRta = esbResponse.getResult();
 
 			salida = (RecuperoOperacionesNDFAValuarResponse) xs.fromXML(sRta);
 		} catch (ESBClientException e) {
