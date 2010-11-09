@@ -9,6 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.valuaciones.Valuaciones;
 
 public class TasaFWD {
 	private Date fechaPublicacion;
@@ -80,6 +81,9 @@ public class TasaFWD {
 		TasaFWD tasaFwd = (TasaFWD) CollectionUtils
 				.find(tasas, new BeanPropertyValueEqualsPredicate(
 						"fechaPublicacion", fecha));
+		if (tasaFwd == null) {
+			throw new Exception("No se encontró taza fwd para fecha:" +  Valuaciones.sdf.format(fecha));
+		}		
 		this.setTasaParafechaPublicacionVencimiento(tasaFwd);
 	}
 
