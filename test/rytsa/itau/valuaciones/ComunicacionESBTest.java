@@ -1,8 +1,19 @@
 package rytsa.itau.valuaciones;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import junit.framework.TestCase;
+import rytsa.itau.db.factory.DatabaseFactory;
+import rytsa.itau.utils.DateUtils;
+import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
@@ -24,8 +35,8 @@ public class ComunicacionESBTest extends TestCase {
 		try {
 			client = ESBClientFactory.createInstance(4, "esb_desa", 3424);
 			esbRequest = client.createRequest("OPERACIONES_NDF_PATRON_LISTADO"); // nombre
-																					// del
-																					// servicio
+			// del
+			// servicio
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			esbRequest.setParameter("fechaProceso", "18-10-2010");
 			client.execute(esbRequest, esbResponse);
@@ -48,11 +59,11 @@ public class ComunicacionESBTest extends TestCase {
 	}
 
 	public void testCalcularMTMSwap() throws Exception {
-		Test t = new Test(
-				"E:\\DESARROLLO\\Workspace\\Itau\\DB");
-		t.calcularMTMSwap("18/10/2010");
+		Test t = new Test("E:\\DESARROLLO\\Workspace\\Itau\\DB");
+		t.calcularMTMSwap("02/03/2010");
 
 	}
+
 	public void xtestResultadoOperacionesNDF() {
 		RecuperoOperacionesNDFAValuarResponse salida = null;
 		ESBClient client = null;
@@ -61,7 +72,7 @@ public class ComunicacionESBTest extends TestCase {
 
 		try {
 			client = ESBClientFactory.createInstance(4, "esb_desa", 3424);
-			esbRequest = client.createRequest("WS_SEGURIDAD_PATRON_LOGIN"); 
+			esbRequest = client.createRequest("WS_SEGURIDAD_PATRON_LOGIN");
 			esbRequest.setParameter("UserName", "5G6mzLf/vMA");
 			esbRequest.setParameter("Password", "iMq121MyrD5thEd4e10CNQ==");
 			esbRequest.setParameter("Ip", "1.1.1.1");
@@ -87,6 +98,79 @@ public class ComunicacionESBTest extends TestCase {
 			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		}
+	}
+
+	public void xtestFeriadosNDF() {
+		RecuperoOperacionesNDFAValuarResponse salida = null;
+		ESBClient client = null;
+		ESBRequest esbRequest = null;
+		ESBResponse esbResponse = new ESBResponse();
+
+		try {
+			client = ESBClientFactory.createInstance(4, "10.162.139.11", 2424);
+
+			String rta = readFile("E:\\DESARROLLO\\Workspace\\Itau\\test\\rytsa\\itau\\valuaciones\\Feri.xml");
+
+			XStream xs = ValuacionesSWAP.getXStreamOperacionesYFeriados();
+
+			esbRequest = client.createRequest("WS_FERIADOS_PATRON_LISTADO");
+			esbRequest.setParameter("IdSesion",
+					"5b4e4fd9-a56c-4078-8ab2-ea6832acf145");
+			/*
+			 * esbRequest .setParameter( "XmlRequest", "<DisponibilizacionFeriadosXmlRequestData><IdCalendario>1</IdCalendario><FechaIni>1990-01-01</FechaIni><FechaFin>2011-12-31</FechaFin></DisponibilizacionFeriadosXmlRequestData>");
+			 */esbRequest
+					.setParameter(
+							"XmlRequest",
+							"<DisponibilizacionFeriadosXmlRequestData><IdCalendario>1</IdCalendario><FechaIni>2010-10-13</FechaIni><FechaFin>2011-01-31</FechaFin></DisponibilizacionFeriadosXmlRequestData>");
+
+			client.execute(esbRequest, esbResponse);
+			String sRtaFeriados = esbResponse.getResult();
+
+			FeriadosResponse fr = (FeriadosResponse) xs.fromXML(rta);
+
+		} catch (ESBClientException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Bloque catch generado autom�ticamente
+			e.printStackTrace();
+		}
+	}
+
+	private String readFile(String file) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = null;
+		StringBuilder stringBuilder = new StringBuilder();
+		String ls = System.getProperty("line.separator");
+		while ((line = reader.readLine()) != null) {
+			stringBuilder.append(line);
+			stringBuilder.append(ls);
+		}
+		return stringBuilder.toString();
+	}
+
+	public void xtestObtenerFactorAct() throws SQLException, Exception {
+		ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Double factorAct = null;
+		Date date = null;
+		int plazo = 0;
+		try {
+			conn = DatabaseFactory.getConnection();
+			ps = conn.prepareStatement("SELECT DISTINCT D_PROC FROM Cupon_4 ;");// TODO
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				//factorAct = rs.getDouble("F_ACT");
+				date = rs.getDate("D_PROC");
+				//plazo = rs.getInt("PLAZO");
+				System.out.println(factorAct + " | " + date + " | " + plazo);
+			}
+
+		} finally {
+			DatabaseFactory.closeConnection(conn, ps, rs);
+		}
+
 	}
 
 }

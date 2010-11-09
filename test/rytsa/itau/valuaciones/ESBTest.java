@@ -15,8 +15,8 @@ public class ESBTest extends TestCase {
 			ESBClient client;
 			ESBRequest esbRequest;
 			ESBResponse response = new ESBResponse();
-			client = ESBClientFactory.createInstance(4, "esb_int", Integer
-					.valueOf(3424));
+			client = ESBClientFactory.createInstance(4, "10.162.139.11", Integer
+					.valueOf(2424));
 			esbRequest = client.createRequest("OPERACIONES_NDF_PATRON_LISTADO"); // nombre
 			// servicio
 			esbRequest.setParameter("fechaProceso", "18/10/2010");
