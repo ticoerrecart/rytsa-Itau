@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class ComunicacionESBTest extends TestCase {
 
-	public void xtestOperacionesNDF() {
+	public void testOperacionesNDF() {
 		RecuperoOperacionesNDFAValuarResponse salida = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
@@ -64,7 +64,7 @@ public class ComunicacionESBTest extends TestCase {
 
 	}
 
-	public void xtestResultadoOperacionesNDF() {
+	public void testResultadoOperacionesNDF() {
 		RecuperoOperacionesNDFAValuarResponse salida = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
