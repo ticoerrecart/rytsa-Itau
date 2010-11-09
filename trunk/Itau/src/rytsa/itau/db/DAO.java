@@ -326,8 +326,7 @@ public class DAO {
 				factorAct = rs.getDouble("F_ACT");
 			} else {
 				throw new Exception(
-						"No se pudo obtener el factor de actualización para la fecha "
-								+ pFecha + " y el plazo " + pPlazo);
+						"No se pudo obtener el factor de actualización para fecha: " + pFecha.toString() + " y el plazo " + pPlazo );
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -344,7 +343,7 @@ public class DAO {
 		Double factorDesc = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla + " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
+			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla + " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");					
 			ps.setDate(1, DateUtils.convertDate(pFecha));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
