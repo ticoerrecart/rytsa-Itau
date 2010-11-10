@@ -466,8 +466,6 @@ public class ValuacionesSWAP extends Valuaciones {
 					System.out.println("Calcular Tasa Forward ...");
 				}
 				tasa.calcularTasaFWD();
-				System.out.println(DateUtils.dateToString(tasa.getFechaPublicacion()) + " -> " 
-						+ tasa.getTasaFWD());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
