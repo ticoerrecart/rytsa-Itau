@@ -19,6 +19,12 @@ public abstract class DateUtils {
 		return convertedDate;
 	}
 
+	public static Date stringToDate(String pFecha,String mask) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(mask);
+		Date convertedDate = dateFormat.parse(pFecha);
+		return convertedDate;
+	}
+	
 	public static String dateToString(Date pFecha) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String convertedDate = dateFormat.format(pFecha);

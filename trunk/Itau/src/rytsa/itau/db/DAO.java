@@ -449,13 +449,11 @@ public class DAO {
 			 * ps.setDouble(4, 2.25); ps.executeUpdate();
 			 */
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (SQLException e) {
-				// TODO Bloque catch generado autom�ticamente
 				e.printStackTrace();
 			}
 		}
