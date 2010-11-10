@@ -26,9 +26,14 @@ public class ValuacionesNDF extends Valuaciones {
 
 	public static InformarNovedadesValuacionesXmlRequest calcularMTM(
 			Date pFechaProceso) throws Exception {
-
-		RecuperoOperacionesNDFAValuarResponse operacionesNDF = null;
-		operacionesNDF = operacionesNDFAValuar(pFechaProceso);
+		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
+		if (Valuaciones.LOGGEAR) {
+			System.out.println("Comienza Calculo MTM para NDF para la fecha: "
+					+ DateUtils.dateToString(pFechaProceso)
+					+ ", cantidad de operaciones: "
+					+ operacionesNDF.getRecuperoOperacionesNDFAValuarResult()
+							.size());
+		}
 
 		return calculoMTM(pFechaProceso, operacionesNDF);
 	}
@@ -37,7 +42,6 @@ public class ValuacionesNDF extends Valuaciones {
 			Date pFechaProceso,
 			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF)
 			throws Exception {
-
 		List<Mtm> listaMtm = new ArrayList<Mtm>();
 		for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 				.getRecuperoOperacionesNDFAValuarResult()) {
@@ -47,6 +51,11 @@ public class ValuacionesNDF extends Valuaciones {
 			}
 		}
 
+		if (Valuaciones.LOGGEAR) {
+			System.out
+					.println("Filtro las operaciones con mercado válido... total:  "
+							+ listaMtm.size());
+		}
 		InformarNovedadesValuacionesXmlRequest informar = new InformarNovedadesValuacionesXmlRequest();
 		for (Mtm mtm : listaMtm) {
 			// InformarNovedadesValuaciones.
@@ -59,6 +68,20 @@ public class ValuacionesNDF extends Valuaciones {
 			rd.setIdOperacion(mtm.getOperacionNDF().getIDOperacion());
 			rd.setMonedaValuacion(1);
 			rd.setMTM(mtm.getMtm());
+
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("*************************************");
+				System.out.println("Código " + rd.getCodigo());
+				System.out.println("CodUsuario " + rd.getCodUsuario());
+				System.out.println("Corrida " + rd.getCorrida());
+				System.out.println("Fecha " + rd.getFecha());
+				System.out.println("IdOperacion " + rd.getIdOperacion());
+				System.out
+						.println("MonedaValuacion " + rd.getMonedaValuacion());
+				System.out.println("MTM " + rd.getMTM());
+				System.out.println("*************************************");
+			}
+
 			informar.addRequestData(rd);
 
 		}
@@ -70,8 +93,8 @@ public class ValuacionesNDF extends Valuaciones {
 		XStream xs = ValuacionesNDF.getXStream();
 		String xml = xs.toXML(informar);
 		xml = xml.replace("\n", "");
-		String resutl = informarValuaciones(xml);
-		System.out.println(resutl);
+
+		String result = informarValuaciones(xml);
 		return informar;
 	}
 

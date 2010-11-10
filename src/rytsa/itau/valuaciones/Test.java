@@ -24,9 +24,13 @@ public class Test {
 
 	public Test(String pPath) {
 		Test.path = pPath + File.separator;
+		System.out.println("SE CREA CUPON_4...");
 		DAO.crearCupon4();
+		System.out.println("SE CREAN LAS CURVAS...");
 		DAO.crearCurvas();
+		System.out.println("SE CREA EL TIPO DE CAMBIO...");
 		DAO.crearTipoDeCambio();
+		System.out.println("SE CREAN LAS TASAS DE BADLAR...");
 		DAO.crearTasasDeBadlar();
 	}
 
@@ -45,13 +49,12 @@ public class Test {
 				.calcularMTM(DateUtils.stringToDate(pDate));// "03/06/2010"
 		return listaNDF;
 	}
-	
+
 	@WebMethod
-	public String testSuma1Dia(String pDate)
-			throws ParseException, Exception {
+	public String testSuma1Dia(String pDate) throws ParseException, Exception {
 		Date d = DateUtils.addDays(DateUtils.stringToDate(pDate), 1);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		return sdf.format(d);
 	}
-	
+
 }
