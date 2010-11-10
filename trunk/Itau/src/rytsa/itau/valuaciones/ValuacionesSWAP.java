@@ -58,12 +58,25 @@ public class ValuacionesSWAP extends Valuaciones {
 	 */
 	public static InformarNovedadesValuacionesXmlRequest calcularMTM(
 			Date pFechaProceso) throws Exception {
-		List<OperacionSWAPAValuarData> operaciones = null;
-		operaciones = operacionesSWAP(pFechaProceso);
-
+		
+		if (Valuaciones.LOGGEAR){
+			System.out.println("Comienza Calculo MTM para SWAPS para la fecha: " + DateUtils.dateToString(pFechaProceso));
+		}
+		List<OperacionSWAPAValuarData> operaciones = operacionesSWAP(pFechaProceso);
+		if (Valuaciones.LOGGEAR){
+			System.out.println("Comienza CONSTRUCCION DE TASAS FWD. Cantidad de Operaciones: " +  operaciones.size());
+		}
 		armarOperacionesSWAPParteFijaYVariable(operaciones);
-
+		if (Valuaciones.LOGGEAR){
+			System.out.println("Armado de Partes Fijas y Variables.  Partes Fijas : " + operacionesParteFija.size() + "  Partes Variables : " +  operacionesParteVariable.size());
+		}
+		
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
+		
+		
+		if (Valuaciones.LOGGEAR){
+			System.out.println("Comienza Calculo de MTM");
+		}
 		armarAgendaCuponOperaciones(agendaSWAP(), pFechaProceso);
 		return calculoMTM();
 	}
@@ -116,9 +129,10 @@ public class ValuacionesSWAP extends Valuaciones {
 			if (lista == null) {// si la lista no existe la creo
 				lista = new ArrayList<CuponSWAP>();
 			}
-
 			OperacionSWAPAValuarData parteVariable = operacionesParteVariable
 					.get(agendaCupon.getNumeroOperacion());
+			
+
 			OperacionSWAPAValuarData parteFija = operacionesParteFija
 					.get(parteVariable.getIDOperacion());
 			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, agendaCupon,
@@ -126,6 +140,14 @@ public class ValuacionesSWAP extends Valuaciones {
 
 			lista.add(cuponSWAP);
 			agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);
+			
+			
+			if (Valuaciones.LOGGEAR){
+				System.out.println("Numero de Cupon:" + agendaCupon.getNumeroOperacion());
+				
+			}
+
+			
 		}
 	}
 
@@ -223,17 +245,18 @@ public class ValuacionesSWAP extends Valuaciones {
 			}
 		}
 
+		if (Valuaciones.LOGGEAR){
+			System.out.println("Diaz Habiles Necesarios Calculados. Total: " + fr.getFeriadosResult().size());
+		}
+		
 		return fr;
 	}
 
-	private static FeriadosResponse getDias(Date pFechaDesde, Date pFechaHasta) {
+	public static FeriadosResponse getDias(Date pFechaDesde, Date pFechaHasta) {
 		XStream xs = getXStreamOperacionesYFeriados();
 
 		String idSession = Valuaciones.getIdSession();
 
-		// TODO ac� ir�a el llamado al WS hasta conseguir a partir de la
-		// fecha,
-		// los 5400 (DIAS) h�biles!!!!!!!!!!!
 		FeriadosResponse fr = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
@@ -264,7 +287,6 @@ public class ValuacionesSWAP extends Valuaciones {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		} finally {
 			if (client != null) {
@@ -301,7 +323,6 @@ public class ValuacionesSWAP extends Valuaciones {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		} finally {
 			if (client != null) {
@@ -337,7 +358,6 @@ public class ValuacionesSWAP extends Valuaciones {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		} finally {
 			if (client != null) {
@@ -356,22 +376,30 @@ public class ValuacionesSWAP extends Valuaciones {
 		for (FechaData fechaData : pDiasHabiles.getFeriadosResult()) {
 			try {
 
-				TasaFWD tasa = new TasaFWD();
+				TasaFWD tasa = new TasaFWD(pDiasHabiles.getFeriadosResult());
 				// 1) Armado de fechas PUBLIC_T + Factor de Actualizaci�n
 				// (Obtenido de Cupon_4).
+				if (Valuaciones.LOGGEAR){
+					System.out.println("Calcular Factor de Actualizacion...");
+				}
 				tasa.calcularFactorDeActualizacion(pFechaProceso,
-						DateUtils.stringToDate(fechaData.getFecha()));
+						DateUtils.stringToDate(fechaData.getFecha(),Valuaciones.DATE_MASK_RTA_FERIADOS));
 				// 2) Obtener fechas de mercado (Fecha �T�)
+				if (Valuaciones.LOGGEAR){
+					System.out.println("Calcular Fecha de Mercado...");
+				}
 				tasa.calcularFechaMercado();
+				
 				// 3) Obtener fechas de Vencimiento Plazos Fijos (Fecha �D�)
+				if (Valuaciones.LOGGEAR){
+					System.out.println("Calcular Fecha de Vencimiento Plazo Fijo...");
+				}
 				tasa.calcularFechaVencimientoPzoFijo();
 
 				tasasFwd.add(tasa);
 			} catch (ParseException e) {
-				// TODO Bloque catch generado autom�ticamente
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Bloque catch generado autom�ticamente
 				e.printStackTrace();
 			}
 		}// end for
@@ -381,19 +409,28 @@ public class ValuacionesSWAP extends Valuaciones {
 		// En el arreglo final no las agrego
 		for (TasaFWD tasa : tasasFwd.subList(0, tasasFwd.size() - 31)) {
 			try {
+				if (Valuaciones.LOGGEAR){
+					System.out.println("Calcular Fecha de Publicacion Vencimiento ...");
+				}
 				tasa.calcularFechaPublicacionVencimiento(tasasFwd);
+				
+				if (Valuaciones.LOGGEAR){
+					System.out.println("Calcular Tasa Forward ...");
+				}
 				tasa.calcularTasaFWD();
-				System.out.println(Valuaciones.sdf.format(tasa.getFechaPublicacion()) + "->"
+				System.out.println(DateUtils.dateToString(tasa.getFechaPublicacion()) + " -> " 
 						+ tasa.getTasaFWD());
 			} catch (ParseException e) {
-				// TODO Bloque catch generado autom�ticamente
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Bloque catch generado autom�ticamente
 				e.printStackTrace();
 			}
 		}
 
 		DAO.crearTasaFWD(tasasFwd, pFechaProceso);
+		if (Valuaciones.LOGGEAR){
+			System.out.println("Persistiendo Tasas Forward ...");
+		}
+		
 	}
 }
