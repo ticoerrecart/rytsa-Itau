@@ -75,9 +75,13 @@ public class ValuacionesSWAP extends Valuaciones {
 		
 		
 		if (Valuaciones.LOGGEAR){
-			System.out.println("Comienza Calculo de MTM");
+			System.out.println("Comienza Armado de Agenda para Calculo de MTM");
 		}
 		armarAgendaCuponOperaciones(agendaSWAP(), pFechaProceso);
+		
+		if (Valuaciones.LOGGEAR){
+			System.out.println("Comienza Calculo de MTM");
+		}	
 		return calculoMTM();
 	}
 
@@ -90,6 +94,12 @@ public class ValuacionesSWAP extends Valuaciones {
 
 		}
 
+		if (Valuaciones.LOGGEAR){
+			System.out.println("MTM FIJA: " + mtmFija);
+			System.out.println("MTM VARIABLE: " + mtmVariable);
+		}
+		
+		
 		InformarNovedadesValuacionesXmlRequest listaNovedadesRD = new InformarNovedadesValuacionesXmlRequest();
 		RequestData novedadF = new RequestData();
 		novedadF.setMTM(mtmFija);
@@ -113,6 +123,11 @@ public class ValuacionesSWAP extends Valuaciones {
 		XStream xs = ValuacionesSWAP.getXStreamInformarNovedades();
 		String xml = xs.toXML(listaNovedadesRD);
 		xml = xml.replace("\n", "");
+		
+		if (Valuaciones.LOGGEAR){
+			System.out.println("INFORMA VALUACIONES");
+		}
+		
 		String resutl = informarValuaciones(xml);
 		System.out.println(resutl);
 
@@ -123,30 +138,63 @@ public class ValuacionesSWAP extends Valuaciones {
 			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP,
 			Date pFechaProceso) throws Exception {
 		for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
+
+			if (Valuaciones.LOGGEAR){
+				System.out.println("Procesando Cupon Numero:" + agendaCupon.getNumeroOperacion());
+			}
 			// busco la lista
 			List<CuponSWAP> lista = agendaCuponOperaciones.get(agendaCupon
 					.getNumeroOperacion());
 			if (lista == null) {// si la lista no existe la creo
 				lista = new ArrayList<CuponSWAP>();
 			}
+			
 			OperacionSWAPAValuarData parteVariable = operacionesParteVariable
 					.get(agendaCupon.getNumeroOperacion());
-			
-
+			if (Valuaciones.LOGGEAR){
+				System.out.println("************Parte Variable***********");
+				System.out.println("Número Operación: " + parteVariable.getNumeroOperacion());
+				System.out.println("Número de Boleto: " + parteVariable.getNumeroBoleto());
+				System.out.println("ID Operación Relacionada: " + parteVariable.getIdoperacionrelacionada());
+				System.out.println("Fecha de Inicio: " + parteVariable.getFechaInicio());
+				System.out.println("Fecha Vencimiento: " + parteVariable.getFechaVencimiento());
+				System.out.println("Cantidad VN: " + parteVariable.getCantidadVN());
+				System.out.println("Metodo de Fixing: " + parteVariable.getMetodoFixing());
+				System.out.println("Base: " + parteVariable.getBase());
+				System.out.println("*************************************");
+			}
 			OperacionSWAPAValuarData parteFija = operacionesParteFija
 					.get(parteVariable.getIDOperacion());
-			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, agendaCupon,
-					parteFija, parteVariable);
-
-			lista.add(cuponSWAP);
-			agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);
-			
 			
 			if (Valuaciones.LOGGEAR){
-				System.out.println("Numero de Cupon:" + agendaCupon.getNumeroOperacion());
-				
+				System.out.println("************Parte Fija***********");
+				System.out.println("Número Operación: " + parteFija.getNumeroOperacion());
+				System.out.println("Número de Boleto: " + parteFija.getNumeroBoleto());
+				System.out.println("ID Operación Relacionada: " + parteFija.getIdoperacionrelacionada());
+				System.out.println("Fecha de Inicio: " + parteFija.getFechaInicio());
+				System.out.println("Fecha Vencimiento: " + parteFija.getFechaVencimiento());
+				System.out.println("Cantidad VN: " + parteFija.getCantidadVN());
+				System.out.println("Metodo de Fixing: " + parteFija.getMetodoFixing());
+				System.out.println("Base: " + parteFija.getBase());
+				System.out.println("*************************************");
 			}
-
+			
+			
+			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, agendaCupon,
+					parteFija, parteVariable);
+			if (Valuaciones.LOGGEAR){
+				System.out.println("************Cupon Swap***********");
+				System.out.println("Plazo Residual: " + cuponSWAP.getPlazoResidual());
+				System.out.println("TNA Index: " + cuponSWAP.getTnaIndex());
+				System.out.println("VFutCli: " + cuponSWAP.getVFutCli());
+				System.out.println("FraCli: " + cuponSWAP.getFraCli());
+				System.out.println("VFutCliRf: " + cuponSWAP.getVFutCliRf());
+				System.out.println("FraCliRf: " + cuponSWAP.getFraCliRf());
+				System.out.println("*************************************");
+			}
+			
+			lista.add(cuponSWAP);
+			agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);
 			
 		}
 	}
