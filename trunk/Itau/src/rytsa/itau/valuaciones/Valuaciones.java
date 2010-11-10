@@ -3,10 +3,8 @@ package rytsa.itau.valuaciones;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
@@ -33,22 +31,27 @@ public abstract class Valuaciones {
 	protected static String HOST;
 
 	protected static String DATE_MASK;
-	
+
 	protected static String DATE_MASK_NOVEDADES;
-	
+
 	public static String DATE_MASK_RTA_FERIADOS;
 
-	public static Boolean LOGGEAR = true;  
-	
+	public static Boolean LOGGEAR = true;
+
 	protected static ResourceBundle resourceBundle;
 
-	
 	static {
 		resourceBundle = ResourceBundle.getBundle("config");
 		DIAS = Integer.parseInt(resourceBundle.getString("cantRegistros"));
 		MODO = Integer.parseInt(resourceBundle.getString("esb.modo"));
 		PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
 		HOST = resourceBundle.getString("esb.host");
+		String log = resourceBundle.getString("logger");
+		if (log != null) {
+			Boolean booleanLog = Boolean.valueOf(log);
+			LOGGEAR = booleanLog;
+		}
+
 		DATE_MASK = "dd-MM-yyyy";
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
 		DATE_MASK_RTA_FERIADOS = "MM-dd-yyyy";
@@ -78,18 +81,13 @@ public abstract class Valuaciones {
 	 * @param pXml
 	 * @return
 	 */
-	/*public static String removerHeaderSoap(String pXml) {
-		StringBuffer xml = new StringBuffer();
-		Scanner scanner = new Scanner(pXml);
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine();
-			if (line.indexOf("soap:") < 0) {
-				xml.append(line);
-			}
-		}
-		return xml.toString();
-	}
-*/
+	/*
+	 * public static String removerHeaderSoap(String pXml) { StringBuffer xml =
+	 * new StringBuffer(); Scanner scanner = new Scanner(pXml); while
+	 * (scanner.hasNextLine()) { String line = scanner.nextLine(); if
+	 * (line.indexOf("soap:") < 0) { xml.append(line); } } return
+	 * xml.toString(); }
+	 */
 	protected static String getIdSession() {
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
@@ -97,8 +95,10 @@ public abstract class Valuaciones {
 		try {
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client.createRequest("WS_SEGURIDAD_PATRON_LOGIN");
-			esbRequest.setParameter("UserName", " 5G6mzLf/vMAVdh4+nVW6wA==" ); //VALOR PARAMETRO VALIDO
-			esbRequest.setParameter("Password", "iMq121MyrD5thEd4e10CNQ==" );
+			esbRequest.setParameter("UserName", " 5G6mzLf/vMAVdh4+nVW6wA=="); // VALOR
+																				// PARAMETRO
+																				// VALIDO
+			esbRequest.setParameter("Password", "iMq121MyrD5thEd4e10CNQ==");
 			esbRequest.setParameter("Ip", "1.1.1.1");
 			esbRequest.setParameter("IdAplicacion", "2");
 
@@ -126,7 +126,10 @@ public abstract class Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
-			
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("INFORMA VALUACIONES");
+				System.out.println(xml);
+			}
 			String idSession = getIdSession();
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client

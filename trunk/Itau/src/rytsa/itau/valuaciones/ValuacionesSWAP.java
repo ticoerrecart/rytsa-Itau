@@ -58,30 +58,37 @@ public class ValuacionesSWAP extends Valuaciones {
 	 */
 	public static InformarNovedadesValuacionesXmlRequest calcularMTM(
 			Date pFechaProceso) throws Exception {
-		
-		if (Valuaciones.LOGGEAR){
-			System.out.println("Comienza Calculo MTM para SWAPS para la fecha: " + DateUtils.dateToString(pFechaProceso));
+
+		if (Valuaciones.LOGGEAR) {
+			System.out
+					.println("Comienza Calculo MTM para SWAPS para la fecha: "
+							+ DateUtils.dateToString(pFechaProceso));
 		}
 		List<OperacionSWAPAValuarData> operaciones = operacionesSWAP(pFechaProceso);
-		if (Valuaciones.LOGGEAR){
-			System.out.println("Comienza CONSTRUCCION DE TASAS FWD. Cantidad de Operaciones: " +  operaciones.size());
+		if (Valuaciones.LOGGEAR) {
+			System.out
+					.println("Comienza CONSTRUCCION DE TASAS FWD. Cantidad de Operaciones: "
+							+ operaciones.size());
 		}
 		armarOperacionesSWAPParteFijaYVariable(operaciones);
-		if (Valuaciones.LOGGEAR){
-			System.out.println("Armado de Partes Fijas y Variables.  Partes Fijas : " + operacionesParteFija.size() + "  Partes Variables : " +  operacionesParteVariable.size());
+		if (Valuaciones.LOGGEAR) {
+			System.out
+					.println("Armado de Partes Fijas y Variables.  Partes Fijas : "
+							+ operacionesParteFija.size()
+							+ "  Partes Variables : "
+							+ operacionesParteVariable.size());
 		}
-		
+
 		construccionTasasFWD(diasHabiles(pFechaProceso), pFechaProceso);
-		
-		
-		if (Valuaciones.LOGGEAR){
+
+		if (Valuaciones.LOGGEAR) {
 			System.out.println("Comienza Armado de Agenda para Calculo de MTM");
 		}
 		armarAgendaCuponOperaciones(agendaSWAP(), pFechaProceso);
-		
-		if (Valuaciones.LOGGEAR){
+
+		if (Valuaciones.LOGGEAR) {
 			System.out.println("Comienza Calculo de MTM");
-		}	
+		}
 		return calculoMTM();
 	}
 
@@ -94,12 +101,11 @@ public class ValuacionesSWAP extends Valuaciones {
 
 		}
 
-		if (Valuaciones.LOGGEAR){
+		if (Valuaciones.LOGGEAR) {
 			System.out.println("MTM FIJA: " + mtmFija);
 			System.out.println("MTM VARIABLE: " + mtmVariable);
 		}
-		
-		
+
 		InformarNovedadesValuacionesXmlRequest listaNovedadesRD = new InformarNovedadesValuacionesXmlRequest();
 		RequestData novedadF = new RequestData();
 		novedadF.setMTM(mtmFija);
@@ -123,13 +129,8 @@ public class ValuacionesSWAP extends Valuaciones {
 		XStream xs = ValuacionesSWAP.getXStreamInformarNovedades();
 		String xml = xs.toXML(listaNovedadesRD);
 		xml = xml.replace("\n", "");
-		
-		if (Valuaciones.LOGGEAR){
-			System.out.println("INFORMA VALUACIONES");
-		}
-		
-		String resutl = informarValuaciones(xml);
-		System.out.println(resutl);
+
+		String result = informarValuaciones(xml);
 
 		return listaNovedadesRD;
 	}
@@ -139,8 +140,9 @@ public class ValuacionesSWAP extends Valuaciones {
 			Date pFechaProceso) throws Exception {
 		for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
 
-			if (Valuaciones.LOGGEAR){
-				System.out.println("Procesando Cupon Numero:" + agendaCupon.getNumeroOperacion());
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("Procesando Cupon Numero:"
+						+ agendaCupon.getNumeroOperacion());
 			}
 			// busco la lista
 			List<CuponSWAP> lista = agendaCuponOperaciones.get(agendaCupon
@@ -148,43 +150,56 @@ public class ValuacionesSWAP extends Valuaciones {
 			if (lista == null) {// si la lista no existe la creo
 				lista = new ArrayList<CuponSWAP>();
 			}
-			
+
 			OperacionSWAPAValuarData parteVariable = operacionesParteVariable
 					.get(agendaCupon.getNumeroOperacion());
-			if (Valuaciones.LOGGEAR){
+			if (Valuaciones.LOGGEAR) {
 				System.out.println("************Parte Variable***********");
-				System.out.println("Número Operación: " + parteVariable.getNumeroOperacion());
-				System.out.println("Número de Boleto: " + parteVariable.getNumeroBoleto());
-				System.out.println("ID Operación Relacionada: " + parteVariable.getIdoperacionrelacionada());
-				System.out.println("Fecha de Inicio: " + parteVariable.getFechaInicio());
-				System.out.println("Fecha Vencimiento: " + parteVariable.getFechaVencimiento());
-				System.out.println("Cantidad VN: " + parteVariable.getCantidadVN());
-				System.out.println("Metodo de Fixing: " + parteVariable.getMetodoFixing());
+				System.out.println("Número Operación: "
+						+ parteVariable.getNumeroOperacion());
+				System.out.println("Número de Boleto: "
+						+ parteVariable.getNumeroBoleto());
+				System.out.println("ID Operación Relacionada: "
+						+ parteVariable.getIdoperacionrelacionada());
+				System.out.println("Fecha de Inicio: "
+						+ parteVariable.getFechaInicio());
+				System.out.println("Fecha Vencimiento: "
+						+ parteVariable.getFechaVencimiento());
+				System.out.println("Cantidad VN: "
+						+ parteVariable.getCantidadVN());
+				System.out.println("Metodo de Fixing: "
+						+ parteVariable.getMetodoFixing());
 				System.out.println("Base: " + parteVariable.getBase());
 				System.out.println("*************************************");
 			}
 			OperacionSWAPAValuarData parteFija = operacionesParteFija
 					.get(parteVariable.getIDOperacion());
-			
-			if (Valuaciones.LOGGEAR){
+
+			if (Valuaciones.LOGGEAR) {
 				System.out.println("************Parte Fija***********");
-				System.out.println("Número Operación: " + parteFija.getNumeroOperacion());
-				System.out.println("Número de Boleto: " + parteFija.getNumeroBoleto());
-				System.out.println("ID Operación Relacionada: " + parteFija.getIdoperacionrelacionada());
-				System.out.println("Fecha de Inicio: " + parteFija.getFechaInicio());
-				System.out.println("Fecha Vencimiento: " + parteFija.getFechaVencimiento());
+				System.out.println("Número Operación: "
+						+ parteFija.getNumeroOperacion());
+				System.out.println("Número de Boleto: "
+						+ parteFija.getNumeroBoleto());
+				System.out.println("ID Operación Relacionada: "
+						+ parteFija.getIdoperacionrelacionada());
+				System.out.println("Fecha de Inicio: "
+						+ parteFija.getFechaInicio());
+				System.out.println("Fecha Vencimiento: "
+						+ parteFija.getFechaVencimiento());
 				System.out.println("Cantidad VN: " + parteFija.getCantidadVN());
-				System.out.println("Metodo de Fixing: " + parteFija.getMetodoFixing());
+				System.out.println("Metodo de Fixing: "
+						+ parteFija.getMetodoFixing());
 				System.out.println("Base: " + parteFija.getBase());
 				System.out.println("*************************************");
 			}
-			
-			
+
 			CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, agendaCupon,
 					parteFija, parteVariable);
-			if (Valuaciones.LOGGEAR){
+			if (Valuaciones.LOGGEAR) {
 				System.out.println("************Cupon Swap***********");
-				System.out.println("Plazo Residual: " + cuponSWAP.getPlazoResidual());
+				System.out.println("Plazo Residual: "
+						+ cuponSWAP.getPlazoResidual());
 				System.out.println("TNA Index: " + cuponSWAP.getTnaIndex());
 				System.out.println("VFutCli: " + cuponSWAP.getVFutCli());
 				System.out.println("FraCli: " + cuponSWAP.getFraCli());
@@ -192,10 +207,10 @@ public class ValuacionesSWAP extends Valuaciones {
 				System.out.println("FraCliRf: " + cuponSWAP.getFraCliRf());
 				System.out.println("*************************************");
 			}
-			
+
 			lista.add(cuponSWAP);
 			agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);
-			
+
 		}
 	}
 
@@ -293,10 +308,11 @@ public class ValuacionesSWAP extends Valuaciones {
 			}
 		}
 
-		if (Valuaciones.LOGGEAR){
-			System.out.println("Diaz Habiles Necesarios Calculados. Total: " + fr.getFeriadosResult().size());
+		if (Valuaciones.LOGGEAR) {
+			System.out.println("Dias Habiles Necesarios Calculados. Total: "
+					+ fr.getFeriadosResult().size());
 		}
-		
+
 		return fr;
 	}
 
@@ -363,8 +379,7 @@ public class ValuacionesSWAP extends Valuaciones {
 			 * ), pFechaProceso);
 			 */
 			client.execute(esbRequest, esbResponse);
-			String sRtaAgendaCupones = esbResponse
-					.getResult();
+			String sRtaAgendaCupones = esbResponse.getResult();
 
 			salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
 					.fromXML(sRtaAgendaCupones);
@@ -427,20 +442,22 @@ public class ValuacionesSWAP extends Valuaciones {
 				TasaFWD tasa = new TasaFWD(pDiasHabiles.getFeriadosResult());
 				// 1) Armado de fechas PUBLIC_T + Factor de Actualizaciï¿½n
 				// (Obtenido de Cupon_4).
-				if (Valuaciones.LOGGEAR){
+				if (Valuaciones.LOGGEAR) {
 					System.out.println("Calcular Factor de Actualizacion...");
 				}
-				tasa.calcularFactorDeActualizacion(pFechaProceso,
-						DateUtils.stringToDate(fechaData.getFecha(),Valuaciones.DATE_MASK_RTA_FERIADOS));
+				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils
+						.stringToDate(fechaData.getFecha(),
+								Valuaciones.DATE_MASK_RTA_FERIADOS));
 				// 2) Obtener fechas de mercado (Fecha ï¿½Tï¿½)
-				if (Valuaciones.LOGGEAR){
+				if (Valuaciones.LOGGEAR) {
 					System.out.println("Calcular Fecha de Mercado...");
 				}
 				tasa.calcularFechaMercado();
-				
+
 				// 3) Obtener fechas de Vencimiento Plazos Fijos (Fecha ï¿½Dï¿½)
-				if (Valuaciones.LOGGEAR){
-					System.out.println("Calcular Fecha de Vencimiento Plazo Fijo...");
+				if (Valuaciones.LOGGEAR) {
+					System.out
+							.println("Calcular Fecha de Vencimiento Plazo Fijo...");
 				}
 				tasa.calcularFechaVencimientoPzoFijo();
 
@@ -457,12 +474,13 @@ public class ValuacionesSWAP extends Valuaciones {
 		// En el arreglo final no las agrego
 		for (TasaFWD tasa : tasasFwd.subList(0, tasasFwd.size() - 31)) {
 			try {
-				if (Valuaciones.LOGGEAR){
-					System.out.println("Calcular Fecha de Publicacion Vencimiento ...");
+				if (Valuaciones.LOGGEAR) {
+					System.out
+							.println("Calcular Fecha de Publicacion Vencimiento ...");
 				}
 				tasa.calcularFechaPublicacionVencimiento(tasasFwd);
-				
-				if (Valuaciones.LOGGEAR){
+
+				if (Valuaciones.LOGGEAR) {
 					System.out.println("Calcular Tasa Forward ...");
 				}
 				tasa.calcularTasaFWD();
@@ -474,9 +492,9 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 
 		DAO.crearTasaFWD(tasasFwd, pFechaProceso);
-		if (Valuaciones.LOGGEAR){
+		if (Valuaciones.LOGGEAR) {
 			System.out.println("Persistiendo Tasas Forward ...");
 		}
-		
+
 	}
 }
