@@ -35,10 +35,13 @@ public abstract class Valuaciones {
 	protected static String DATE_MASK;
 	
 	protected static String DATE_MASK_NOVEDADES;
+	
+	public static String DATE_MASK_RTA_FERIADOS;
 
+	public static Boolean LOGGEAR = true;  
+	
 	protected static ResourceBundle resourceBundle;
 
-	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	static {
 		resourceBundle = ResourceBundle.getBundle("config");
@@ -48,6 +51,7 @@ public abstract class Valuaciones {
 		HOST = resourceBundle.getString("esb.host");
 		DATE_MASK = "dd-MM-yyyy";
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
+		DATE_MASK_RTA_FERIADOS = "MM-dd-yyyy";
 	}
 
 	protected static String convertStreamToString(InputStream is)
@@ -107,7 +111,6 @@ public abstract class Valuaciones {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		} finally {
 			if (client != null) {
@@ -138,7 +141,6 @@ public abstract class Valuaciones {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		} finally {
 			if (client != null) {

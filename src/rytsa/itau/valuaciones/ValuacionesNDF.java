@@ -143,7 +143,6 @@ public class ValuacionesNDF extends Valuaciones {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		} finally {
 			if (client != null) {
