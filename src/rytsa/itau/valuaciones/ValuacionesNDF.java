@@ -52,9 +52,9 @@ public class ValuacionesNDF extends Valuaciones {
 		}
 
 		if (Valuaciones.LOGGEAR) {
-			System.out
-					.println("Filtro las operaciones con mercado válido... total:  "
-							+ listaMtm.size());
+			System.out.println("Filtro las operaciones con mercado válido ("
+					+ resourceBundle.getString("mercados.validos")
+					+ ")... total:  " + listaMtm.size());
 		}
 		InformarNovedadesValuacionesXmlRequest informar = new InformarNovedadesValuacionesXmlRequest();
 		for (Mtm mtm : listaMtm) {

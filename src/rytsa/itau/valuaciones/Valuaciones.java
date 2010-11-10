@@ -52,6 +52,12 @@ public abstract class Valuaciones {
 			LOGGEAR = booleanLog;
 		}
 
+		if (Valuaciones.LOGGEAR) {
+			System.out.println("Configuración del ESB: host '" + HOST
+					+ "'| modo '" + MODO + "'|puerto '" + PUERTO + "'");
+			System.out.println("Cantidad de Registros (cantRegistros) '" + DIAS
+					+ "'");
+		}
 		DATE_MASK = "dd-MM-yyyy";
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
 		DATE_MASK_RTA_FERIADOS = "MM-dd-yyyy";
@@ -94,14 +100,24 @@ public abstract class Valuaciones {
 		ESBResponse esbResponse = new ESBResponse();
 		try {
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client.createRequest("WS_SEGURIDAD_PATRON_LOGIN");
-			esbRequest.setParameter("UserName", " 5G6mzLf/vMAVdh4+nVW6wA=="); // VALOR
-																				// PARAMETRO
-																				// VALIDO
-			esbRequest.setParameter("Password", "iMq121MyrD5thEd4e10CNQ==");
-			esbRequest.setParameter("Ip", "1.1.1.1");
+			esbRequest = client.createRequest(resourceBundle
+					.getString("servicios.Login.nombreServicio"));
+			esbRequest.setParameter("UserName",
+					resourceBundle.getString("ws.userName"));
+			esbRequest.setParameter("Password",
+					resourceBundle.getString("ws.password"));
+			esbRequest.setParameter("Ip", resourceBundle.getString("ws.ip"));
 			esbRequest.setParameter("IdAplicacion", "2");
 
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("RECUPERAR ID DE SESION...");
+				System.out.println("userName '"
+						+ resourceBundle.getString("ws.userName") + "'");
+				System.out.println("password '"
+						+ resourceBundle.getString("ws.password") + "'");
+				System.out.println("ip '" + resourceBundle.getString("ws.ip")
+						+ "'");
+			}
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
 			XStream xs = ValuacionesNDF.getXStream();
