@@ -50,6 +50,15 @@ public abstract class DateUtils {
 		return newDate;
 	}
 
+	public static Date addHours(Date pDate, int hours) {
+		Date newDate = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(pDate);
+		cal.add(Calendar.HOUR, hours);
+		newDate.setTime(cal.getTime().getTime());
+		return newDate;
+	}
+	
 	public static boolean esFinDeSemana(Date pDate) {
 		boolean esFinDeSemana = false;
 		Calendar cal = Calendar.getInstance();

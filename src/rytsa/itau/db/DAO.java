@@ -306,7 +306,7 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
-			ps.setDate(1, DateUtils.convertDate(pFecha));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha,23)));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -331,9 +331,8 @@ public class DAO {
 		Double factorDesc = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla
-					+ " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
-			ps.setDate(1, DateUtils.convertDate(pFecha));
+			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla + " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");					
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha,23)));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -361,7 +360,7 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT PRICE FROM Calib_div_h WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
-			ps.setDate(1, DateUtils.convertDate(pFechaProceso));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFechaProceso,23)));
 			ps.setLong(2, codDiv);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -460,8 +459,8 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT PRICE FROM Calib_index_h WHERE D_PROC >= ? AND D_PROC <= ?;");
-			ps.setDate(1, DateUtils.convertDate(pfInicio));
-			ps.setDate(2, DateUtils.convertDate(pfFin));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicio,-23)));
+			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin,23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				precio = rs.getDouble("PRICE");
@@ -492,8 +491,8 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ?;");
-			ps.setDate(1, DateUtils.convertDate(pfInicio));
-			ps.setDate(2, DateUtils.convertDate(pfFin));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicio,-23)));
+			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin,23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				tasaFWD = rs.getDouble("TASA_FWD");
