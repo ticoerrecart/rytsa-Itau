@@ -276,19 +276,6 @@ public class DAO {
 			}
 		}
 
-		/*
-		 * if (pNombreTabla.equalsIgnoreCase("curva_4")) { pPs =
-		 * pConn.prepareStatement(sql); pPs.setInt(1, 29); pPs.setDouble(2,
-		 * 10.32922312d); pPs.setDouble(3, 0.9901924071d); pPs.setDouble(4,
-		 * 1.0099047345d); pPs.setDate(5,
-		 * DateUtils.convertDate(DateUtils.stringToDate("03/06/2010")));
-		 * pPs.executeUpdate(); } else { if
-		 * (pNombreTabla.equalsIgnoreCase("curva_1")) { pPs =
-		 * pConn.prepareStatement(sql); pPs.setInt(1, 29); pPs.setDouble(2,
-		 * 10.32922312d); pPs.setDouble(3, 0.9899924071d); pPs.setDouble(4,
-		 * 1.0099047345d); pPs.setDate(5, DateUtils.convertDate(DateUtils
-		 * .stringToDate("03/06/2010"))); pPs.executeUpdate(); } }
-		 */
 
 	}
 

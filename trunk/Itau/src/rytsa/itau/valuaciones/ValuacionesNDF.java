@@ -42,6 +42,9 @@ public class ValuacionesNDF extends Valuaciones {
 			Date pFechaProceso,
 			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF)
 			throws Exception {
+		if (pOperacionesNDF.getRecuperoOperacionesNDFAValuarResult() == null) {
+			throw new Exception("No hay operaciones NDF a Valuar");
+		}
 		List<Mtm> listaMtm = new ArrayList<Mtm>();
 		for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 				.getRecuperoOperacionesNDFAValuarResult()) {
