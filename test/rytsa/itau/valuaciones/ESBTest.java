@@ -25,7 +25,6 @@ public class ESBTest extends TestCase {
 			String sRta = response.getResult();
 			System.out.println(sRta);
 		} catch (ESBClientException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Error -> " + e.toString());
 		}
 

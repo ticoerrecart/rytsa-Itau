@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class ComunicacionESBTest extends TestCase {
 
-	public void testOperacionesNDF() {
+	public void ctestOperacionesNDF() {
 		RecuperoOperacionesNDFAValuarResponse salida = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
@@ -46,7 +46,6 @@ public class ComunicacionESBTest extends TestCase {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		}
 	}
@@ -58,13 +57,13 @@ public class ComunicacionESBTest extends TestCase {
 
 	}
 
-	public void testCalcularMTMSwap() throws Exception {
+	public void xtestCalcularMTMSwap() throws Exception {
 		Test t = new Test("E:\\DESARROLLO\\Workspace\\Itau\\DB");
 		t.calcularMTMSwap("02/03/2010");
 
 	}
 
-	public void testResultadoOperacionesNDF() {
+	public void ctestResultadoOperacionesNDF() {
 		RecuperoOperacionesNDFAValuarResponse salida = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
@@ -95,7 +94,6 @@ public class ComunicacionESBTest extends TestCase {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		}
 	}
@@ -131,7 +129,6 @@ public class ComunicacionESBTest extends TestCase {
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Bloque catch generado autom�ticamente
 			e.printStackTrace();
 		}
 	}
@@ -148,7 +145,7 @@ public class ComunicacionESBTest extends TestCase {
 		return stringBuilder.toString();
 	}
 
-	public void xtestObtenerFactorAct() throws SQLException, Exception {
+	public void testObtenerFactorAct() throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -157,14 +154,21 @@ public class ComunicacionESBTest extends TestCase {
 		int plazo = 0;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT DISTINCT D_PROC FROM Cupon_4 ;");// TODO
-
+			ps = conn.prepareStatement("SELECT * FROM curva_6 WHERE D_PROC > ? ORDER BY D_PROC DESC;");					
+			ps.setDate(1, DateUtils.convertDate(DateUtils.stringToDate("18/10/2010")));
+			//ps.setLong(2, 2);
 			rs = ps.executeQuery();
+			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 			while (rs.next()) {
-				//factorAct = rs.getDouble("F_ACT");
+				factorAct = rs.getDouble("F_DESC");
 				date = rs.getDate("D_PROC");
-				//plazo = rs.getInt("PLAZO");
-				System.out.println(factorAct + " | " + date + " | " + plazo);
+				plazo = rs.getInt("PLAZO");
+				
+				System.out.println(factorAct + " | " + date + " | " + plazo + " | " + sdf.format(date) );
+				
+				
+				
+				
 			}
 
 		} finally {
