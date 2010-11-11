@@ -28,9 +28,9 @@ public class Test {
 		DAO.crearCupon4();
 		System.out.println("SE CREAN LAS CURVAS...");
 		DAO.crearCurvas();
-		System.out.println("SE CREA EL TIPO DE CAMBIO...");
+		System.out.println("SE CREA EL TIPO DE CAMBIO (Calib_div_h)...");
 		DAO.crearTipoDeCambio();
-		System.out.println("SE CREAN LAS TASAS DE BADLAR...");
+		System.out.println("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
 		DAO.crearTasasDeBadlar();
 	}
 
