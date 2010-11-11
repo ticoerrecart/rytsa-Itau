@@ -60,7 +60,7 @@ public abstract class Valuaciones {
 		}
 		DATE_MASK = "dd-MM-yyyy";
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
-		DATE_MASK_RTA_FERIADOS = "MM-dd-yyyy";
+		DATE_MASK_RTA_FERIADOS = "MM/dd/yyyy";
 	}
 
 	protected static String convertStreamToString(InputStream is)
