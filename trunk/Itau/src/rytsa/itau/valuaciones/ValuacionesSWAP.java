@@ -84,7 +84,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		if (Valuaciones.LOGGEAR) {
 			System.out.println("Comienza Armado de Agenda para Calculo de MTM");
 		}
-		armarAgendaCuponOperaciones(agendaSWAP(), pFechaProceso);
+		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
 
 		if (Valuaciones.LOGGEAR) {
 			System.out.println("Comienza Calculo de MTM");
@@ -285,7 +285,7 @@ public class ValuacionesSWAP extends Valuaciones {
 	 * @param pFechaProceso
 	 * @return
 	 */
-	private static FeriadosResponse diasHabiles(Date pFechaProceso) {
+	public static FeriadosResponse diasHabiles(Date pFechaProceso) {
 		FeriadosResponse fr = new FeriadosResponse();
 		int diasHabiles = 0;
 		Date fechaDesde = pFechaProceso;
@@ -345,6 +345,11 @@ public class ValuacionesSWAP extends Valuaciones {
 					.getString("servicios.Feriados.paramXmlRequest"), xml);
 
 			client.execute(esbRequest, esbResponse);
+			
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("Se ejecuto ESB de Feriados" );
+			}
+			
 			String sRtaFeriados = esbResponse.getResult();
 
 			fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
@@ -361,7 +366,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		return fr;
 	}
 
-	private static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP() {
+	private static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP(Date pFechaProceso) {
 		XStream xs = getXStreamAgenda();
 		RecuperarAgendaCuponesOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
@@ -373,12 +378,16 @@ public class ValuacionesSWAP extends Valuaciones {
 			esbRequest = client
 					.createRequest(resourceBundle
 							.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.nombreServicio"));
-			/*
-			 * esbRequest .setParameter( resourceBundle .getString(
-			 * "servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramFechaProceso"
-			 * ), pFechaProceso);
-			 */
+			
+			esbRequest .setParameter( resourceBundle .getString(
+			 "servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramFechaProceso"
+			  ), DateUtils.dateToString(pFechaProceso, DATE_MASK));
+			 
 			client.execute(esbRequest, esbResponse);
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("Se ejecuto ESB Agenda Operaciones SWAP " );
+			}
+
 			String sRtaAgendaCupones = esbResponse.getResult();
 
 			salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
@@ -396,7 +405,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		return salida.getRecuperoAgendaCuponesOperacionesSWAPAValuarResult();
 	}
 
-	private static List<OperacionSWAPAValuarData> operacionesSWAP(
+	public static List<OperacionSWAPAValuarData> operacionesSWAP(
 			Date pFechaProceso) {
 		XStream xs = getXStreamOperacionesYFeriados();
 		RecuperarOperacionesSWAPAValuarResponse salida = null;
@@ -414,6 +423,10 @@ public class ValuacionesSWAP extends Valuaciones {
 									.getString("servicios.RecuperoOperacionesSWAPAValuar.paramFechaProceso"),
 							DateUtils.dateToString(pFechaProceso, DATE_MASK));
 			client.execute(esbRequest, esbResponse);
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("Se ejecuto ESB Operaciones SWAP a Valuar" );
+			}
+			
 			String sRtaOperaciones = esbResponse.getResult();
 
 			salida = (RecuperarOperacionesSWAPAValuarResponse) xs
@@ -443,6 +456,7 @@ public class ValuacionesSWAP extends Valuaciones {
 				// 1) Armado de fechas PUBLIC_T + Factor de Actualizaci�n
 				// (Obtenido de Cupon_4).
 				if (Valuaciones.LOGGEAR) {
+					System.out.println("************************************");
 					System.out.println("Calcular Factor de Actualizacion...");
 				}
 				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils
@@ -460,7 +474,9 @@ public class ValuacionesSWAP extends Valuaciones {
 							.println("Calcular Fecha de Vencimiento Plazo Fijo...");
 				}
 				tasa.calcularFechaVencimientoPzoFijo();
-
+				if (Valuaciones.LOGGEAR) {
+					System.out.println("************************************");
+				}
 				tasasFwd.add(tasa);
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -472,9 +488,13 @@ public class ValuacionesSWAP extends Valuaciones {
 		// Tengo q crear 28 Tasas forward mas para calcular las necesarias...
 		// porque miramos tasas futuras.
 		// En el arreglo final no las agrego
+		if (Valuaciones.LOGGEAR) {
+			System.out.println("***Comienza Calculo de Valores de Taza FWD***");		
+		}
 		for (TasaFWD tasa : tasasFwd.subList(0, tasasFwd.size() - 31)) {
 			try {
 				if (Valuaciones.LOGGEAR) {
+					System.out.println("************************************");
 					System.out
 							.println("Calcular Fecha de Publicacion Vencimiento ...");
 				}
@@ -484,6 +504,9 @@ public class ValuacionesSWAP extends Valuaciones {
 					System.out.println("Calcular Tasa Forward ...");
 				}
 				tasa.calcularTasaFWD();
+				if (Valuaciones.LOGGEAR) {
+					System.out.println("************************************");
+				}	
 			} catch (ParseException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
@@ -493,7 +516,7 @@ public class ValuacionesSWAP extends Valuaciones {
 
 		DAO.crearTasaFWD(tasasFwd, pFechaProceso);
 		if (Valuaciones.LOGGEAR) {
-			System.out.println("Persistiendo Tasas Forward ...");
+			System.out.println("***Persistiendo Tasas Forward ...***");
 		}
 
 	}
