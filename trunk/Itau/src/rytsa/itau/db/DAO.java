@@ -276,7 +276,6 @@ public class DAO {
 			}
 		}
 
-
 	}
 
 	private static void crearCurva(Connection conn, PreparedStatement ps,
@@ -285,6 +284,7 @@ public class DAO {
 		try {
 			t = new Table(files.get(codigoPatron));
 			String tabla = FileUtils.getFileName(files.get(codigoPatron));
+			System.out.println("CREANDO LA TABLA " + tabla);
 			crearTabla(tabla, t, conn, ps);
 		} catch (EOFException eofE) {
 			System.err.println("No existe la tabla " + files.get(codigoPatron));
@@ -313,7 +313,8 @@ public class DAO {
 				factorAct = rs.getDouble("F_ACT");
 			} else {
 				throw new Exception(
-						"No se pudo obtener el factor de actualización para fecha: " + pFecha.toString() + " y el plazo " + pPlazo );
+						"No se pudo obtener el factor de actualización para fecha: "
+								+ pFecha.toString() + " y el plazo " + pPlazo);
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -330,7 +331,8 @@ public class DAO {
 		Double factorDesc = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla + " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");					
+			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla
+					+ " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(pFecha));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
