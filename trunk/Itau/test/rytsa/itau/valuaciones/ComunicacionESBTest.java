@@ -7,15 +7,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
+import org.apache.commons.collections.CollectionUtils;
 
 import junit.framework.TestCase;
 import rytsa.itau.db.factory.DatabaseFactory;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
+import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -34,9 +41,7 @@ public class ComunicacionESBTest extends TestCase {
 
 		try {
 			client = ESBClientFactory.createInstance(4, "esb_desa", 3424);
-			esbRequest = client.createRequest("OPERACIONES_NDF_PATRON_LISTADO"); // nombre
-			// del
-			// servicio
+			esbRequest = client.createRequest("OPERACIONES_NDF_PATRON_LISTADO"); 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			esbRequest.setParameter("fechaProceso", "18-10-2010");
 			client.execute(esbRequest, esbResponse);
@@ -57,9 +62,9 @@ public class ComunicacionESBTest extends TestCase {
 
 	}
 
-	public void xtestCalcularMTMSwap() throws Exception {
+	public void testCalcularMTMSwap() throws Exception {
 		Test t = new Test("E:\\DESARROLLO\\Workspace\\Itau\\DB");
-		t.calcularMTMSwap("02/03/2010");
+		t.calcularMTMSwap("19/10/2010");
 
 	}
 
@@ -145,7 +150,7 @@ public class ComunicacionESBTest extends TestCase {
 		return stringBuilder.toString();
 	}
 
-	public void testObtenerFactorAct() throws SQLException, Exception {
+	public void ctestObtenerFactorAct() throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -154,27 +159,80 @@ public class ComunicacionESBTest extends TestCase {
 		int plazo = 0;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT * FROM curva_6 WHERE D_PROC > ? ORDER BY D_PROC DESC;");					
-			ps.setDate(1, DateUtils.convertDate(DateUtils.stringToDate("18/10/2010")));
-			//ps.setLong(2, 2);
+			ps = conn
+					.prepareStatement("SELECT * FROM curva_6 WHERE D_PROC > ? ORDER BY D_PROC DESC;");
+			ps.setDate(1, DateUtils.convertDate(DateUtils
+					.stringToDate("18/10/2010")));
+			// ps.setLong(2, 2);
 			rs = ps.executeQuery();
 			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 			while (rs.next()) {
 				factorAct = rs.getDouble("F_DESC");
 				date = rs.getDate("D_PROC");
 				plazo = rs.getInt("PLAZO");
-				
-				System.out.println(factorAct + " | " + date + " | " + plazo + " | " + sdf.format(date) );
-				
-				
-				
-				
+
+				System.out.println(factorAct + " | " + date + " | " + plazo
+						+ " | " + sdf.format(date));
+
 			}
 
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 
+	}
+
+	public void ctestFindDiasHabiles() throws Exception {
+		FeriadosResponse fr = ValuacionesSWAP.diasHabiles(DateUtils
+				.stringToDate("09/01/2011"));
+		FechaData fechaData = null;
+		for (FechaData fd : fr.getFeriadosResult()) {
+			if (fd.getFecha().equals(
+					DateUtils.dateToString(
+							DateUtils.stringToDate("25/10/2010"),
+							Valuaciones.DATE_MASK_RTA_FERIADOS))) {
+				System.out.println("Encontro");
+				fechaData = fd;
+				return;
+			}
+			;
+		}
+
+		assertNotNull(fechaData);
+	}
+
+	public void xtestGetDiasHabiles() throws Exception {
+		FeriadosResponse fr = ValuacionesSWAP.getDias(DateUtils
+				.stringToDate("09/01/2011"), DateUtils
+				.stringToDate("10/01/2011"));
+		fr.getFeriadosResult().size();
+	}
+
+	public void ctestGetOperacionesSWAP() throws Exception {
+		List<OperacionSWAPAValuarData> a = ValuacionesSWAP
+				.operacionesSWAP(DateUtils.stringToDate("19/10/2010"));
+		System.out.println(a.size());
+	}
+
+	public void ctestResultadoAgendaOperacionesSWAP() {
+		RecuperoOperacionesNDFAValuarResponse salida = null;
+		ESBClient client = null;
+		ESBRequest esbRequest = null;
+		ESBResponse esbResponse = new ESBResponse();
+
+		try {
+			client = ESBClientFactory.createInstance(4, "10.162.139.11", 2424);
+			esbRequest = client.createRequest("CUPONES_PATRON_CONSULTA");
+			esbRequest.setParameter("fechaProceso", "19-10-2010");
+
+			client.execute(esbRequest, esbResponse);
+			String sRta = esbResponse.getResult();
+			System.out.println(sRta);	
+		} catch (ESBClientException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
