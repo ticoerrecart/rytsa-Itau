@@ -31,7 +31,7 @@ public class TasaFWD {
 	
 	private List<FechaData> diasHabiles;
 
-	public TasaFWD (List<FechaData> diasHabiles){
+	public TasaFWD(List<FechaData> diasHabiles){
 		this.diasHabiles = diasHabiles;
 	}
 
@@ -51,15 +51,21 @@ public class TasaFWD {
 	}
 
 	private boolean esDiaHabil(Date pFecha) throws ParseException {
-		FechaData fechaData = (FechaData) CollectionUtils.find(this.diasHabiles, new BeanPropertyValueEqualsPredicate(
-				"Fecha", DateUtils.dateToString(pFecha, Valuaciones.DATE_MASK_RTA_FERIADOS)));
+		FechaData fechaData = null;
+		
+		for (FechaData fd : this.diasHabiles) {
+			if (fd.getFecha().equals(DateUtils.dateToString(pFecha, Valuaciones.DATE_MASK_RTA_FERIADOS))){
+				fechaData = fd;
+				break;
+			}	
+		}
 		
 		if (fechaData == null) {
 			Date primerDia = DateUtils.stringToDate(this.diasHabiles.get(0).getFecha(),Valuaciones.DATE_MASK_RTA_FERIADOS);
 			Date ultimoDia = DateUtils.stringToDate(this.diasHabiles.get(this.diasHabiles.size() - 1).getFecha(),Valuaciones.DATE_MASK_RTA_FERIADOS);
 			if (pFecha.after(ultimoDia) || pFecha.before(primerDia)){
-				FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha, pFecha);
-				return ((FechaData)fr.getFeriadosResult().get(0)).getEsFeriado();
+				FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha, DateUtils.addDays(pFecha,1));
+				return !((FechaData)fr.getFeriadosResult().get(0)).getEsFeriado();
 				
 			} else {
 				return false;

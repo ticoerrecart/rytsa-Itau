@@ -110,13 +110,7 @@ public abstract class Valuaciones {
 			esbRequest.setParameter("IdAplicacion", "2");
 
 			if (Valuaciones.LOGGEAR) {
-				System.out.println("RECUPERAR ID DE SESION...");
-				System.out.println("userName '"
-						+ resourceBundle.getString("ws.userName") + "'");
-				System.out.println("password '"
-						+ resourceBundle.getString("ws.password") + "'");
-				System.out.println("ip '" + resourceBundle.getString("ws.ip")
-						+ "'");
+				System.out.println("Se ejecuto ESB Login " );
 			}
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
