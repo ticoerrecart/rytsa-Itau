@@ -16,6 +16,7 @@ import rytsa.itau.db.factory.DatabaseFactory;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.FileUtils;
+import rytsa.itau.valuaciones.Valuaciones;
 import br.com.softsite.sfc.tini.persistence.FieldNotFoundException;
 import br.com.softsite.sfc.tini.persistence.FieldTypeException;
 import br.com.softsite.sfc.tini.persistence.Table;
@@ -306,11 +307,16 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
-			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha,23)));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha, 23)));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				factorAct = rs.getDouble("F_ACT");
+				if (Valuaciones.LOGGEAR) {
+					System.out.println("Se obtuvo el FactorAct para la fecha "
+							+ DateUtils.dateToString(pFecha) + ", plazo "
+							+ pPlazo);
+				}
 			} else {
 				throw new Exception(
 						"No se pudo obtener el factor de actualización para fecha: "
@@ -331,12 +337,18 @@ public class DAO {
 		Double factorDesc = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla + " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");					
-			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha,23)));
+			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla
+					+ " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha, 23)));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				factorDesc = rs.getDouble("F_DESC");
+				if (Valuaciones.LOGGEAR) {
+					System.out.println("Se obtuvo el FactorDesc para la fecha "
+							+ DateUtils.dateToString(pFecha) + ", plazo "
+							+ pPlazo + ", tabla " + pTabla);
+				}
 			} else {
 				throw new Exception(
 						"No se pudo obtener el factor de descuento para la fecha "
@@ -360,11 +372,18 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT PRICE FROM Calib_div_h WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
-			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFechaProceso,23)));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(
+					pFechaProceso, 23)));
 			ps.setLong(2, codDiv);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				precio = rs.getDouble("PRICE");
+				if (Valuaciones.LOGGEAR) {
+					System.out
+							.println("Se obtuvo el TipoCambioMoneda para la fecha "
+									+ DateUtils.dateToString(pFechaProceso)
+									+ ", codDiv " + codDiv);
+				}
 			} else {
 				throw new Exception(
 						"No se pudo obtener el Tipo Cambio Moneda para el codigo "
@@ -399,43 +418,6 @@ public class DAO {
 				i++;
 			}
 
-			/*
-			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
-			 * DateUtils.convertDate(DateUtils.stringToDate("22/03/2010")));
-			 * ps.setDate(3,
-			 * DateUtils.convertDate(DateUtils.stringToDate("22/03/2010")));
-			 * ps.setDouble(4, 2.2); ps.executeUpdate();
-			 * 
-			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
-			 * DateUtils.convertDate(DateUtils.stringToDate("20/04/2010")));
-			 * ps.setDate(3,
-			 * DateUtils.convertDate(DateUtils.stringToDate("20/04/2010")));
-			 * ps.setDouble(4, 2.25); ps.executeUpdate();
-			 * 
-			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
-			 * DateUtils.convertDate(DateUtils.stringToDate("23/04/2010")));
-			 * ps.setDate(3,
-			 * DateUtils.convertDate(DateUtils.stringToDate("23/04/2010")));
-			 * ps.setDouble(4, 2.25); ps.executeUpdate();
-			 * 
-			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
-			 * DateUtils.convertDate(DateUtils.stringToDate("20/05/2010")));
-			 * ps.setDate(3,
-			 * DateUtils.convertDate(DateUtils.stringToDate("20/05/2010")));
-			 * ps.setDouble(4, 2.25); ps.executeUpdate();
-			 * 
-			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
-			 * DateUtils.convertDate(DateUtils.stringToDate("26/05/2010")));
-			 * ps.setDate(3,
-			 * DateUtils.convertDate(DateUtils.stringToDate("26/05/2010")));
-			 * ps.setDouble(4, 2.25); ps.executeUpdate();
-			 * 
-			 * ps = conn.prepareStatement(sql); ps.setInt(1, i); ps.setDate(2,
-			 * DateUtils.convertDate(DateUtils.stringToDate("20/06/2010")));
-			 * ps.setDate(3,
-			 * DateUtils.convertDate(DateUtils.stringToDate("20/06/2010")));
-			 * ps.setDouble(4, 2.25); ps.executeUpdate();
-			 */
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -459,8 +441,9 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT PRICE FROM Calib_index_h WHERE D_PROC >= ? AND D_PROC <= ?;");
-			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicio,-23)));
-			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin,23)));
+			ps.setDate(1,
+					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
+			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				precio = rs.getDouble("PRICE");
@@ -471,6 +454,13 @@ public class DAO {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 		if (total != 0) {
+			if (Valuaciones.LOGGEAR) {
+				System.out
+						.println("Promedio Tasas de Badlar entre las fechas ("
+								+ DateUtils.dateToString(pfInicio) + ","
+								+ DateUtils.dateToString(pfFin) + ") :" + suma
+								/ total);
+			}
 			return suma / total;
 		} else {
 			throw new Exception(
@@ -491,8 +481,9 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ?;");
-			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicio,-23)));
-			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin,23)));
+			ps.setDate(1,
+					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
+			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				tasaFWD = rs.getDouble("TASA_FWD");
@@ -503,6 +494,11 @@ public class DAO {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 		if (total != 0) {
+			if (Valuaciones.LOGGEAR) {
+				System.out.println("Promedio Tasas FWD entre las fechas ("
+						+ DateUtils.dateToString(pfInicio) + ","
+						+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
+			}
 			return suma / total;
 		} else {
 			throw new Exception(

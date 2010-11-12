@@ -6,6 +6,7 @@ import java.util.Date;
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.FileUtils;
+import rytsa.itau.valuaciones.Valuaciones;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 
 public class Mtm {
@@ -61,6 +62,18 @@ public class Mtm {
 		this.calcularFwd();
 
 		this.calcularMtm();
+
+		if (Valuaciones.LOGGEAR) {
+			System.out.println("Tipo Cambio Moneda: "
+					+ this.getTipoCambioMoneda());
+			System.out.println("Tipo Cambio Moneda2: "
+					+ this.getTipoCambioMoneda2());
+			System.out.println("Plazo Remanente: " + this.getPlazoRemanente());
+			System.out.println("Curva Moneda: " + this.getCurvaMoneda());
+			System.out.println("Curva Moneda2: " + this.getCurvaMoneda2());
+			System.out.println("Calculo Fwd: " + this.getFwd());
+			System.out.println("Calculo Mtm: " + this.getMtm());
+		}
 	}
 
 	public void calcularFwd() throws NumberFormatException, SQLException,
