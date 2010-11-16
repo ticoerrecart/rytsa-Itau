@@ -106,7 +106,7 @@ public class ValuacionesNDF extends Valuaciones {
 		String[] ms = mercados.split(",");
 
 		for (String mercado : ms) {
-			if (mercado.equalsIgnoreCase(pMercado)) {
+			if (mercado.trim().equalsIgnoreCase(pMercado.trim())) {
 				return true;
 			}
 		}

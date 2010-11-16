@@ -84,7 +84,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		if (Valuaciones.LOGGEAR) {
 			System.out.println("Comienza Armado de Agenda para Calculo de MTM");
 		}
-		armarAgendaCuponOperaciones(agendaSWAP(pFechaProceso), pFechaProceso);
+		armarAgendaCuponOperaciones(agendaSWAP(), pFechaProceso);
 
 		if (Valuaciones.LOGGEAR) {
 			System.out.println("Comienza Calculo de MTM");
@@ -140,6 +140,8 @@ public class ValuacionesSWAP extends Valuaciones {
 			Date pFechaProceso) throws Exception {
 		for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
 
+			if (!agendaCupon.getNumeroOperacion().equals("0")) {
+			
 			if (Valuaciones.LOGGEAR) {
 				System.out.println("Procesando Cupon Numero:"
 						+ agendaCupon.getNumeroOperacion());
@@ -173,7 +175,7 @@ public class ValuacionesSWAP extends Valuaciones {
 				System.out.println("*************************************");
 			}
 			OperacionSWAPAValuarData parteFija = operacionesParteFija
-					.get(parteVariable.getIDOperacion());
+					.get(parteVariable.getIdoperacionrelacionada());
 
 			if (Valuaciones.LOGGEAR) {
 				System.out.println("************Parte Fija***********");
@@ -210,20 +212,29 @@ public class ValuacionesSWAP extends Valuaciones {
 
 			lista.add(cuponSWAP);
 			agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);
-
+			}
+			else {
+				if (Valuaciones.LOGGEAR) {
+					System.out.println("Cupon Ignorado. Cupon Numero:"
+							+ agendaCupon.getNumeroOperacion());
+				}
+			}
 		}
 	}
 
 	private static void armarOperacionesSWAPParteFijaYVariable(
 			List<OperacionSWAPAValuarData> pOperacionesSWAP) {
 		for (OperacionSWAPAValuarData operacionSWAP : pOperacionesSWAP) {
-			if (operacionSWAP.getMetodoFixing().equalsIgnoreCase("Tasa Fija")) {
-				operacionesParteFija.put(operacionSWAP.getNumeroOperacion(),
-						operacionSWAP);
-			} else {
-				operacionesParteVariable.put(
-						operacionSWAP.getNumeroOperacion(), operacionSWAP);
-			}
+			
+			if (mercadoValido(operacionSWAP.getMercado())) {
+				if (operacionSWAP.getMetodoFixing().equalsIgnoreCase("Tasa Fija")) {
+					operacionesParteFija.put(operacionSWAP.getIDOperacion(),
+							operacionSWAP);
+				} else {
+					operacionesParteVariable.put(
+							operacionSWAP.getIDOperacion(), operacionSWAP);
+				}
+			}	
 		}
 	}
 
@@ -366,7 +377,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		return fr;
 	}
 
-	private static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP(Date pFechaProceso) {
+	public static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP() {
 		XStream xs = getXStreamAgenda();
 		RecuperarAgendaCuponesOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
@@ -379,10 +390,11 @@ public class ValuacionesSWAP extends Valuaciones {
 					.createRequest(resourceBundle
 							.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.nombreServicio"));
 			
-			esbRequest .setParameter( resourceBundle .getString(
+			/**
+			 * esbRequest .setParameter( resourceBundle .getString(
 			 "servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramFechaProceso"
 			  ), DateUtils.dateToString(pFechaProceso, DATE_MASK));
-			 
+			 */
 			client.execute(esbRequest, esbResponse);
 			if (Valuaciones.LOGGEAR) {
 				System.out.println("Se ejecuto ESB Agenda Operaciones SWAP " );
@@ -520,4 +532,17 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 
 	}
+	
+	private static boolean mercadoValido(String pMercado) {
+		String mercados = resourceBundle.getString("mercados.validos.swap");
+		String[] ms = mercados.split(",");
+
+		for (String mercado : ms) {
+			if (mercado.trim().equalsIgnoreCase(pMercado.trim())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

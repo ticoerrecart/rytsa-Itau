@@ -22,6 +22,7 @@ import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
+import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
@@ -64,7 +65,7 @@ public class ComunicacionESBTest extends TestCase {
 
 	public void testCalcularMTMSwap() throws Exception {
 		Test t = new Test("E:\\DESARROLLO\\Workspace\\Itau\\DB");
-		t.calcularMTMSwap("19/10/2010");
+		t.calcularMTMSwap("20/10/2010");
 
 	}
 
@@ -222,8 +223,8 @@ public class ComunicacionESBTest extends TestCase {
 
 		try {
 			client = ESBClientFactory.createInstance(4, "10.162.139.11", 2424);
-			esbRequest = client.createRequest("CUPONES_PATRON_CONSULTA");
-			esbRequest.setParameter("fechaProceso", "19-10-2010");
+			esbRequest = client.createRequest("CUPONES_PATRON_LISTADO");
+			//esbRequest.setParameter("fechaProceso", "19-10-2010");
 
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
@@ -235,4 +236,27 @@ public class ComunicacionESBTest extends TestCase {
 		}
 	}
 
+	public void ctestOperacionesSWAP()  throws Exception{
+		System.out.println("Operaciones");
+		List<OperacionSWAPAValuarData> operaciones = ValuacionesSWAP.operacionesSWAP(DateUtils.stringToDate("20/10/2010"));
+		for (OperacionSWAPAValuarData operacionSWAPAValuarData : operaciones) {
+			System.out.println("ID Operacion = " + operacionSWAPAValuarData.getIDOperacion());
+			System.out.println("Numero Operacion= " + operacionSWAPAValuarData.getNumeroOperacion());
+			System.out.println("Mercado= " + operacionSWAPAValuarData.getMercado());
+			System.out.println("*********************************************");
+		}
+		
+		System.out.println("Cupones");
+		List<AgendaCuponOperacioneSWAPAValuarData> cupones = ValuacionesSWAP.agendaSWAP();
+		for (AgendaCuponOperacioneSWAPAValuarData cupon : cupones) {
+			System.out.println("ID Cupon = " + cupon.getIdCupon());
+			System.out.println("Numero Operacion= " + cupon.getNumeroOperacion());
+			System.out.println("*********************************************");
+			
+		}
+		
+			
+		 
+	}
+	
 }
