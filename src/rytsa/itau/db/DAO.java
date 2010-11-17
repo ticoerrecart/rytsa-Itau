@@ -387,7 +387,7 @@ public class DAO {
 			} else {
 				throw new Exception(
 						"No se pudo obtener el Tipo Cambio Moneda para el codigo "
-								+ codDiv + " y para la fecha " + pFechaProceso);
+								+ codDiv + " y para la fecha " + DateUtils.dateToString(pFechaProceso));
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
