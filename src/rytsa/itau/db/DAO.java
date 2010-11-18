@@ -306,15 +306,17 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT F_ACT FROM Cupon_4 WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
+					.prepareStatement("SELECT F_ACT, D_PROC  FROM Cupon_4 WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha, 23)));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				factorAct = rs.getDouble("F_ACT");
+				Date d = rs.getDate("D_PROC");
+				
 				if (Valuaciones.LOGGEAR) {
 					System.out.println("Se obtuvo el FactorAct para la fecha "
-							+ DateUtils.dateToString(pFecha) + ", plazo "
+							+ DateUtils.dateToString(d) + ", plazo "
 							+ pPlazo);
 				}
 			} else {
@@ -337,16 +339,17 @@ public class DAO {
 		Double factorDesc = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn.prepareStatement("SELECT F_DESC FROM " + pTabla
+			ps = conn.prepareStatement("SELECT F_DESC, D_PROC FROM " + pTabla
 					+ " WHERE D_PROC <= ? AND PLAZO = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFecha, 23)));
 			ps.setLong(2, pPlazo);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				factorDesc = rs.getDouble("F_DESC");
+				Date d = rs.getDate("D_PROC");
 				if (Valuaciones.LOGGEAR) {
 					System.out.println("Se obtuvo el FactorDesc para la fecha "
-							+ DateUtils.dateToString(pFecha) + ", plazo "
+							+ DateUtils.dateToString(d) + ", plazo "
 							+ pPlazo + ", tabla " + pTabla);
 				}
 			} else {
@@ -371,17 +374,18 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT PRICE FROM Calib_div_h WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
+					.prepareStatement("SELECT PRICE, D_PROC FROM Calib_div_h WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(
 					pFechaProceso, 23)));
 			ps.setLong(2, codDiv);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				precio = rs.getDouble("PRICE");
+				Date d = rs.getDate("D_PROC");
 				if (Valuaciones.LOGGEAR) {
 					System.out
 							.println("Se obtuvo el TipoCambioMoneda para la fecha "
-									+ DateUtils.dateToString(pFechaProceso)
+									+ DateUtils.dateToString(d)
 									+ ", codDiv " + codDiv);
 				}
 			} else {
@@ -440,7 +444,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT PRICE FROM Calib_index_h WHERE D_PROC >= ? AND D_PROC <= ?;");
+					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE D_PROC >= ? AND D_PROC <= ?;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
