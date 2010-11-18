@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import rytsa.itau.db.Constantes;
 import rytsa.itau.utils.FileUtils;
@@ -53,7 +54,10 @@ public abstract class DatabaseFactory {
 	}
 
 	public static Connection getConnection() throws Exception {
-		String directory = System.getProperty("user.home") + Constantes.DATABASE_DIRECTORY;
+		
+		ResourceBundle resources = ResourceBundle.getBundle("config");
+		String ddbbpath = resources.getString("bbdd.path");
+		String directory =  ddbbpath  + Constantes.DATABASE_DIRECTORY;
 		String fileName = directory + Constantes.DATABASE_SQLITE_URL;
 		String url = Constantes.DATABASE_SQLITE + fileName;
 
