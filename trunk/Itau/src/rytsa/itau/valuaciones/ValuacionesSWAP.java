@@ -140,6 +140,7 @@ public class ValuacionesSWAP extends Valuaciones {
 
 				try {
 					if (Valuaciones.LOGGEAR) {
+						System.out.println("------------------------------------");
 						System.out.println("Procesando Cupon Numero:"
 								+ agendaCupon.getNumeroOperacion());
 					}
