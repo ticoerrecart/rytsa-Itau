@@ -6,6 +6,7 @@ import java.util.Date;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.valuaciones.Valuaciones;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 
@@ -55,24 +56,29 @@ public class CuponSWAP {
 			throw new Exception("FechaProceso es nula");
 		}
 		this.setPlazoResidual(DateUtils.diferenciaEntreFechas(DateUtils
-				.stringToDate(this.getAgendaCupon().getFechavencimiento()),
-				this.getFechaProceso()));
+				.stringToDate(this.getAgendaCupon().getFechavencimiento(),
+						Valuaciones.DATE_MASK_CUPON_SWAP), this
+				.getFechaProceso()));
 	}
 
 	public Date getFechaIndiceInicio() throws ParseException {
-		return DateUtils.stringToDate(agendaCupon.getFechaIndiceInicio());
+		return DateUtils.stringToDate(agendaCupon.getFechaIndiceInicio(),
+				Valuaciones.DATE_MASK_CUPON_SWAP);
 	}
 
 	public Date getFechaIndiceFin() throws ParseException {
-		return DateUtils.stringToDate(agendaCupon.getFechaIndiceFin());
+		return DateUtils.stringToDate(agendaCupon.getFechaIndiceFin(),
+				Valuaciones.DATE_MASK_CUPON_SWAP);
 	}
 
 	public Date getFechaInicio() throws ParseException {
-		return DateUtils.stringToDate(agendaCupon.getFechaInicio());
+		return DateUtils.stringToDate(agendaCupon.getFechaInicio(),
+				Valuaciones.DATE_MASK_CUPON_SWAP);
 	}
 
 	public Date getFechaVencimiento() throws ParseException {
-		return DateUtils.stringToDate(agendaCupon.getFechavencimiento());
+		return DateUtils.stringToDate(agendaCupon.getFechavencimiento(),
+				Valuaciones.DATE_MASK_CUPON_SWAP);
 	}
 
 	public void calcularTnaIndex() throws Exception {

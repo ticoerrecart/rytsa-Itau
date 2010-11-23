@@ -36,6 +36,8 @@ public abstract class Valuaciones {
 
 	public static String DATE_MASK_RTA_FERIADOS;
 
+	public static String DATE_MASK_CUPON_SWAP;
+
 	public static Boolean LOGGEAR = true;
 
 	protected static ResourceBundle resourceBundle;
@@ -60,6 +62,7 @@ public abstract class Valuaciones {
 		}
 		DATE_MASK = "dd-MM-yyyy";
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
+		DATE_MASK_CUPON_SWAP = "yyyy-MM-dd";
 		DATE_MASK_RTA_FERIADOS = "MM/dd/yyyy";
 	}
 
@@ -110,7 +113,7 @@ public abstract class Valuaciones {
 			esbRequest.setParameter("IdAplicacion", "2");
 
 			if (Valuaciones.LOGGEAR) {
-				System.out.println("Se ejecuto ESB Login " );
+				System.out.println("Se ejecuto ESB Login ");
 			}
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
