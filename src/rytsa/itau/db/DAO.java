@@ -313,11 +313,10 @@ public class DAO {
 			if (rs.next()) {
 				factorAct = rs.getDouble("F_ACT");
 				Date d = rs.getDate("D_PROC");
-				
+
 				if (Valuaciones.LOGGEAR) {
 					System.out.println("Se obtuvo el FactorAct para la fecha "
-							+ DateUtils.dateToString(d) + ", plazo "
-							+ pPlazo);
+							+ DateUtils.dateToString(d) + ", plazo " + pPlazo);
 				}
 			} else {
 				throw new Exception(
@@ -349,8 +348,8 @@ public class DAO {
 				Date d = rs.getDate("D_PROC");
 				if (Valuaciones.LOGGEAR) {
 					System.out.println("Se obtuvo el FactorDesc para la fecha "
-							+ DateUtils.dateToString(d) + ", plazo "
-							+ pPlazo + ", tabla " + pTabla);
+							+ DateUtils.dateToString(d) + ", plazo " + pPlazo
+							+ ", tabla " + pTabla);
 				}
 			} else {
 				throw new Exception(
@@ -386,12 +385,14 @@ public class DAO {
 					System.out
 							.println("Se obtuvo el TipoCambioMoneda para la fecha "
 									+ DateUtils.dateToString(d)
-									+ ", codDiv " + codDiv);
+									+ ", codDiv "
+									+ codDiv);
 				}
 			} else {
 				throw new Exception(
 						"No se pudo obtener el Tipo Cambio Moneda para el codigo "
-								+ codDiv + " y para la fecha " + DateUtils.dateToString(pFechaProceso));
+								+ codDiv + " y para la fecha "
+								+ DateUtils.dateToString(pFechaProceso));
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -408,16 +409,17 @@ public class DAO {
 			String sqlDelete = "DELETE FROM Tasa_FWD;";// http://www.sqlite.org/lang_delete.html#trucateopt
 			ps = conn.prepareStatement(sqlDelete);
 			ps.executeUpdate();
-			String sql = "INSERT INTO Tasa_FWD VALUES(?, ?, ?, ?);";
+			String sql = "INSERT INTO Tasa_FWD VALUES(?, ?, ?, ?, ?, ?);";
 			int i = 1;
 			for (TasaFWD tasa : pTasas.subList(0, pTasas.size() - 31)) {
 				ps = conn.prepareStatement(sql);
-				// System.out.println(tasa.getFechaPublicacion() + "-" +
-				// tasa.getTasaFWD());
 				ps.setInt(1, i);
 				ps.setDate(2, DateUtils.convertDate(pFechaProceso));
 				ps.setDate(3, DateUtils.convertDate(tasa.getFechaPublicacion()));
 				ps.setDouble(4, tasa.getTasaFWD());
+				ps.setString(5, DateUtils.dateToString(pFechaProceso));
+				ps.setString(6,
+						DateUtils.dateToString(tasa.getFechaPublicacion()));
 				ps.executeUpdate();
 				i++;
 			}
