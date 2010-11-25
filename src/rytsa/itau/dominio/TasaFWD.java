@@ -54,7 +54,7 @@ public class TasaFWD {
 		FechaData fechaData = null;
 		
 		for (FechaData fd : this.diasHabiles) {
-			if (fd.getFecha().equals(DateUtils.dateToString(pFecha, Valuaciones.DATE_MASK_RTA_FERIADOS))){
+			if (DateUtils.dateToString(DateUtils.stringToDate(fd.getFecha(),Valuaciones.DATE_MASK_RTA_FERIADOS),Valuaciones.DATE_MASK_RTA_FERIADOS).equals(DateUtils.dateToString(pFecha, Valuaciones.DATE_MASK_RTA_FERIADOS))){
 				fechaData = fd;
 				break;
 			}	
