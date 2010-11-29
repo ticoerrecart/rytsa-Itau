@@ -57,4 +57,19 @@ public class Test {
 		return sdf.format(d);
 	}
 
+	@WebMethod
+	public String resetBBDD() throws ParseException, Exception {
+		System.out.println("SE CREA CUPON_4...");
+		DAO.crearCupon4();
+		System.out.println("SE CREAN LAS CURVAS...");
+		DAO.crearCurvas();
+		System.out.println("SE CREA EL TIPO DE CAMBIO (Calib_div_h)...");
+		DAO.crearTipoDeCambio();
+		System.out.println("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
+		DAO.crearTasasDeBadlar();
+		
+		return "Tablas Cargadas Con exito. Ubicacion de archivos de Origen:" + Test.path;
+	}
+
+	
 }
