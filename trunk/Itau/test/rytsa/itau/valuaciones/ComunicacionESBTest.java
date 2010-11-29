@@ -7,13 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
-import org.apache.commons.collections.CollectionUtils;
 
 import junit.framework.TestCase;
 import rytsa.itau.db.factory.DatabaseFactory;
@@ -42,7 +38,7 @@ public class ComunicacionESBTest extends TestCase {
 
 		try {
 			client = ESBClientFactory.createInstance(4, "esb_desa", 3424);
-			esbRequest = client.createRequest("OPERACIONES_NDF_PATRON_LISTADO"); 
+			esbRequest = client.createRequest("OPERACIONES_NDF_PATRON_LISTADO");
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			esbRequest.setParameter("fechaProceso", "18-10-2010");
 			client.execute(esbRequest, esbResponse);
@@ -121,7 +117,9 @@ public class ComunicacionESBTest extends TestCase {
 			esbRequest.setParameter("IdSesion",
 					"5b4e4fd9-a56c-4078-8ab2-ea6832acf145");
 			/*
-			 * esbRequest .setParameter( "XmlRequest", "<DisponibilizacionFeriadosXmlRequestData><IdCalendario>1</IdCalendario><FechaIni>1990-01-01</FechaIni><FechaFin>2011-12-31</FechaFin></DisponibilizacionFeriadosXmlRequestData>");
+			 * esbRequest .setParameter( "XmlRequest",
+			 * "<DisponibilizacionFeriadosXmlRequestData><IdCalendario>1</IdCalendario><FechaIni>1990-01-01</FechaIni><FechaFin>2011-12-31</FechaFin></DisponibilizacionFeriadosXmlRequestData>"
+			 * );
 			 */esbRequest
 					.setParameter(
 							"XmlRequest",
@@ -162,8 +160,8 @@ public class ComunicacionESBTest extends TestCase {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT * FROM curva_6 WHERE D_PROC > ? ORDER BY D_PROC DESC;");
-			ps.setDate(1, DateUtils.convertDate(DateUtils
-					.stringToDate("18/10/2010")));
+			ps.setDate(1,
+					DateUtils.convertDate(DateUtils.stringToDate("18/10/2010")));
 			// ps.setLong(2, 2);
 			rs = ps.executeQuery();
 			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
@@ -184,10 +182,10 @@ public class ComunicacionESBTest extends TestCase {
 	}
 
 	public void ctestFindDiasHabiles() throws Exception {
-		FeriadosResponse fr = ValuacionesSWAP.diasHabiles(DateUtils
+		List<FeriadosResponse> fr = ValuacionesSWAP.diasHabiles(DateUtils
 				.stringToDate("09/01/2011"));
 		FechaData fechaData = null;
-		for (FechaData fd : fr.getFeriadosResult()) {
+		for (FechaData fd : fr.get(0).getFeriadosResult()) {
 			if (fd.getFecha().equals(
 					DateUtils.dateToString(
 							DateUtils.stringToDate("25/10/2010"),
@@ -196,16 +194,15 @@ public class ComunicacionESBTest extends TestCase {
 				fechaData = fd;
 				return;
 			}
-			;
 		}
 
 		assertNotNull(fechaData);
 	}
 
 	public void xtestGetDiasHabiles() throws Exception {
-		FeriadosResponse fr = ValuacionesSWAP.getDias(DateUtils
-				.stringToDate("09/01/2011"), DateUtils
-				.stringToDate("10/01/2011"));
+		FeriadosResponse fr = ValuacionesSWAP.getDias(
+				DateUtils.stringToDate("09/01/2011"),
+				DateUtils.stringToDate("10/01/2011"));
 		fr.getFeriadosResult().size();
 	}
 
@@ -224,11 +221,11 @@ public class ComunicacionESBTest extends TestCase {
 		try {
 			client = ESBClientFactory.createInstance(4, "10.162.139.11", 2424);
 			esbRequest = client.createRequest("CUPONES_PATRON_LISTADO");
-			//esbRequest.setParameter("fechaProceso", "19-10-2010");
+			// esbRequest.setParameter("fechaProceso", "19-10-2010");
 
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
-			System.out.println(sRta);	
+			System.out.println(sRta);
 		} catch (ESBClientException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -236,27 +233,31 @@ public class ComunicacionESBTest extends TestCase {
 		}
 	}
 
-	public void ctestOperacionesSWAP()  throws Exception{
+	public void ctestOperacionesSWAP() throws Exception {
 		System.out.println("Operaciones");
-		List<OperacionSWAPAValuarData> operaciones = ValuacionesSWAP.operacionesSWAP(DateUtils.stringToDate("20/10/2010"));
+		List<OperacionSWAPAValuarData> operaciones = ValuacionesSWAP
+				.operacionesSWAP(DateUtils.stringToDate("20/10/2010"));
 		for (OperacionSWAPAValuarData operacionSWAPAValuarData : operaciones) {
-			System.out.println("ID Operacion = " + operacionSWAPAValuarData.getIDOperacion());
-			System.out.println("Numero Operacion= " + operacionSWAPAValuarData.getNumeroOperacion());
-			System.out.println("Mercado= " + operacionSWAPAValuarData.getMercado());
+			System.out.println("ID Operacion = "
+					+ operacionSWAPAValuarData.getIDOperacion());
+			System.out.println("Numero Operacion= "
+					+ operacionSWAPAValuarData.getNumeroOperacion());
+			System.out.println("Mercado= "
+					+ operacionSWAPAValuarData.getMercado());
 			System.out.println("*********************************************");
 		}
-		
+
 		System.out.println("Cupones");
-		List<AgendaCuponOperacioneSWAPAValuarData> cupones = ValuacionesSWAP.agendaSWAP();
+		List<AgendaCuponOperacioneSWAPAValuarData> cupones = ValuacionesSWAP
+				.agendaSWAP();
 		for (AgendaCuponOperacioneSWAPAValuarData cupon : cupones) {
 			System.out.println("ID Cupon = " + cupon.getIdCupon());
-			System.out.println("Numero Operacion= " + cupon.getNumeroOperacion());
+			System.out.println("Numero Operacion= "
+					+ cupon.getNumeroOperacion());
 			System.out.println("*********************************************");
-			
+
 		}
-		
-			
-		 
+
 	}
-	
+
 }
