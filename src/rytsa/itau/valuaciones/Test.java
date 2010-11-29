@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -37,16 +38,16 @@ public class Test {
 	@WebMethod
 	public InformarNovedadesValuacionesXmlRequest calcularMTMSwap(String pDate)
 			throws ParseException, Exception {
-		InformarNovedadesValuacionesXmlRequest listaSWAP = ValuacionesSWAP
-				.calcularMTM(DateUtils.stringToDate(pDate));// "02/03/2010"
+		InformarNovedadesValuacionesXmlRequest listaSWAP = ValuacionesSWAP.calcularMTM(DateUtils
+				.stringToDate(pDate));// "02/03/2010"
 		return listaSWAP;
 	}
 
 	@WebMethod
 	public InformarNovedadesValuacionesXmlRequest calcularMTMNdf(String pDate)
 			throws ParseException, Exception {
-		InformarNovedadesValuacionesXmlRequest listaNDF = ValuacionesNDF
-				.calcularMTM(DateUtils.stringToDate(pDate));// "03/06/2010"
+		InformarNovedadesValuacionesXmlRequest listaNDF = ValuacionesNDF.calcularMTM(DateUtils
+				.stringToDate(pDate));// "03/06/2010"
 		return listaNDF;
 	}
 
@@ -67,9 +68,17 @@ public class Test {
 		DAO.crearTipoDeCambio();
 		System.out.println("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
 		DAO.crearTasasDeBadlar();
-		
-		return "Tablas Cargadas Con exito. Ubicacion de archivos de Origen:" + Test.path;
+		ResourceBundle rb = ResourceBundle.getBundle("config");
+		StringBuffer origenes = new StringBuffer();
+		origenes.append("Cupon 4: " + rb.getString("cupon_4") + ",");
+		String linea = rb.getString("codMonedas");
+		for (String moneda : linea.split(",")) {
+			origenes.append(moneda + ":" + rb.getString(moneda.trim()).split(",")[1] + ",");
+		}
+		origenes.append("Calib_div_h: " + rb.getString("calib_div_h") + ",");
+		origenes.append("Calib_index_h: " + rb.getString("calib_index_h") + ",");
+		return "Tablas Cargadas Con exito. Ubicacion de la BBDD:" + rb.getString("bbdd.path")
+				+ ". Ubicacion de archivos de Origen:" + origenes.toString();
 	}
 
-	
 }
