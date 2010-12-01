@@ -41,11 +41,15 @@ public class CuponSWAP {
 
 		this.setAgendaCupon(pAgendaCupon);
 		this.calcularPlazoResidual();
-		this.calcularTnaIndex();
-		this.calcularVFutCli();
-		this.calcularFraCli();
-		this.calcularVFutCliRf();
-		this.calcularFraCliRf();
+		if (operacionParteFija != null) {
+			this.calcularVFutCli();
+			this.calcularFraCli();
+		} else {
+			this.calcularTnaIndex();
+			this.calcularVFutCliRf();
+			this.calcularFraCliRf();
+		}
+
 	}
 
 	public void calcularPlazoResidual() throws Exception {
@@ -101,12 +105,10 @@ public class CuponSWAP {
 			} else {
 				// algunas tasas son anteriores (Badlar) y otras son posteriores
 				// (FWD)
-				Double promedio = DAO.obtenerPromedioTasasDeBadlar(
-						this.getFechaIndiceInicio(), this.getFechaProceso());
-				promedio = promedio
-						+ DAO.obtenerPromedioTasasFWD(
-								DateUtils.addDays(this.getFechaProceso(), 1),
-								this.getFechaIndiceFin());
+				Double promedio = DAO.obtenerPromedioBadlarYTasasFWD(
+						this.getFechaIndiceInicio(), this.getFechaProceso(),
+						DateUtils.addDays(this.getFechaProceso(), 1),
+						this.getFechaIndiceFin());
 				this.setTnaIndex(promedio);
 			}
 		}
@@ -144,7 +146,8 @@ public class CuponSWAP {
 		this.setVFutCli(this.getCantidadVNParteFija()
 				* this.getTasaFijaParteFija()
 				* (DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(),
-						this.getFechaInicio())) / this.getBaseParteFija() * 100);
+						this.getFechaInicio()))
+				/ (this.getBaseParteFija() * 100));
 	}
 
 	public void calcularFraCli() throws SQLException, Exception {
@@ -204,8 +207,8 @@ public class CuponSWAP {
 		this.setVFutCliRf(this.getCantidadVNParteVariable()
 				* this.getTnaIndex()
 				* DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(),
-						this.getFechaInicio()) / this.getBaseParteVariable()
-				* 100);
+						this.getFechaInicio())
+				/ (this.getBaseParteVariable() * 100));
 	}
 
 	public AgendaCuponOperacioneSWAPAValuarData getAgendaCupon() {
