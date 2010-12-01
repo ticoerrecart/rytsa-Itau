@@ -475,6 +475,72 @@ public class DAO {
 		}
 	}
 
+	public static Double obtenerPromedioBadlarYTasasFWD(Date pfInicioB,
+			Date pfFinB, Date pfInicioTF, Date pfFinTF) throws Exception {
+		Double sumaTF = new Double(0);
+		Double sumaB = new Double(0);
+		ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		Double tasaFWD = null;
+		Double precio = null;
+		Integer totalTF = 0;
+		Integer totalB = 0;
+		try {
+			conn = DatabaseFactory.getConnection();
+			ps = conn
+					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ?;");
+			ps.setDate(1,
+					DateUtils.convertDate(DateUtils.addHours(pfInicioTF, -23)));
+			ps.setDate(2,
+					DateUtils.convertDate(DateUtils.addHours(pfFinTF, 23)));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				tasaFWD = rs.getDouble("TASA_FWD");
+				sumaTF = sumaTF + tasaFWD;
+				totalTF++;
+			}
+
+			ps = conn
+					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
+			ps.setDate(1,
+					DateUtils.convertDate(DateUtils.addHours(pfInicioB, -23)));
+			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFinB, 23)));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				precio = rs.getDouble("PRICE");
+				sumaB = sumaB + precio;
+				totalB++;
+			}
+
+		} finally {
+			DatabaseFactory.closeConnection(conn, ps, rs);
+		}
+		if (totalB != 0 && totalTF != 0) {
+			if (Valuaciones.LOGGEAR) {
+				System.out
+						.println("Promedio Badlar y Tasas FWD entre las fechas ("
+								+ DateUtils.dateToString(pfInicioB)
+								+ ","
+								+ DateUtils.dateToString(pfFinB)
+								+ ","
+								+ DateUtils.dateToString(pfInicioTF)
+								+ ","
+								+ DateUtils.dateToString(pfFinTF)
+								+ ") :"
+								+ (sumaB + sumaTF) / (totalB + totalTF));
+			}
+			return (sumaB + sumaTF) / (totalB + totalTF);
+		} else {
+			throw new Exception(
+					"No se pudo obtener el Promedio de Tasas de Badlar Y FWD entre las fecha "
+							+ DateUtils.dateToString(pfInicioB) + ","
+							+ DateUtils.dateToString(pfFinB) + ","
+							+ DateUtils.dateToString(pfInicioTF) + ","
+							+ DateUtils.dateToString(pfFinTF));
+		}
+	}
+
 	public static Double obtenerPromedioTasasFWD(Date pfInicio, Date pfFin)
 			throws Exception {
 		Double suma = new Double(0);
