@@ -12,6 +12,7 @@ import javax.jws.soap.SOAPBinding;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 
 @WebService
@@ -19,35 +20,66 @@ import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 public class Test {
 
 	public static String path;
+	private static ResourceBundle resourceBundle = null;
 
 	public Test() {
 	}
 
+	public static void main(String[] args) {
+		try {
+			if (args[0] != null && args[1] != null && !"".equals(args[0])
+					&& !"".equals(args[1])) {
+				String root = System.getProperty("user.dir");
+				String filepath = "/DB"; // in case of Windows: "\\path
+											// \\to\\yourfile.txt
+				String abspath = root + filepath;
+				Test test = new Test(abspath);
+				if ("SWAP".equalsIgnoreCase(args[0])) {
+					test.calcularMTMSwap(args[1]);
+				} else {
+					if ("NDF".equalsIgnoreCase(args[0])) {
+						test.calcularMTMNdf(args[1]);
+					}
+				}
+			} else {
+				MyLogger.logError("Error en los parámetros de entrada.  Arg0: '"
+						+ args[0] + "', Arg1: '" + args[1] + "'");
+			}
+
+		} catch (ParseException e) {
+			MyLogger.logError(e.getMessage());
+		} catch (Exception e) {
+			MyLogger.logError(e.getMessage());
+		}
+	}
+
 	public Test(String pPath) {
 		Test.path = pPath + File.separator;
-		System.out.println("SE CREA CUPON_4...");
+		MyLogger.log("SE EMPIEZAN A CREAR LAS TABLAS...");
+		MyLogger.log("SE CREA CUPON_4...");
 		DAO.crearCupon4();
-		System.out.println("SE CREAN LAS CURVAS...");
+		MyLogger.log("SE CREAN LAS CURVAS...");
 		DAO.crearCurvas();
-		System.out.println("SE CREA EL TIPO DE CAMBIO (Calib_div_h)...");
+		MyLogger.log("SE CREA EL TIPO DE CAMBIO (Calib_div_h)...");
 		DAO.crearTipoDeCambio();
-		System.out.println("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
+		MyLogger.log("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
 		DAO.crearTasasDeBadlar();
+		MyLogger.log("SE TERMINAN DE CREAR LAS TABLAS...");
 	}
 
 	@WebMethod
 	public InformarNovedadesValuacionesXmlRequest calcularMTMSwap(String pDate)
 			throws ParseException, Exception {
-		InformarNovedadesValuacionesXmlRequest listaSWAP = ValuacionesSWAP.calcularMTM(DateUtils
-				.stringToDate(pDate));// "02/03/2010"
+		InformarNovedadesValuacionesXmlRequest listaSWAP = ValuacionesSWAP
+				.calcularMTM(DateUtils.stringToDate(pDate));// "02/03/2010"
 		return listaSWAP;
 	}
 
 	@WebMethod
 	public InformarNovedadesValuacionesXmlRequest calcularMTMNdf(String pDate)
 			throws ParseException, Exception {
-		InformarNovedadesValuacionesXmlRequest listaNDF = ValuacionesNDF.calcularMTM(DateUtils
-				.stringToDate(pDate));// "03/06/2010"
+		InformarNovedadesValuacionesXmlRequest listaNDF = ValuacionesNDF
+				.calcularMTM(DateUtils.stringToDate(pDate));// "03/06/2010"
 		return listaNDF;
 	}
 
@@ -60,25 +92,37 @@ public class Test {
 
 	@WebMethod
 	public String resetBBDD() throws ParseException, Exception {
-		System.out.println("SE CREA CUPON_4...");
-		DAO.crearCupon4();
-		System.out.println("SE CREAN LAS CURVAS...");
-		DAO.crearCurvas();
-		System.out.println("SE CREA EL TIPO DE CAMBIO (Calib_div_h)...");
-		DAO.crearTipoDeCambio();
-		System.out.println("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
-		DAO.crearTasasDeBadlar();
-		ResourceBundle rb = ResourceBundle.getBundle("config");
-		StringBuffer origenes = new StringBuffer();
-		origenes.append("Cupon 4: " + rb.getString("cupon_4") + ",");
-		String linea = rb.getString("codMonedas");
-		for (String moneda : linea.split(",")) {
-			origenes.append(moneda + ":" + rb.getString(moneda.trim()).split(",")[1] + ",");
+		if (resourceBundle == null) {
+			resourceBundle = ResourceBundle.getBundle("config");
 		}
-		origenes.append("Calib_div_h: " + rb.getString("calib_div_h") + ",");
-		origenes.append("Calib_index_h: " + rb.getString("calib_index_h") + ",");
-		return "Tablas Cargadas Con exito. Ubicacion de la BBDD:" + rb.getString("bbdd.path")
+		MyLogger.log("SE CREA CUPON_4...");
+		DAO.crearCupon4();
+
+		MyLogger.log("SE CREAN LAS CURVAS...");
+		DAO.crearCurvas();
+		MyLogger.log("SE CREA EL TIPO DE CAMBIO (Calib_div_h)...");
+		DAO.crearTipoDeCambio();
+		MyLogger.log("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
+		DAO.crearTasasDeBadlar();
+
+		StringBuffer origenes = new StringBuffer();
+		origenes.append("Cupon 4: " + resourceBundle.getString("cupon_4") + ",");
+		String linea = resourceBundle.getString("codMonedas");
+		for (String moneda : linea.split(",")) {
+			origenes.append(moneda + ":"
+					+ resourceBundle.getString(moneda.trim()).split(",")[1]
+					+ ",");
+		}
+		origenes.append("Calib_div_h: "
+				+ resourceBundle.getString("calib_div_h") + ",");
+		origenes.append("Calib_index_h: "
+				+ resourceBundle.getString("calib_index_h") + ",");
+
+		MyLogger.log("Tablas Cargadas Con exito. Ubicacion de la BBDD:"
+				+ resourceBundle.getString("bbdd.path")
+				+ ". Ubicacion de archivos de Origen:" + origenes.toString());
+		return "Tablas Cargadas Con exito. Ubicacion de la BBDD:"
+				+ resourceBundle.getString("bbdd.path")
 				+ ". Ubicacion de archivos de Origen:" + origenes.toString();
 	}
-
 }

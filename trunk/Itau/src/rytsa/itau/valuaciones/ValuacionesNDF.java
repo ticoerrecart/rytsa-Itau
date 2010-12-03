@@ -6,6 +6,7 @@ import java.util.List;
 
 import rytsa.itau.dominio.Mtm;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 import rytsa.itau.valuaciones.dto.LoginSesionResponseData;
 import rytsa.itau.valuaciones.dto.RequestData;
@@ -27,14 +28,13 @@ public class ValuacionesNDF extends Valuaciones {
 	public static InformarNovedadesValuacionesXmlRequest calcularMTM(
 			Date pFechaProceso) throws Exception {
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
-		if (Valuaciones.LOGGEAR) {
-			System.out.println("Comienza Calculo MTM para NDF para la fecha: "
+		if (operacionesNDF != null) {
+			MyLogger.log("Comienza Calculo MTM para NDF para la fecha: "
 					+ DateUtils.dateToString(pFechaProceso)
 					+ ", cantidad de operaciones: "
 					+ operacionesNDF.getRecuperoOperacionesNDFAValuarResult()
 							.size());
 		}
-
 		return calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
@@ -42,23 +42,25 @@ public class ValuacionesNDF extends Valuaciones {
 			Date pFechaProceso,
 			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF)
 			throws Exception {
-		if (pOperacionesNDF.getRecuperoOperacionesNDFAValuarResult() == null) {
-			throw new Exception("No hay operaciones NDF a Valuar");
+		if (pOperacionesNDF == null
+				|| pOperacionesNDF.getRecuperoOperacionesNDFAValuarResult() == null) {
+			MyLogger.logError("No hay operaciones NDF a Valuar");
+			// throw new Exception("No hay operaciones NDF a Valuar");
 		}
 		List<Mtm> listaMtm = new ArrayList<Mtm>();
-		for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
-				.getRecuperoOperacionesNDFAValuarResult()) {
-			if (mercadoValido(operacionNDF.getMercado())) {
-				Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
-				listaMtm.add(mtm);
+		if (pOperacionesNDF != null) {
+			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
+					.getRecuperoOperacionesNDFAValuarResult()) {
+				if (mercadoValido(operacionNDF.getMercado())) {
+					Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
+					listaMtm.add(mtm);
+				}
 			}
 		}
 
-		if (Valuaciones.LOGGEAR) {
-			System.out.println("Filtro las operaciones con mercado válido ("
-					+ resourceBundle.getString("mercados.validos")
-					+ ")... total:  " + listaMtm.size());
-		}
+		MyLogger.log("Filtro las operaciones con mercado válido ("
+				+ resourceBundle.getString("mercados.validos")
+				+ ")... total:  " + listaMtm.size());
 		InformarNovedadesValuacionesXmlRequest informar = new InformarNovedadesValuacionesXmlRequest();
 		for (Mtm mtm : listaMtm) {
 			// InformarNovedadesValuaciones.
@@ -72,27 +74,25 @@ public class ValuacionesNDF extends Valuaciones {
 			rd.setMonedaValuacion(1);
 			rd.setMTM(mtm.getMtm());
 
-			if (Valuaciones.LOGGEAR) {
-				System.out.println("*************************************");
-				System.out.println("Código " + rd.getCodigo());
-				System.out.println("CodUsuario " + rd.getCodUsuario());
-				System.out.println("Corrida " + rd.getCorrida());
-				System.out.println("Fecha " + rd.getFecha());
-				System.out.println("IdOperacion " + rd.getIdOperacion());
-				System.out
-						.println("MonedaValuacion " + rd.getMonedaValuacion());
-				System.out.println("MTM " + rd.getMTM());
-				System.out.println("*************************************");
-			}
+			MyLogger.log("*************************************");
+			MyLogger.log("Código " + rd.getCodigo());
+			MyLogger.log("CodUsuario " + rd.getCodUsuario());
+			MyLogger.log("Corrida " + rd.getCorrida());
+			MyLogger.log("Fecha " + rd.getFecha());
+			MyLogger.log("IdOperacion " + rd.getIdOperacion());
+			MyLogger.log("MonedaValuacion " + rd.getMonedaValuacion());
+			MyLogger.log("MTM " + rd.getMTM());
+			MyLogger.log("*************************************");
 
 			informar.addRequestData(rd);
 
 		}
 		informar.setCodFormula("MTMAC");
-		informar.setFechaProceso(DateUtils.dateToString(listaMtm.get(0)
-				.getOperacionNDF().getFechaProceso(),
-				Valuaciones.DATE_MASK_NOVEDADES));
-
+		if (listaMtm != null && listaMtm.size() > 0) {
+			informar.setFechaProceso(DateUtils.dateToString(listaMtm.get(0)
+					.getOperacionNDF().getFechaProceso(),
+					Valuaciones.DATE_MASK_NOVEDADES));
+		}
 		XStream xs = ValuacionesNDF.getXStream();
 		String xml = xs.toXML(informar);
 		xml = xml.replace("\n", "");
@@ -167,9 +167,9 @@ public class ValuacionesNDF extends Valuaciones {
 
 			salida = (RecuperoOperacionesNDFAValuarResponse) xs.fromXML(sRta);
 		} catch (ESBClientException e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			if (client != null) {
 				client.close();
@@ -178,5 +178,4 @@ public class ValuacionesNDF extends Valuaciones {
 
 		return salida;
 	}
-
 }
