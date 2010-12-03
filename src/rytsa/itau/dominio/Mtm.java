@@ -6,7 +6,7 @@ import java.util.Date;
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.FileUtils;
-import rytsa.itau.valuaciones.Valuaciones;
+import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 
 public class Mtm {
@@ -38,9 +38,11 @@ public class Mtm {
 				DAO.monedas.get(pOperacionNDF.getMonedaLiquidacion())));
 
 		if (this.getTipoCambioMoneda() == null) {
+			MyLogger.logError("tipoCambioMoneda es nulo");
 			throw new Exception("tipoCambioMoneda es nulo");
 		}
 		if (this.getTipoCambioMoneda2() == null) {
+			MyLogger.logError("tipoCambioMoneda2 es nulo");
 			throw new Exception("tipoCambioMoneda2 es nulo");
 		}
 
@@ -48,6 +50,7 @@ public class Mtm {
 				pOperacionNDF.getFechaVencimiento(), pFechaProceso));
 
 		if (this.getPlazoRemanente() == null) {
+			MyLogger.logError("plazoRemanente es nulo");
 			throw new Exception("plazoRemanente es nulo");
 		}
 
@@ -63,22 +66,18 @@ public class Mtm {
 
 		this.calcularMtm();
 
-		if (Valuaciones.LOGGEAR) {
-			System.out.println("Tipo Cambio Moneda: "
-					+ this.getTipoCambioMoneda());
-			System.out.println("Tipo Cambio Moneda2: "
-					+ this.getTipoCambioMoneda2());
-			System.out.println("Plazo Remanente: " + this.getPlazoRemanente());
-			System.out.println("Curva Moneda: " + this.getCurvaMoneda());
-			System.out.println("Curva Moneda2: " + this.getCurvaMoneda2());
-			System.out.println("Calculo Fwd: " + this.getFwd());
-			System.out.println("Calculo Mtm: " + this.getMtm());
-		}
+		MyLogger.log("Tipo Cambio Moneda: " + this.getTipoCambioMoneda());
+		MyLogger.log("Tipo Cambio Moneda2: " + this.getTipoCambioMoneda2());
+		MyLogger.log("Plazo Remanente: " + this.getPlazoRemanente());
+		MyLogger.log("Curva Moneda: " + this.getCurvaMoneda());
+		MyLogger.log("Curva Moneda2: " + this.getCurvaMoneda2());
+		MyLogger.log("Calculo Fwd: " + this.getFwd());
+		MyLogger.log("Calculo Mtm: " + this.getMtm());
+
 	}
 
 	public void calcularFwd() throws NumberFormatException, SQLException,
 			Exception {
-
 		this.setFwd((this.getTipoCambioMoneda() / this.getTipoCambioMoneda2())
 				* (this.getCurvaMoneda() / this.getCurvaMoneda2()));
 	}
@@ -154,5 +153,4 @@ public class Mtm {
 	public void setOperacionNDF(OperacionNDFAValuarData operacionNDF) {
 		this.operacionNDF = operacionNDF;
 	}
-
 }

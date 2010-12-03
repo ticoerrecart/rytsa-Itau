@@ -6,6 +6,7 @@ import java.util.Date;
 
 import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.Valuaciones;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
@@ -54,9 +55,11 @@ public class CuponSWAP {
 
 	public void calcularPlazoResidual() throws Exception {
 		if (this.getAgendaCupon().getFechavencimiento() == null) {
+			MyLogger.logError("FechaVencimiento es nula");
 			throw new Exception("FechaVencimiento es nula");
 		}
 		if (this.getFechaProceso() == null) {
+			MyLogger.logError("FechaProceso es nula");
 			throw new Exception("FechaProceso es nula");
 		}
 		this.setPlazoResidual(DateUtils.diferenciaEntreFechas(DateUtils
@@ -87,9 +90,11 @@ public class CuponSWAP {
 
 	public void calcularTnaIndex() throws Exception {
 		if (this.getFechaIndiceInicio() == null) {
+			MyLogger.logError("FechaIndiceInicio es nula");
 			throw new Exception("FechaIndiceInicio es nula");
 		}
 		if (this.getFechaIndiceFin() == null) {
+			MyLogger.logError("FechaIndiceFin es nula");
 			throw new Exception("FechaIndiceFin es nula");
 		}
 
@@ -128,18 +133,23 @@ public class CuponSWAP {
 
 	public void calcularVFutCli() throws Exception {
 		if (this.getCantidadVNParteFija() == null) {
+			MyLogger.logError("CantidadVNParteFija es nula");
 			throw new Exception("CantidadVNParteFija es nula");
 		}
 		if (this.getTasaFijaParteFija() == null) {
+			MyLogger.logError("TasaFijaParteFija es nula");
 			throw new Exception("TasaFijaParteFija es nula");
 		}
 		if (this.getFechaVencimiento() == null) {
+			MyLogger.logError("FechaVencimiento es nula");
 			throw new Exception("FechaVencimiento es nula");
 		}
 		if (this.getFechaInicio() == null) {
+			MyLogger.logError("FechaInicio es nula");
 			throw new Exception("FechaInicio es nula");
 		}
 		if (this.getBaseParteFija() == null) {
+			MyLogger.logError("BaseParteFija es nula");
 			throw new Exception("BaseParteFija es nula");
 		}
 
@@ -152,9 +162,11 @@ public class CuponSWAP {
 
 	public void calcularFraCli() throws SQLException, Exception {
 		if (this.getVFutCli() == null) {
+			MyLogger.logError("VFutCli es nula");
 			throw new Exception("VFutCli es nula");
 		}
 		if (this.getPlazoResidual() == null) {
+			MyLogger.logError("PlazoResidual es nula");
 			throw new Exception("PlazoResidual es nula");
 		}
 
@@ -167,9 +179,11 @@ public class CuponSWAP {
 
 	public void calcularFraCliRf() throws SQLException, Exception {
 		if (this.getVFutCliRf() == null) {
+			MyLogger.logError("VFutCliRF es nula");
 			throw new Exception("VFutCliRF es nula");
 		}
 		if (this.getPlazoResidual() == null) {
+			MyLogger.logError("PlazoResidual es nula");
 			throw new Exception("PlazoResidual es nula");
 		}
 		// FIXME se calculo el FactorDesc con la fecha de Proceso o con la de
@@ -193,15 +207,19 @@ public class CuponSWAP {
 
 	public void calcularVFutCliRf() throws Exception {
 		if (this.getCantidadVNParteVariable() == null) {
+			MyLogger.logError("CantidadVNParteVariable es nula");
 			throw new Exception("CantidadVNParteVariable es nula");
 		}
 		if (this.getTnaIndex() == null) {
+			MyLogger.logError("TnaIndex es nula");
 			throw new Exception("TnaIndex es nula");
 		}
 		if (this.getFechaInicio() == null) {
+			MyLogger.logError("FechaInicio es nula");
 			throw new Exception("FechaInicio es nula");
 		}
 		if (this.getBaseParteVariable() == null) {
+			MyLogger.logError("BaseParteVariable es nula");
 			throw new Exception("BaseParteVariable es nula");
 		}
 		this.setVFutCliRf(this.getCantidadVNParteVariable()

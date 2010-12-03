@@ -16,7 +16,7 @@ import rytsa.itau.db.factory.DatabaseFactory;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.FileUtils;
-import rytsa.itau.valuaciones.Valuaciones;
+import rytsa.itau.utils.MyLogger;
 import br.com.softsite.sfc.tini.persistence.FieldNotFoundException;
 import br.com.softsite.sfc.tini.persistence.FieldTypeException;
 import br.com.softsite.sfc.tini.persistence.Table;
@@ -63,7 +63,7 @@ public class DAO {
 					 */
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
-					System.err.println(nfe.getMessage());
+					MyLogger.log("NumberFormatException en crearTipoDeCambio");
 				}
 			}
 
@@ -80,7 +80,7 @@ public class DAO {
 			 */
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -88,7 +88,7 @@ public class DAO {
 					t.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				MyLogger.logError(e.getMessage());
 			}
 		}
 	}
@@ -122,12 +122,12 @@ public class DAO {
 					// ps.setDate(4, DateUtils.convertDate(dPublic));
 					ps.executeUpdate();
 				} catch (NumberFormatException nfe) {
-					System.err.println(nfe.getMessage());
+					MyLogger.log("NumberFormatException en crearTasasDeBadlar");
 				}
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -135,7 +135,7 @@ public class DAO {
 					t.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				MyLogger.logError(e.getMessage());
 			}
 		}
 
@@ -160,12 +160,12 @@ public class DAO {
 				crearCurva(conn, ps, moneda.trim());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (Exception e) {
-				e.printStackTrace();
+				MyLogger.logError(e.getMessage());
 			}
 		}
 	}
@@ -220,9 +220,9 @@ public class DAO {
 			conn = DatabaseFactory.getConnectionForBulk();
 			crearTabla(nomTabla, t, conn, ps);
 		} catch (EOFException eofE) {
-			System.err.println("No existe la tabla " + nomTabla);
+			MyLogger.logError("No existe la tabla " + nomTabla);
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			try {
 				if (t != null) {
@@ -230,7 +230,7 @@ public class DAO {
 				}
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (Exception e) {
-				e.printStackTrace();
+				MyLogger.logError(e.getMessage());
 			}
 		}
 
@@ -273,7 +273,7 @@ public class DAO {
 				 */
 				pPs.executeUpdate();
 			} catch (NumberFormatException nfe) {
-				System.err.println(nfe.getMessage());
+				MyLogger.log(nfe.getMessage());
 			}
 		}
 
@@ -285,10 +285,10 @@ public class DAO {
 		try {
 			t = new Table(files.get(codigoPatron));
 			String tabla = FileUtils.getFileName(files.get(codigoPatron));
-			System.out.println("CREANDO LA TABLA " + tabla);
+			MyLogger.log("CREANDO LA TABLA " + tabla);
 			crearTabla(tabla, t, conn, ps);
 		} catch (EOFException eofE) {
-			System.err.println("No existe la tabla " + files.get(codigoPatron));
+			MyLogger.logError("No existe la tabla " + files.get(codigoPatron));
 		} finally {
 			if (t != null) {
 				t.close();
@@ -314,13 +314,13 @@ public class DAO {
 				factorAct = rs.getDouble("F_ACT");
 				Date d = rs.getDate("D_PROC");
 
-				if (Valuaciones.LOGGEAR) {
-					System.out.println("Se obtuvo el FactorAct para la fecha "
-							+ DateUtils.dateToString(d) + ", plazo " + pPlazo);
-				}
+				MyLogger.log("Se obtuvo el FactorAct para la fecha "
+						+ DateUtils.dateToString(d) + ", plazo " + pPlazo);
 			} else {
+				MyLogger.logError("No se pudo obtener el factor de actualización para la fecha: "
+						+ pFecha.toString() + " y el plazo " + pPlazo);
 				throw new Exception(
-						"No se pudo obtener el factor de actualización para fecha: "
+						"No se pudo obtener el factor de actualización para la fecha: "
 								+ pFecha.toString() + " y el plazo " + pPlazo);
 			}
 		} finally {
@@ -346,12 +346,13 @@ public class DAO {
 			if (rs.next()) {
 				factorDesc = rs.getDouble("F_DESC");
 				Date d = rs.getDate("D_PROC");
-				if (Valuaciones.LOGGEAR) {
-					System.out.println("Se obtuvo el FactorDesc para la fecha "
-							+ DateUtils.dateToString(d) + ", plazo " + pPlazo
-							+ ", tabla " + pTabla);
-				}
+				MyLogger.log("Se obtuvo el FactorDesc para la fecha "
+						+ DateUtils.dateToString(d) + ", plazo " + pPlazo
+						+ ", tabla " + pTabla);
+
 			} else {
+				MyLogger.logError("No se pudo obtener el factor de descuento para la fecha "
+						+ pFecha + ", plazo " + pPlazo + " y tabla " + pTabla);
 				throw new Exception(
 						"No se pudo obtener el factor de descuento para la fecha "
 								+ pFecha + ", plazo " + pPlazo + " y tabla "
@@ -381,14 +382,13 @@ public class DAO {
 			if (rs.next()) {
 				precio = rs.getDouble("PRICE");
 				Date d = rs.getDate("D_PROC");
-				if (Valuaciones.LOGGEAR) {
-					System.out
-							.println("Se obtuvo el TipoCambioMoneda para la fecha "
-									+ DateUtils.dateToString(d)
-									+ ", codDiv "
-									+ codDiv);
-				}
+				MyLogger.log("Se obtuvo el TipoCambioMoneda para la fecha "
+						+ DateUtils.dateToString(d) + ", codDiv " + codDiv);
 			} else {
+				MyLogger.logError("No se pudo obtener el Tipo Cambio Moneda para el codigo "
+						+ codDiv
+						+ " y para la fecha "
+						+ DateUtils.dateToString(pFechaProceso));
 				throw new Exception(
 						"No se pudo obtener el Tipo Cambio Moneda para el codigo "
 								+ codDiv + " y para la fecha "
@@ -425,12 +425,12 @@ public class DAO {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				MyLogger.logError(e.getMessage());
 			}
 		}
 	}
@@ -460,15 +460,13 @@ public class DAO {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 		if (total != 0) {
-			if (Valuaciones.LOGGEAR) {
-				System.out
-						.println("Promedio Tasas de Badlar entre las fechas ("
-								+ DateUtils.dateToString(pfInicio) + ","
-								+ DateUtils.dateToString(pfFin) + ") :" + suma
-								/ total);
-			}
+			MyLogger.log("Promedio Tasas de Badlar entre las fechas ("
+					+ DateUtils.dateToString(pfInicio) + ","
+					+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
 			return suma / total;
 		} else {
+			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+					+ pfInicio + " y la fecha " + pfFin);
 			throw new Exception(
 					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
 							+ pfInicio + " y la fecha " + pfFin);
@@ -517,21 +515,22 @@ public class DAO {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 		if (totalB != 0 && totalTF != 0) {
-			if (Valuaciones.LOGGEAR) {
-				System.out
-						.println("Promedio Badlar y Tasas FWD entre las fechas ("
-								+ DateUtils.dateToString(pfInicioB)
-								+ ","
-								+ DateUtils.dateToString(pfFinB)
-								+ ","
-								+ DateUtils.dateToString(pfInicioTF)
-								+ ","
-								+ DateUtils.dateToString(pfFinTF)
-								+ ") :"
-								+ (sumaB + sumaTF) / (totalB + totalTF));
-			}
+			MyLogger.log("Promedio Badlar y Tasas FWD entre las fechas ("
+					+ DateUtils.dateToString(pfInicioB) + ","
+					+ DateUtils.dateToString(pfFinB) + ","
+					+ DateUtils.dateToString(pfInicioTF) + ","
+					+ DateUtils.dateToString(pfFinTF) + ") :"
+					+ (sumaB + sumaTF) / (totalB + totalTF));
 			return (sumaB + sumaTF) / (totalB + totalTF);
 		} else {
+			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar Y FWD entre las fecha "
+					+ DateUtils.dateToString(pfInicioB)
+					+ ","
+					+ DateUtils.dateToString(pfFinB)
+					+ ","
+					+ DateUtils.dateToString(pfInicioTF)
+					+ ","
+					+ DateUtils.dateToString(pfFinTF));
 			throw new Exception(
 					"No se pudo obtener el Promedio de Tasas de Badlar Y FWD entre las fecha "
 							+ DateUtils.dateToString(pfInicioB) + ","
@@ -566,13 +565,13 @@ public class DAO {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 		if (total != 0) {
-			if (Valuaciones.LOGGEAR) {
-				System.out.println("Promedio Tasas FWD entre las fechas ("
-						+ DateUtils.dateToString(pfInicio) + ","
-						+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
-			}
+			MyLogger.log("Promedio Tasas FWD entre las fechas ("
+					+ DateUtils.dateToString(pfInicio) + ","
+					+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
 			return suma / total;
 		} else {
+			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+					+ pfInicio + " y la fecha " + pfFin);
 			throw new Exception(
 					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
 							+ pfInicio + " y la fecha " + pfFin);

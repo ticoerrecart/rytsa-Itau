@@ -1,0 +1,7 @@
+Con Eclipse Helios:
+-------------------
+Right Click on the Project->Export->Runneable JAR File->Next
+Launch Configuration: Itau - Test
+Export Destination: donde vaya el jar destino...
+Seleccionar de las opciones: Package required libraries into generated JAR
+Finish

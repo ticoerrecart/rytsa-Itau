@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import ar.com.itau.esb.client.ESBClient;
@@ -38,8 +39,6 @@ public abstract class Valuaciones {
 
 	public static String DATE_MASK_CUPON_SWAP;
 
-	public static Boolean LOGGEAR = true;
-
 	protected static ResourceBundle resourceBundle;
 
 	static {
@@ -48,18 +47,10 @@ public abstract class Valuaciones {
 		MODO = Integer.parseInt(resourceBundle.getString("esb.modo"));
 		PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
 		HOST = resourceBundle.getString("esb.host");
-		String log = resourceBundle.getString("logger");
-		if (log != null) {
-			Boolean booleanLog = Boolean.valueOf(log);
-			LOGGEAR = booleanLog;
-		}
 
-		if (Valuaciones.LOGGEAR) {
-			System.out.println("Configuración del ESB: host '" + HOST
-					+ "'| modo '" + MODO + "'|puerto '" + PUERTO + "'");
-			System.out.println("Cantidad de Registros (cantRegistros) '" + DIAS
-					+ "'");
-		}
+		MyLogger.log("Configuración del ESB: host '" + HOST + "'| modo '"
+				+ MODO + "'|puerto '" + PUERTO + "'");
+		MyLogger.log("Cantidad de Registros (cantRegistros) '" + DIAS + "'");
 		DATE_MASK = "dd-MM-yyyy";
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
 		DATE_MASK_CUPON_SWAP = "yyyy-MM-dd";
@@ -112,9 +103,7 @@ public abstract class Valuaciones {
 			esbRequest.setParameter("Ip", resourceBundle.getString("ws.ip"));
 			esbRequest.setParameter("IdAplicacion", "2");
 
-			if (Valuaciones.LOGGEAR) {
-				System.out.println("Se ejecuto ESB Login ");
-			}
+			MyLogger.log("Se ejecuto ESB Login ");
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
 			XStream xs = ValuacionesNDF.getXStream();
@@ -122,9 +111,9 @@ public abstract class Valuaciones {
 			return seg.getLoginSesionResponseData().getIdSesion();
 
 		} catch (ESBClientException e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			if (client != null) {
 				client.close();
@@ -139,10 +128,8 @@ public abstract class Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
-			if (Valuaciones.LOGGEAR) {
-				System.out.println("INFORMA VALUACIONES");
-				System.out.println(xml);
-			}
+			MyLogger.log("INFORMA VALUACIONES");
+			MyLogger.log(xml);
 			String idSession = getIdSession();
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client
@@ -155,9 +142,9 @@ public abstract class Valuaciones {
 			return esbResponse.getResult();
 
 		} catch (ESBClientException e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.logError(e.getMessage());
 		} finally {
 			if (client != null) {
 				client.close();
