@@ -5,3 +5,6 @@ Launch Configuration: Itau - Test
 Export Destination: donde vaya el jar destino...
 Seleccionar de las opciones: Package required libraries into generated JAR
 Finish
+
+IMPORTANTE: luego copiarle al jar generado la carpeta DB\rytsa.sqlite que se copia
+del source del proyecto Itau.
