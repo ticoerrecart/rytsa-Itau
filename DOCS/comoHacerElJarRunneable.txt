@@ -8,3 +8,8 @@ Finish
 
 IMPORTANTE: luego copiarle al jar generado la carpeta DB\rytsa.sqlite que se copia
 del source del proyecto Itau.
+
+Modo de uso:
+------------
+Para SWAP: java -jar Itau.jar SWAP 18/10/2010
+Para NDF: java -jar Itau.jar NDF 18/10/2010
