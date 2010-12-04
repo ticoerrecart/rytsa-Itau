@@ -120,12 +120,12 @@ public class ValuacionesSWAP extends Valuaciones {
 				novedadF.setMTM(mtmFija);
 				listaNovedadesRD.addRequestData(novedadF);
 				MyLogger.log("************MTM FIJA*****************");
-				MyLogger.log("Código " + novedadF.getCodigo());
+				MyLogger.log("Cï¿½digo " + novedadF.getCodigo());
 				MyLogger.log("CodUsuario " + novedadF.getCodUsuario());
 				MyLogger.log("Corrida " + novedadF.getCorrida());
 				MyLogger.log("Fecha " + novedadF.getFecha());// la
 																// fecha
-				// ya está
+				// ya estï¿½
 				// formateada
 				MyLogger.log("IdOperacion " + novedadF.getIdOperacion());
 				MyLogger.log("MonedaValuacion " + novedadF.getMonedaValuacion());
@@ -142,12 +142,12 @@ public class ValuacionesSWAP extends Valuaciones {
 				novedadV.setMTM(mtmVariable);
 				listaNovedadesRD.addRequestData(novedadV);
 				MyLogger.log("************MTM VARIABLE*****************");
-				MyLogger.log("Código " + novedadV.getCodigo());
+				MyLogger.log("Cï¿½digo " + novedadV.getCodigo());
 				MyLogger.log("CodUsuario " + novedadV.getCodUsuario());
 				MyLogger.log("Corrida " + novedadV.getCorrida());
 				MyLogger.log("Fecha " + novedadV.getFecha());// la
 																// fecha
-				// ya está
+				// ya estï¿½
 				// formateada
 				MyLogger.log("IdOperacion " + novedadV.getIdOperacion());
 				MyLogger.log("MonedaValuacion " + novedadV.getMonedaValuacion());
@@ -204,11 +204,11 @@ public class ValuacionesSWAP extends Valuaciones {
 									"Variable")) {
 
 								MyLogger.log("************Parte Variable***********");
-								MyLogger.log("Número Operación: "
+								MyLogger.log("Nï¿½mero Operaciï¿½n: "
 										+ parteVariable.getNumeroOperacion());
-								MyLogger.log("Número de Boleto: "
+								MyLogger.log("Nï¿½mero de Boleto: "
 										+ parteVariable.getNumeroBoleto());
-								MyLogger.log("ID Operación Relacionada: "
+								MyLogger.log("ID Operaciï¿½n Relacionada: "
 										+ parteVariable
 												.getIdoperacionrelacionada());
 								MyLogger.log("Fecha de Inicio: "
@@ -226,11 +226,11 @@ public class ValuacionesSWAP extends Valuaciones {
 							if (agendaCupon.getTipoFlujo().equalsIgnoreCase(
 									"Fijo")) {
 								MyLogger.log("************Parte Fija***********");
-								MyLogger.log("Número Operación: "
+								MyLogger.log("Nï¿½mero Operaciï¿½n: "
 										+ parteFija.getNumeroOperacion());
-								MyLogger.log("Número de Boleto: "
+								MyLogger.log("Nï¿½mero de Boleto: "
 										+ parteFija.getNumeroBoleto());
-								MyLogger.log("ID Operación Relacionada: "
+								MyLogger.log("ID Operaciï¿½n Relacionada: "
 										+ parteFija.getIdoperacionrelacionada());
 								MyLogger.log("Fecha de Inicio: "
 										+ parteFija.getFechaInicio());
@@ -263,7 +263,7 @@ public class ValuacionesSWAP extends Valuaciones {
 					} catch (Exception e) {
 						MyLogger.logError("Error en Cupon Numero:"
 								+ agendaCupon.getNumeroOperacion());
-						MyLogger.logError(e.getMessage());
+						MyLogger.logError(e.toString());
 					}
 				} else {
 					MyLogger.log("Cupon Ignorado. Cupon Numero:"
@@ -434,9 +434,9 @@ public class ValuacionesSWAP extends Valuaciones {
 
 			fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
 		} catch (ESBClientException e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			if (client != null) {
 				client.close();
@@ -472,9 +472,9 @@ public class ValuacionesSWAP extends Valuaciones {
 			salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
 					.fromXML(sRtaAgendaCupones);
 		} catch (ESBClientException e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			if (client != null) {
 				client.close();
@@ -514,9 +514,9 @@ public class ValuacionesSWAP extends Valuaciones {
 			salida = (RecuperarOperacionesSWAPAValuarResponse) xs
 					.fromXML(sRtaOperaciones);
 		} catch (ESBClientException e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			if (client != null) {
 				client.close();
@@ -558,9 +558,9 @@ public class ValuacionesSWAP extends Valuaciones {
 				MyLogger.log("************************************");
 				tasasFwd.add(tasa);
 			} catch (ParseException e) {
-				MyLogger.logError(e.getMessage());
+				MyLogger.logError(e.toString());
 			} catch (Exception e) {
-				MyLogger.logError(e.getMessage());
+				MyLogger.logError(e.toString());
 			}
 		}// end for
 
@@ -579,9 +579,9 @@ public class ValuacionesSWAP extends Valuaciones {
 					tasa.calcularTasaFWD();
 					MyLogger.log("************************************");
 				} catch (ParseException e) {
-					MyLogger.logError(e.getMessage());
+					MyLogger.logError(e.toString());
 				} catch (Exception e) {
-					MyLogger.logError(e.getMessage());
+					MyLogger.logError(e.toString());
 				}
 			}
 			DAO.crearTasaFWD(tasasFwd, pFechaProceso);

@@ -80,7 +80,7 @@ public class DAO {
 			 */
 
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -88,7 +88,7 @@ public class DAO {
 					t.close();
 				}
 			} catch (Exception e) {
-				MyLogger.logError(e.getMessage());
+				MyLogger.logError(e.toString());
 			}
 		}
 	}
@@ -127,7 +127,7 @@ public class DAO {
 			}
 
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -135,7 +135,7 @@ public class DAO {
 					t.close();
 				}
 			} catch (Exception e) {
-				MyLogger.logError(e.getMessage());
+				MyLogger.logError(e.toString());
 			}
 		}
 
@@ -160,12 +160,12 @@ public class DAO {
 				crearCurva(conn, ps, moneda.trim());
 			}
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (Exception e) {
-				MyLogger.logError(e.getMessage());
+				MyLogger.logError(e.toString());
 			}
 		}
 	}
@@ -222,7 +222,7 @@ public class DAO {
 		} catch (EOFException eofE) {
 			MyLogger.logError("No existe la tabla " + nomTabla);
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			try {
 				if (t != null) {
@@ -230,7 +230,7 @@ public class DAO {
 				}
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (Exception e) {
-				MyLogger.logError(e.getMessage());
+				MyLogger.logError(e.toString());
 			}
 		}
 
@@ -273,7 +273,7 @@ public class DAO {
 				 */
 				pPs.executeUpdate();
 			} catch (NumberFormatException nfe) {
-				MyLogger.log(nfe.getMessage());
+				MyLogger.log(nfe.toString());
 			}
 		}
 
@@ -317,10 +317,10 @@ public class DAO {
 				MyLogger.log("Se obtuvo el FactorAct para la fecha "
 						+ DateUtils.dateToString(d) + ", plazo " + pPlazo);
 			} else {
-				MyLogger.logError("No se pudo obtener el factor de actualización para la fecha: "
+				MyLogger.logError("No se pudo obtener el factor de actualizaciï¿½n para la fecha: "
 						+ pFecha.toString() + " y el plazo " + pPlazo);
 				throw new Exception(
-						"No se pudo obtener el factor de actualización para la fecha: "
+						"No se pudo obtener el factor de actualizaciï¿½n para la fecha: "
 								+ pFecha.toString() + " y el plazo " + pPlazo);
 			}
 		} finally {
@@ -425,12 +425,12 @@ public class DAO {
 			}
 
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (SQLException e) {
-				MyLogger.logError(e.getMessage());
+				MyLogger.logError(e.toString());
 			}
 		}
 	}

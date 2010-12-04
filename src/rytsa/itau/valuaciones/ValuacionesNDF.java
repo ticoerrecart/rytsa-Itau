@@ -58,7 +58,7 @@ public class ValuacionesNDF extends Valuaciones {
 			}
 		}
 
-		MyLogger.log("Filtro las operaciones con mercado válido ("
+		MyLogger.log("Filtro las operaciones con mercado vï¿½lido ("
 				+ resourceBundle.getString("mercados.validos")
 				+ ")... total:  " + listaMtm.size());
 		InformarNovedadesValuacionesXmlRequest informar = new InformarNovedadesValuacionesXmlRequest();
@@ -75,7 +75,7 @@ public class ValuacionesNDF extends Valuaciones {
 			rd.setMTM(mtm.getMtm());
 
 			MyLogger.log("*************************************");
-			MyLogger.log("Código " + rd.getCodigo());
+			MyLogger.log("Cï¿½digo " + rd.getCodigo());
 			MyLogger.log("CodUsuario " + rd.getCodUsuario());
 			MyLogger.log("Corrida " + rd.getCorrida());
 			MyLogger.log("Fecha " + rd.getFecha());
@@ -167,9 +167,9 @@ public class ValuacionesNDF extends Valuaciones {
 
 			salida = (RecuperoOperacionesNDFAValuarResponse) xs.fromXML(sRta);
 		} catch (ESBClientException e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			if (client != null) {
 				client.close();
