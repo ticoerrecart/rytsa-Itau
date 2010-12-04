@@ -48,7 +48,7 @@ public abstract class Valuaciones {
 		PUERTO = Integer.parseInt(resourceBundle.getString("esb.puerto"));
 		HOST = resourceBundle.getString("esb.host");
 
-		MyLogger.log("Configuración del ESB: host '" + HOST + "'| modo '"
+		MyLogger.log("Configuraciï¿½n del ESB: host '" + HOST + "'| modo '"
 				+ MODO + "'|puerto '" + PUERTO + "'");
 		MyLogger.log("Cantidad de Registros (cantRegistros) '" + DIAS + "'");
 		DATE_MASK = "dd-MM-yyyy";
@@ -111,9 +111,9 @@ public abstract class Valuaciones {
 			return seg.getLoginSesionResponseData().getIdSesion();
 
 		} catch (ESBClientException e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			if (client != null) {
 				client.close();
@@ -131,20 +131,24 @@ public abstract class Valuaciones {
 			MyLogger.log("INFORMA VALUACIONES");
 			MyLogger.log(xml);
 			String idSession = getIdSession();
-			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client
-					.createRequest("WS_VALUACION_PATRON_MODIFICACION");
+			if (idSession != null) {
+				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
+				esbRequest = client
+						.createRequest("WS_VALUACION_PATRON_MODIFICACION");
 
-			esbRequest.setParameter("IdSesion", idSession);
-			esbRequest.setParameter("XmlRequest", xml);
+				esbRequest.setParameter("IdSesion", idSession);
+				esbRequest.setParameter("XmlRequest", xml);
 
-			client.execute(esbRequest, esbResponse);
-			return esbResponse.getResult();
-
+				client.execute(esbRequest, esbResponse);
+				return esbResponse.getResult();
+			} else {
+				MyLogger.logError("No se pudo obtener el IdSession para poder informar las valuaciones");
+				return null;
+			}
 		} catch (ESBClientException e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} finally {
 			if (client != null) {
 				client.close();

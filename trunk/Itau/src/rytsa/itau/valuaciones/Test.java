@@ -42,14 +42,14 @@ public class Test {
 					}
 				}
 			} else {
-				MyLogger.logError("Error en los parámetros de entrada.  Arg0: '"
+				MyLogger.logError("Error en los parï¿½metros de entrada.  Arg0: '"
 						+ args[0] + "', Arg1: '" + args[1] + "'");
 			}
 
 		} catch (ParseException e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		} catch (Exception e) {
-			MyLogger.logError(e.getMessage());
+			MyLogger.logError(e.toString());
 		}
 	}
 
