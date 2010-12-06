@@ -12,7 +12,7 @@ public abstract class MyLogger {
 	private static Boolean LOGGEAR = true;
 
 	protected static ResourceBundle resourceBundle;
-
+ 
 	static {
 		resourceBundle = ResourceBundle.getBundle("config");
 		String log = resourceBundle.getString("logger");
