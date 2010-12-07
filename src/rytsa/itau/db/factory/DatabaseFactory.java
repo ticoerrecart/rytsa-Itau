@@ -69,8 +69,8 @@ public abstract class DatabaseFactory {
 
 		ResourceBundle resources = ResourceBundle.getBundle("config");
 		String ddbbpath = resources.getString("bbdd.path");
-		if (!ddbbpath.endsWith("\\")) {
-			ddbbpath = ddbbpath + "\\";
+		if (!ddbbpath.endsWith(File.separator)) {
+			ddbbpath = ddbbpath + File.separatorChar;
 		}
 		String fileName = ddbbpath + Constantes.DATABASE_SQLITE_URL;
 		String url = Constantes.DATABASE_SQLITE + fileName;
@@ -82,7 +82,7 @@ public abstract class DatabaseFactory {
 			InputStream is = DatabaseFactory.class
 					.getResourceAsStream("/DB/rytsa.sqlite");
 			if (is != null) {
-				MyLogger.log("recuperé la BD dentro del jar");
+				MyLogger.log("recuperï¿½ la BD dentro del jar");
 				OutputStream out = null;
 				try {
 					out = new FileOutputStream(f);
@@ -91,7 +91,7 @@ public abstract class DatabaseFactory {
 					while ((len = is.read(buf)) > 0) {
 						out.write(buf, 0, len);
 					}
-					MyLogger.log("copié la BD desde el jar");
+					MyLogger.log("copiï¿½ la BD desde el jar");
 				} finally {
 					closeResource(out);
 					closeResource(is);
@@ -104,7 +104,7 @@ public abstract class DatabaseFactory {
 				FileUtils.copyFile(db, f);
 			}
 
-			MyLogger.log("Se copió la BD a:" + fileName);
+			MyLogger.log("Se copiï¿½ la BD a:" + fileName);
 		}
 
 		Class.forName(Constantes.DATABASE_SQLITE_JDBC).newInstance();

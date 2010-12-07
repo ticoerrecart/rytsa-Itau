@@ -46,14 +46,13 @@ public class ValuacionesSWAP extends Valuaciones {
 	/**
 	 * Para ello es necesario obtener las operaciones de swaps y los cupones
 	 * correspondientes de cada SWAP que se obtendr�n desde el sistema de
-	 * Patr�n, para este cometido, se desarrollaron 2 Web Services que
-	 * retornan dicha informaci�n en formato XML, para ser consumidos desde
-	 * cualquier plataforma. Una vez calculadas las valuaciones MTM de cada
-	 * Swap, se debe ejecutar un Web Service del sistema Patr�n que
-	 * actualizar� los precios de cada SWAP necesarios para cerrar el d�a y
-	 * el c�lculo de la contabilidad. Por �ltimo se deber� generar una
-	 * tabla DBF o se actualizar� una tabla SQL con los C�lculos de tasas
-	 * FWD.
+	 * Patr�n, para este cometido, se desarrollaron 2 Web Services que retornan
+	 * dicha informaci�n en formato XML, para ser consumidos desde cualquier
+	 * plataforma. Una vez calculadas las valuaciones MTM de cada Swap, se debe
+	 * ejecutar un Web Service del sistema Patr�n que actualizar� los precios de
+	 * cada SWAP necesarios para cerrar el d�a y el c�lculo de la contabilidad.
+	 * Por �ltimo se deber� generar una tabla DBF o se actualizar� una tabla SQL
+	 * con los C�lculos de tasas FWD.
 	 * 
 	 * 
 	 */
@@ -179,7 +178,10 @@ public class ValuacionesSWAP extends Valuaciones {
 		if (pOperacionesSWAP != null) {
 			for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
 
-				if (!agendaCupon.getNumeroOperacion().equals("0")) {
+				if (!agendaCupon.getNumeroOperacion().equals("0")
+						&& DateUtils.stringToDate(
+								agendaCupon.getFechavencimiento(),Valuaciones.DATE_MASK_CUPON_SWAP).after(
+								pFechaProceso)) {
 					try {
 						MyLogger.log("------------------------------------");
 						MyLogger.log("Procesando Cupon Numero:"
