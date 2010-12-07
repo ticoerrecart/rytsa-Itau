@@ -30,10 +30,7 @@ public class Test {
 			if (args[0] != null && args[1] != null && !"".equals(args[0])
 					&& !"".equals(args[1])) {
 				String root = System.getProperty("user.dir");
-				String filepath = "/DB"; // in case of Windows: "\\path
-											// \\to\\yourfile.txt
-				String abspath = root + filepath;
-				Test test = new Test(abspath);
+				Test test = new Test(root);
 				if ("SWAP".equalsIgnoreCase(args[0])) {
 					test.calcularMTMSwap(args[1]);
 				} else {
