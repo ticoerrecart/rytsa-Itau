@@ -103,7 +103,7 @@ public class DAO {
 			ps = conn.prepareStatement(sqlDelete);
 			ps.executeUpdate();
 
-			String sql = "INSERT INTO Calib_index_h (C_INDEX, PRICE, D_PROC) VALUES(?, ?, ?);";
+			String sql = "INSERT INTO Calib_index_h (C_INDEX, PRICE, D_PROC, D_PUBLIC) VALUES(?, ?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
 			t = new Table(rb.getString("calib_index_h"));
 			int numRecords = t.getNumberOfRecords();
@@ -114,13 +114,15 @@ public class DAO {
 					Integer cIndex = t.getFieldInteger("C_INDEX");
 					Double price = t.getFieldDouble("PRICE");
 					Date dProc = t.getFieldDate("D_PROC");
-					// Date dPublic = t.getFieldDate("D_PUBLIC");
+					Date dPublic = t.getFieldDate("D_PUBLIC");
 					ps = conn.prepareStatement(sql);
 					ps.setInt(1, cIndex);
 					ps.setDouble(2, price);
 					ps.setDate(3, DateUtils.convertDate(dProc));
-					// ps.setDate(4, DateUtils.convertDate(dPublic));
+					ps.setDate(4, DateUtils.convertDate(dPublic));
 					ps.executeUpdate();
+				} catch (FieldNotFoundException fnfe) {
+					MyLogger.log("FieldNotFoundException (D_PUBLIC) en crearTasasDeBadlar");
 				} catch (NumberFormatException nfe) {
 					MyLogger.log("NumberFormatException en crearTasasDeBadlar");
 				}
@@ -446,7 +448,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE D_PROC >= ? AND D_PROC <= ?;");
+					.prepareStatement("SELECT PRICE  FROM Calib_index_h C_INDEX = 3 WHERE D_PUBLIC >= ? AND D_PUBLIC <= ?;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
@@ -500,7 +502,7 @@ public class DAO {
 			}
 
 			ps = conn
-					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
+					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE C_INDEX = 3 AND D_PUBLIC >= ? AND D_PUBLIC <= ?;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicioB, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFinB, 23)));
