@@ -29,6 +29,8 @@ public class TasaFWD {
 	private TasaFWD tasaParafechaPublicacionVencimiento;
 
 	private Double tasaFWD;
+	
+	private long plazo;
 
 	private List<FechaData> diasHabiles;
 
@@ -39,6 +41,7 @@ public class TasaFWD {
 	public void calcularFactorDeActualizacion(Date pFechaProceso, Date pFecha)
 			throws SQLException, Exception {
 		long plazo = DateUtils.diferenciaEntreFechas(pFecha, pFechaProceso);
+		this.setPlazo(plazo);
 		this.setFechaPublicacion(pFecha);
 		this.setFactorDeActualizacion(DAO
 				.obtenerFactorAct(pFechaProceso, plazo));
@@ -225,6 +228,14 @@ public class TasaFWD {
 	private void setTasaParafechaPublicacionVencimiento(
 			TasaFWD tasaParafechaPublicacionVencimiento) {
 		this.tasaParafechaPublicacionVencimiento = tasaParafechaPublicacionVencimiento;
+	}
+
+	public long getPlazo() {
+		return plazo;
+	}
+
+	public void setPlazo(long plazo) {
+		this.plazo = plazo;
 	}
 
 }

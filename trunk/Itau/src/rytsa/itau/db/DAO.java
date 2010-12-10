@@ -411,7 +411,7 @@ public class DAO {
 			String sqlDelete = "DELETE FROM Tasa_FWD;";// http://www.sqlite.org/lang_delete.html#trucateopt
 			ps = conn.prepareStatement(sqlDelete);
 			ps.executeUpdate();
-			String sql = "INSERT INTO Tasa_FWD VALUES(?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO Tasa_FWD VALUES(?, ?, ?, ?, ?, ?, ?);";
 			int i = 1;
 			for (TasaFWD tasa : pTasas.subList(0, pTasas.size() - 31)) {
 				ps = conn.prepareStatement(sql);
@@ -422,6 +422,7 @@ public class DAO {
 				ps.setString(5, DateUtils.dateToString(pFechaProceso));
 				ps.setString(6,
 						DateUtils.dateToString(tasa.getFechaPublicacion()));
+				ps.setLong(7, tasa.getPlazo());
 				ps.executeUpdate();
 				i++;
 			}
@@ -489,7 +490,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ?;");
+					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ? AND PLAZO > 1;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicioTF, -23)));
 			ps.setDate(2,
@@ -553,7 +554,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ?;");
+					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ? AND PLAZO > 1;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
