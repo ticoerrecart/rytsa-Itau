@@ -526,14 +526,14 @@ public class DAO {
 					+ (sumaB + sumaTF) / (totalB + totalTF));
 			return (sumaB + sumaTF) / (totalB + totalTF);
 		} else {
-			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar Y FWD entre las fecha "
+			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar Y FWD entre las fechas ["
 					+ DateUtils.dateToString(pfInicioB)
 					+ ","
 					+ DateUtils.dateToString(pfFinB)
-					+ ","
+					+ "], ["
 					+ DateUtils.dateToString(pfInicioTF)
 					+ ","
-					+ DateUtils.dateToString(pfFinTF));
+					+ DateUtils.dateToString(pfFinTF) + "]");
 			throw new Exception(
 					"No se pudo obtener el Promedio de Tasas de Badlar Y FWD entre las fecha "
 							+ DateUtils.dateToString(pfInicioB) + ","
