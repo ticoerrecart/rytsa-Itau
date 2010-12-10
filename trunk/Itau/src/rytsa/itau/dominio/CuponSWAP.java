@@ -42,6 +42,8 @@ public class CuponSWAP {
 
 		this.setAgendaCupon(pAgendaCupon);
 		this.calcularPlazoResidual();
+		MyLogger.log("Se calcula FraCli/FraCliRf con la tabla "
+				+ Valuaciones.TABLA_FACTOR_DESC_FRACLI_FRACLIRF);
 		if (operacionParteFija != null) {
 			this.calcularVFutCli();
 			this.calcularFraCli();
@@ -174,7 +176,8 @@ public class CuponSWAP {
 		// Inicio del Cupon Parte Fija???
 		this.setFraCli(this.getVFutCli()
 				* DAO.obtenerFactorDesc(this.getFechaProceso(),
-						this.getPlazoResidual(), "Curva_1"));
+						this.getPlazoResidual(),
+						Valuaciones.TABLA_FACTOR_DESC_FRACLI_FRACLIRF));
 	}
 
 	public void calcularFraCliRf() throws SQLException, Exception {
@@ -190,7 +193,8 @@ public class CuponSWAP {
 		// Inicio del Cupon Parte Variable???
 		this.setFraCliRf(this.getVFutCliRf()
 				* DAO.obtenerFactorDesc(this.getFechaProceso(),
-						this.getPlazoResidual(), "Curva_1"));
+						this.getPlazoResidual(),
+						Valuaciones.TABLA_FACTOR_DESC_FRACLI_FRACLIRF));
 	}
 
 	public Double getCantidadVNParteVariable() {
