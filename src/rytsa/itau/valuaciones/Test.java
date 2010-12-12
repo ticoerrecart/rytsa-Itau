@@ -29,13 +29,18 @@ public class Test {
 		try {
 			if (args[0] != null && args[1] != null && !"".equals(args[0])
 					&& !"".equals(args[1])) {
-				String root = System.getProperty("user.dir");
-				Test test = new Test(root);
-				if ("SWAP".equalsIgnoreCase(args[0])) {
-					test.calcularMTMSwap(args[1]);
-				} else {
-					if ("NDF".equalsIgnoreCase(args[0])) {
-						test.calcularMTMNdf(args[1]);
+				if (DateUtils.isValidDateStr(args[1])) {
+					String root = System.getProperty("user.dir");
+					Test test = new Test(root);
+					if ("SWAP".equalsIgnoreCase(args[0])) {
+						test.calcularMTMSwap(args[1]);
+					} else {
+						if ("NDF".equalsIgnoreCase(args[0])) {
+							test.calcularMTMNdf(args[1]);
+						} else {
+							MyLogger.logError("Error de parametro de entrada: '"
+									+ args[0] + "'");
+						}
 					}
 				}
 			} else {
