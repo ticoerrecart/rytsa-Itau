@@ -39,7 +39,8 @@ public class Test {
 							test.calcularMTMNdf(args[1]);
 						} else {
 							MyLogger.logError("Error de parametro de entrada: '"
-									+ args[0] + "'");
+									+ args[0]
+									+ "'.  Valores válidos [SWAP, NDF]");
 						}
 					}
 				}
