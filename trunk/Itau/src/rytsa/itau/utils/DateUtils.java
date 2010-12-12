@@ -19,24 +19,26 @@ public abstract class DateUtils {
 		return convertedDate;
 	}
 
-	public static Date stringToDate(String pFecha,String mask) throws ParseException {
+	public static Date stringToDate(String pFecha, String mask)
+			throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(mask);
 		Date convertedDate = dateFormat.parse(pFecha);
 		return convertedDate;
 	}
-	
+
 	public static String dateToString(Date pFecha) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String convertedDate = dateFormat.format(pFecha);
 		return convertedDate;
 	}
 
-	public static String dateToString(Date pFecha, String mask) throws ParseException {
+	public static String dateToString(Date pFecha, String mask)
+			throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(mask);
 		String convertedDate = dateFormat.format(pFecha);
 		return convertedDate;
 	}
-	
+
 	public static java.sql.Date convertDate(Date pFecha) {
 		return new java.sql.Date(pFecha.getTime());
 	}
@@ -58,7 +60,7 @@ public abstract class DateUtils {
 		newDate.setTime(cal.getTime().getTime());
 		return newDate;
 	}
-	
+
 	public static boolean esFinDeSemana(Date pDate) {
 		boolean esFinDeSemana = false;
 		Calendar cal = Calendar.getInstance();
@@ -90,6 +92,43 @@ public abstract class DateUtils {
 		XMLGregorianCalendar xgcal = DatatypeFactory.newInstance()
 				.newXMLGregorianCalendar(gcal);
 		return xgcal;
+	}
+
+	public static boolean isValidDateStr(String date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+		// declare and initialize testDate variable, this is what will hold
+		// our converted string
+
+		Date testDate = null;
+
+		// we will now try to parse the string into date form
+		try {
+			testDate = sdf.parse(date);
+		} catch (ParseException e) {
+			// if the format of the string provided doesn't match the format we
+			// declared in SimpleDateFormat() we will get an exception
+			MyLogger.logError("Formato de fecha inválida: " + date);
+			return false;
+		}
+
+		// dateformat.parse will accept any date as long as it's in the format
+		// you defined, it simply rolls dates over, for example, december 32
+		// becomes jan 1 and december 0 becomes november 30
+		// This statement will make sure that once the string
+		// has been checked for proper formatting that the date is still the
+		// date that was entered, if it's not, we assume that the date is
+		// invalid
+
+		if (!sdf.format(testDate).equals(date)) {
+			MyLogger.logError("Fecha inválida: " + date);
+			return false;
+		}
+
+		// if we make it to here without getting an error it is assumed that
+		// the date was a valid one and that it's in the proper format
+
+		return true;
 	}
 
 }
