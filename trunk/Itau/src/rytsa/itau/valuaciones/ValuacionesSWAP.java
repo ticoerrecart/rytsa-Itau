@@ -167,8 +167,9 @@ public class ValuacionesSWAP extends Valuaciones {
 		String xml = xs.toXML(listaNovedadesRD);
 		xml = xml.replace("\n", "");
 
-		informarValuaciones(xml);
+		String rta = informarValuaciones(xml);
 
+        MyLogger.log(rta);
 		return listaNovedadesRD;
 	}
 
