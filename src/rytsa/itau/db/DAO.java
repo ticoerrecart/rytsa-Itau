@@ -449,7 +449,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT PRICE  FROM Calib_index_h C_INDEX = 3 WHERE D_PUBLIC >= ? AND D_PUBLIC <= ?;");
+					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE C_INDEX = 3 AND D_PUBLIC >= ? AND D_PUBLIC <= ?;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
