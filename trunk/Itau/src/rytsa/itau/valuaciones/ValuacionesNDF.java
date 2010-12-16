@@ -161,7 +161,8 @@ public class ValuacionesNDF extends Valuaciones {
 					.setParameter(
 							resourceBundle
 									.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
-							DateUtils.dateToString(pFechaProceso, DATE_MASK));
+							DateUtils.dateToString(pFechaProceso,
+									DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO));
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
 
