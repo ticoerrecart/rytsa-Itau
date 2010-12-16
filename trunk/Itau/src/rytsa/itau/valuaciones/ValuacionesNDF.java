@@ -97,7 +97,9 @@ public class ValuacionesNDF extends Valuaciones {
 		String xml = xs.toXML(informar);
 		xml = xml.replace("\n", "");
 
-		informarValuaciones(xml);
+		String rta = informarValuaciones(xml);
+
+		MyLogger.log(rta);
 		return informar;
 	}
 
