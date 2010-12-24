@@ -154,6 +154,7 @@ public class ValuacionesNDF extends Valuaciones {
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
+		String sRta = null;
 		try {
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client
@@ -166,9 +167,15 @@ public class ValuacionesNDF extends Valuaciones {
 							DateUtils.dateToString(pFechaProceso,
 									DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO));
 			client.execute(esbRequest, esbResponse);
-			String sRta = esbResponse.getResult();
+			sRta = esbResponse.getResult();
+			if (!sRta.startsWith("<error")) {
+				salida = (RecuperoOperacionesNDFAValuarResponse) xs
+						.fromXML(sRta);
+			} else {
+				MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: "
+						+ sRta);
+			}
 
-			salida = (RecuperoOperacionesNDFAValuarResponse) xs.fromXML(sRta);
 		} catch (ESBClientException e) {
 			MyLogger.logError(e.toString());
 		} catch (Exception e) {
