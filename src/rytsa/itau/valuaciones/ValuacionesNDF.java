@@ -6,6 +6,7 @@ import java.util.List;
 
 import rytsa.itau.dominio.Mtm;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.utils.MiDoubleConverter;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 import rytsa.itau.valuaciones.dto.LoginSesionResponseData;
@@ -21,6 +22,7 @@ import ar.com.itau.esb.client.ESBResponse;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
+import com.thoughtworks.xstream.converters.basic.DoubleConverter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
@@ -117,6 +119,7 @@ public class ValuacionesNDF extends Valuaciones {
 
 	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
+		xs.registerConverter(new MiDoubleConverter());
 		xs.registerConverter(new DateConverter("yyyy-MM-dd hh:mm:ss.S",
 				new String[0]));
 		xs.alias(resourceBundle

@@ -12,6 +12,7 @@ import rytsa.itau.db.DAO;
 import rytsa.itau.dominio.CuponSWAP;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
+import rytsa.itau.utils.MiDoubleConverter;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.FechaData;
 import rytsa.itau.valuaciones.dto.FeriadosResponse;
@@ -322,6 +323,7 @@ public class ValuacionesSWAP extends Valuaciones {
 
 	public static XStream getXStreamInformarNovedades() {
 		XStream xs = new XStream(new DomDriver());
+		xs.registerConverter(new MiDoubleConverter());
 		xs.alias(
 				resourceBundle
 						.getString("servicios.informarNovedades.InformarNovedadesValuacionesXmlRequest"),
