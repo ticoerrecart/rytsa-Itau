@@ -168,7 +168,7 @@ public class ValuacionesNDF extends Valuaciones {
 									DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO));
 			client.execute(esbRequest, esbResponse);
 			sRta = esbResponse.getResult();
-			if (!sRta.startsWith("<error")) {
+			if (sRta != null && !sRta.startsWith("<error")) {
 				salida = (RecuperoOperacionesNDFAValuarResponse) xs
 						.fromXML(sRta);
 			} else {

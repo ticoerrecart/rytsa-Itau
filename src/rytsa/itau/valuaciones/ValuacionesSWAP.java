@@ -46,13 +46,14 @@ public class ValuacionesSWAP extends Valuaciones {
 	/**
 	 * Para ello es necesario obtener las operaciones de swaps y los cupones
 	 * correspondientes de cada SWAP que se obtendr�n desde el sistema de
-	 * Patr�n, para este cometido, se desarrollaron 2 Web Services que retornan
-	 * dicha informaci�n en formato XML, para ser consumidos desde cualquier
-	 * plataforma. Una vez calculadas las valuaciones MTM de cada Swap, se debe
-	 * ejecutar un Web Service del sistema Patr�n que actualizar� los precios de
-	 * cada SWAP necesarios para cerrar el d�a y el c�lculo de la contabilidad.
-	 * Por �ltimo se deber� generar una tabla DBF o se actualizar� una tabla SQL
-	 * con los C�lculos de tasas FWD.
+	 * Patr�n, para este cometido, se desarrollaron 2 Web Services que
+	 * retornan dicha informaci�n en formato XML, para ser consumidos desde
+	 * cualquier plataforma. Una vez calculadas las valuaciones MTM de cada
+	 * Swap, se debe ejecutar un Web Service del sistema Patr�n que
+	 * actualizar� los precios de cada SWAP necesarios para cerrar el d�a y
+	 * el c�lculo de la contabilidad. Por �ltimo se deber� generar una
+	 * tabla DBF o se actualizar� una tabla SQL con los C�lculos de tasas
+	 * FWD.
 	 * 
 	 * 
 	 */
@@ -169,7 +170,7 @@ public class ValuacionesSWAP extends Valuaciones {
 
 		String rta = informarValuaciones(xml);
 
-        MyLogger.log(rta);
+		MyLogger.log(rta);
 		return listaNovedadesRD;
 	}
 
@@ -181,7 +182,8 @@ public class ValuacionesSWAP extends Valuaciones {
 
 				if (!agendaCupon.getNumeroOperacion().equals("0")
 						&& DateUtils.stringToDate(
-								agendaCupon.getFechavencimiento(),Valuaciones.DATE_MASK_CUPON_SWAP).after(
+								agendaCupon.getFechavencimiento(),
+								Valuaciones.DATE_MASK_CUPON_SWAP).after(
 								pFechaProceso)) {
 					try {
 						MyLogger.log("------------------------------------");
@@ -434,8 +436,11 @@ public class ValuacionesSWAP extends Valuaciones {
 			MyLogger.log("Se ejecuto ESB de Feriados");
 
 			String sRtaFeriados = esbResponse.getResult();
-
-			fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
+			if (sRtaFeriados != null && !sRtaFeriados.startsWith("<error")) {
+				fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
+			} else {
+				MyLogger.logError("RESPUESTA XML Feriados: " + sRtaFeriados);
+			}
 		} catch (ESBClientException e) {
 			MyLogger.logError(e.toString());
 		} catch (Exception e) {
@@ -471,9 +476,14 @@ public class ValuacionesSWAP extends Valuaciones {
 			MyLogger.log("Se ejecuto ESB Agenda Operaciones SWAP ");
 
 			String sRtaAgendaCupones = esbResponse.getResult();
-
-			salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
-					.fromXML(sRtaAgendaCupones);
+			if (sRtaAgendaCupones != null
+					&& !sRtaAgendaCupones.startsWith("<error")) {
+				salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
+						.fromXML(sRtaAgendaCupones);
+			} else {
+				MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: "
+						+ sRtaAgendaCupones);
+			}
 		} catch (ESBClientException e) {
 			MyLogger.logError(e.toString());
 		} catch (Exception e) {
@@ -513,9 +523,14 @@ public class ValuacionesSWAP extends Valuaciones {
 			MyLogger.log("Se ejecuto ESB Operaciones SWAP a Valuar");
 
 			String sRtaOperaciones = esbResponse.getResult();
-
-			salida = (RecuperarOperacionesSWAPAValuarResponse) xs
-					.fromXML(sRtaOperaciones);
+			if (sRtaOperaciones != null
+					&& !sRtaOperaciones.startsWith("<error")) {
+				salida = (RecuperarOperacionesSWAPAValuarResponse) xs
+						.fromXML(sRtaOperaciones);
+			} else {
+				MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
+						+ sRtaOperaciones);
+			}
 		} catch (ESBClientException e) {
 			MyLogger.logError(e.toString());
 		} catch (Exception e) {
