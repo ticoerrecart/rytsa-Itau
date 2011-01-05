@@ -38,7 +38,7 @@ public abstract class Valuaciones {
 	public static String DATE_MASK_RTA_FERIADOS;
 
 	public static String DATE_MASK_CUPON_SWAP;
-	
+
 	public static String DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO;
 
 	public static String TABLA_FACTOR_DESC_FRACLI_FRACLIRF;
@@ -59,7 +59,10 @@ public abstract class Valuaciones {
 		DATE_MASK_NOVEDADES = "yyyy-MM-dd";
 		DATE_MASK_CUPON_SWAP = "yyyy-MM-dd";
 		DATE_MASK_RTA_FERIADOS = "MM/dd/yyyy";
-		DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO = "MM-dd-yyyy";
+		DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO = resourceBundle
+				.getString("servicios.RecuperoOperacionesNDFAValuar.dateMask");
+		MyLogger.log("Máscara de la fecha de Servicios de RecuperoOperacionesNDFAValuar '"
+				+ DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO + "'");
 		TABLA_FACTOR_DESC_FRACLI_FRACLIRF = resourceBundle
 				.getString("factorDesc.fraCli_fraCliRf");
 	}
