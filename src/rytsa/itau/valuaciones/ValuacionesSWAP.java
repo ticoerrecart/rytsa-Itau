@@ -47,14 +47,13 @@ public class ValuacionesSWAP extends Valuaciones {
 	/**
 	 * Para ello es necesario obtener las operaciones de swaps y los cupones
 	 * correspondientes de cada SWAP que se obtendr�n desde el sistema de
-	 * Patr�n, para este cometido, se desarrollaron 2 Web Services que
-	 * retornan dicha informaci�n en formato XML, para ser consumidos desde
-	 * cualquier plataforma. Una vez calculadas las valuaciones MTM de cada
-	 * Swap, se debe ejecutar un Web Service del sistema Patr�n que
-	 * actualizar� los precios de cada SWAP necesarios para cerrar el d�a y
-	 * el c�lculo de la contabilidad. Por �ltimo se deber� generar una
-	 * tabla DBF o se actualizar� una tabla SQL con los C�lculos de tasas
-	 * FWD.
+	 * Patr�n, para este cometido, se desarrollaron 2 Web Services que retornan
+	 * dicha informaci�n en formato XML, para ser consumidos desde cualquier
+	 * plataforma. Una vez calculadas las valuaciones MTM de cada Swap, se debe
+	 * ejecutar un Web Service del sistema Patr�n que actualizar� los precios de
+	 * cada SWAP necesarios para cerrar el d�a y el c�lculo de la contabilidad.
+	 * Por �ltimo se deber� generar una tabla DBF o se actualizar� una tabla SQL
+	 * con los C�lculos de tasas FWD.
 	 * 
 	 * 
 	 */
@@ -463,28 +462,37 @@ public class ValuacionesSWAP extends Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
+			String idSession = getIdSession();
+			if (idSession != null) {
+				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
+				esbRequest = client
+						.createRequest(resourceBundle
+								.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.nombreServicio"));
 
-			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client
-					.createRequest(resourceBundle
-							.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.nombreServicio"));
+				esbRequest
+						.setParameter(
+								resourceBundle
+										.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramIdSession"),
+								idSession);
+				/**
+				 * esbRequest .setParameter( resourceBundle .getString(
+				 * "servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramFechaProceso"
+				 * ), DateUtils.dateToString(pFechaProceso, DATE_MASK));
+				 */
+				client.execute(esbRequest, esbResponse);
+				MyLogger.log("Se ejecuto ESB Agenda Operaciones SWAP ");
 
-			/**
-			 * esbRequest .setParameter( resourceBundle .getString(
-			 * "servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramFechaProceso"
-			 * ), DateUtils.dateToString(pFechaProceso, DATE_MASK));
-			 */
-			client.execute(esbRequest, esbResponse);
-			MyLogger.log("Se ejecuto ESB Agenda Operaciones SWAP ");
-
-			String sRtaAgendaCupones = esbResponse.getResult();
-			if (sRtaAgendaCupones != null
-					&& !sRtaAgendaCupones.startsWith("<error")) {
-				salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
-						.fromXML(sRtaAgendaCupones);
+				String sRtaAgendaCupones = esbResponse.getResult();
+				if (sRtaAgendaCupones != null
+						&& !sRtaAgendaCupones.startsWith("<error")) {
+					salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
+							.fromXML(sRtaAgendaCupones);
+				} else {
+					MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: "
+							+ sRtaAgendaCupones);
+				}
 			} else {
-				MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: "
-						+ sRtaAgendaCupones);
+				MyLogger.logError("No se pudo obtener el IdSession para recuperar la Agenda Operaciones SWAP");
 			}
 		} catch (ESBClientException e) {
 			MyLogger.logError(e.toString());
@@ -512,26 +520,40 @@ public class ValuacionesSWAP extends Valuaciones {
 		ESBRequest esbRequest = null;
 		ESBResponse esbResponse = new ESBResponse();
 		try {
-			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client
-					.createRequest(resourceBundle
-							.getString("servicios.RecuperoOperacionesSWAPAValuar.nombreServicio"));
-			esbRequest
-					.setParameter(
-							resourceBundle
-									.getString("servicios.RecuperoOperacionesSWAPAValuar.paramFechaProceso"),
-							DateUtils.dateToString(pFechaProceso, DATE_MASK));
-			client.execute(esbRequest, esbResponse);
-			MyLogger.log("Se ejecuto ESB Operaciones SWAP a Valuar");
+			String idSession = getIdSession();
+			if (idSession != null) {
+				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
+				esbRequest = client
+						.createRequest(resourceBundle
+								.getString("servicios.RecuperoOperacionesSWAPAValuar.nombreServicio"));
 
-			String sRtaOperaciones = esbResponse.getResult();
-			if (sRtaOperaciones != null
-					&& !sRtaOperaciones.startsWith("<error")) {
-				salida = (RecuperarOperacionesSWAPAValuarResponse) xs
-						.fromXML(sRtaOperaciones);
+				esbRequest
+						.setParameter(
+								resourceBundle
+										.getString("servicios.RecuperoOperacionesSWAPAValuar.paramIdSession"),
+								idSession);
+				esbRequest
+						.setParameter(
+								resourceBundle
+										.getString("servicios.RecuperoOperacionesSWAPAValuar.paramFechaProceso"),
+								DateUtils
+										.dateToString(pFechaProceso, DATE_MASK));
+
+				client.execute(esbRequest, esbResponse);
+				MyLogger.log("Se ejecuto ESB Operaciones SWAP a Valuar");
+
+				String sRtaOperaciones = esbResponse.getResult();
+				if (sRtaOperaciones != null
+						&& !sRtaOperaciones.startsWith("<error")) {
+					salida = (RecuperarOperacionesSWAPAValuarResponse) xs
+							.fromXML(sRtaOperaciones);
+				} else {
+					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
+							+ sRtaOperaciones);
+				}
+
 			} else {
-				MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
-						+ sRtaOperaciones);
+				MyLogger.logError("No se pudo obtener el IdSession para recuperar las Operaciones SWAP a Valuar");
 			}
 		} catch (ESBClientException e) {
 			MyLogger.logError(e.toString());
