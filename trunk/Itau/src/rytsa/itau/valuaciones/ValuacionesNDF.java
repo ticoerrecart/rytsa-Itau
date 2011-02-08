@@ -22,7 +22,6 @@ import ar.com.itau.esb.client.ESBResponse;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
-import com.thoughtworks.xstream.converters.basic.DoubleConverter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
@@ -159,24 +158,35 @@ public class ValuacionesNDF extends Valuaciones {
 		ESBResponse esbResponse = new ESBResponse();
 		String sRta = null;
 		try {
-			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client
-					.createRequest(resourceBundle
-							.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio"));
-			esbRequest
-					.setParameter(
-							resourceBundle
-									.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
-							DateUtils.dateToString(pFechaProceso,
-									DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO));
-			client.execute(esbRequest, esbResponse);
-			sRta = esbResponse.getResult();
-			if (sRta != null && !sRta.startsWith("<error")) {
-				salida = (RecuperoOperacionesNDFAValuarResponse) xs
-						.fromXML(sRta);
+			String idSession = getIdSession();
+			if (idSession != null) {
+				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
+				esbRequest = client
+						.createRequest(resourceBundle
+								.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio"));
+				esbRequest
+						.setParameter(
+								resourceBundle
+										.getString("servicios.RecuperoOperacionesNDFAValuar.paramIdSession"),
+								idSession);
+				esbRequest
+						.setParameter(
+								resourceBundle
+										.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
+								DateUtils
+										.dateToString(pFechaProceso,
+												DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO));
+				client.execute(esbRequest, esbResponse);
+				sRta = esbResponse.getResult();
+				if (sRta != null && !sRta.startsWith("<error")) {
+					salida = (RecuperoOperacionesNDFAValuarResponse) xs
+							.fromXML(sRta);
+				} else {
+					MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: "
+							+ sRta);
+				}
 			} else {
-				MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: "
-						+ sRta);
+				MyLogger.logError("No se pudo obtener el IdSession para recuperar las operacionesNDFAValuar");
 			}
 
 		} catch (ESBClientException e) {
