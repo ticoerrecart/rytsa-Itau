@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import rytsa.itau.db.DAO;
+import rytsa.itau.db.factory.ProviderDTO;
 import rytsa.itau.dominio.CuponSWAP;
 import rytsa.itau.dominio.TasaFWD;
 import rytsa.itau.utils.DateUtils;
@@ -558,12 +559,7 @@ public class ValuacionesSWAP extends Valuaciones {
 				String sRtaOperaciones = esbResponse.getResult();
 				if (sRtaOperaciones != null
 						&& !sRtaOperaciones.startsWith("<error")) {
-					if (paramUsaWS){
-						salida = ((WSRecuperarOperacionesSWAPAValuarResponse)xs.fromXML(sRtaOperaciones)).getRecuperarOperacionesSWAPAValuarResponse();
-					}else{
-						salida = (RecuperarOperacionesSWAPAValuarResponse) xs.fromXML(sRtaOperaciones);
-					}	
-					
+						salida = ProviderDTO.getRecuperarOperacionesSWAPAValuarResponse(xs.fromXML(sRtaOperaciones));
 				} else {
 					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
 							+ sRtaOperaciones);
