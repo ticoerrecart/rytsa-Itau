@@ -19,11 +19,18 @@ public class XStreamTest extends TestCase {
 				"C:\\Documents and Settings\\rdiaz\\Mis documentos\\Downloads\\borrame.xml"));
 		// ValuacionesSWAP vs = new ValuacionesSWAP();
 		XStream xs = ValuacionesSWAP.getXStreamOperacionesYFeriados();
-		WSRecuperarOperacionesSWAPAValuarResponse op = (WSRecuperarOperacionesSWAPAValuarResponse) xs
-				.fromXML(nuevo);
-
-		RecuperarOperacionesSWAPAValuarResponse vi = (RecuperarOperacionesSWAPAValuarResponse) xs
-				.fromXML(viejo);
+		Object o = xs.fromXML(nuevo);
+		Object o2 = xs.fromXML(viejo);
+		
+		RecuperarOperacionesSWAPAValuarResponse salida;
+		if (o2 instanceof RecuperarOperacionesSWAPAValuarResponse ){
+			salida = (RecuperarOperacionesSWAPAValuarResponse)o2;
+		}else {
+			salida = ((WSRecuperarOperacionesSWAPAValuarResponse)o2).getRecuperarOperacionesSWAPAValuarResponse();
+		}
+		
+		
+		
 		System.out.println("FIN");
 	}
 
