@@ -23,6 +23,7 @@ import rytsa.itau.valuaciones.dto.swap.DisponibilizacionFeriadosXmlRequestData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
+import rytsa.itau.valuaciones.dto.swap.WSRecuperarOperacionesSWAPAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -316,10 +317,22 @@ public class ValuacionesSWAP extends Valuaciones {
 				resourceBundle
 						.getString("servicios.DisponibilizacionFeriadosXmlRequestData"),
 				DisponibilizacionFeriadosXmlRequestData.class);
-
+		//Nuevos alias para WS_
+		xs.alias("respuesta", WSRecuperarOperacionesSWAPAValuarResponse.class);
+		xs.alias("RecuperarOperacionesSWAPAValuarResponse", RecuperarOperacionesSWAPAValuarResponse.class);
+		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class, "cod-retorno");
+		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class, "mensajes");
+		xs.alias("OperacionSWAPAValuarData", OperacionSWAPAValuarData.class);
+		xs.aliasField("IdOperacionRelacionada",OperacionSWAPAValuarData.class , "idoperacionrelacionada");
+		xs.aliasField("IdOperacion", OperacionSWAPAValuarData.class, "IDOperacion");
+		xs.aliasField("RecuperarOperacionesSWAPAValuarResult", RecuperarOperacionesSWAPAValuarResponse.class, "Swaps");
+		
 		return xs;
 	}
 
+	
+	
+	
 	public static XStream getXStreamInformarNovedades() {
 		XStream xs = new XStream(new DomDriver());
 		xs.registerConverter(new MiDoubleConverter());
