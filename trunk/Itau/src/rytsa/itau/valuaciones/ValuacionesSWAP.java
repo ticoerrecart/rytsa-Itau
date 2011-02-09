@@ -558,8 +558,12 @@ public class ValuacionesSWAP extends Valuaciones {
 				String sRtaOperaciones = esbResponse.getResult();
 				if (sRtaOperaciones != null
 						&& !sRtaOperaciones.startsWith("<error")) {
-					salida = (RecuperarOperacionesSWAPAValuarResponse) xs
-							.fromXML(sRtaOperaciones);
+					if (paramUsaWS){
+						salida = ((WSRecuperarOperacionesSWAPAValuarResponse)xs.fromXML(sRtaOperaciones)).getRecuperarOperacionesSWAPAValuarResponse();
+					}else{
+						salida = (RecuperarOperacionesSWAPAValuarResponse) xs.fromXML(sRtaOperaciones);
+					}	
+					
 				} else {
 					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
 							+ sRtaOperaciones);
