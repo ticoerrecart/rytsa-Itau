@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 
 import junit.framework.TestCase;
+import rytsa.itau.db.factory.ProviderDTO;
+import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
+import rytsa.itau.valuaciones.dto.ndf.WSRecuperarOperacionesNDFAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.WSRecuperarOperacionesSWAPAValuarResponse;
 
@@ -13,21 +16,14 @@ public class XStreamTest extends TestCase {
 
 	public void testXS() throws Exception {
 
-		FileReader viejo = new FileReader(new File(
-				"C:\\Documents and Settings\\rdiaz\\Mis documentos\\Downloads\\viejo.xml"));
 		FileReader nuevo = new FileReader(new File(
-				"C:\\Documents and Settings\\rdiaz\\Mis documentos\\Downloads\\borrame.xml"));
+				"C:\\Desarrollo\\MyEclipse\\WorkspaceRYTSA\\Itau\\test\\rytsa\\itau\\valuaciones\\RecuperarOperacionesNDFAValuar.xml"));
 		// ValuacionesSWAP vs = new ValuacionesSWAP();
-		XStream xs = ValuacionesSWAP.getXStreamOperacionesYFeriados();
-		Object o = xs.fromXML(nuevo);
-		Object o2 = xs.fromXML(viejo);
+		XStream xs = ValuacionesNDF.getXStream();
 		
-		RecuperarOperacionesSWAPAValuarResponse salida;
-		if (o2 instanceof RecuperarOperacionesSWAPAValuarResponse ){
-			salida = (RecuperarOperacionesSWAPAValuarResponse)o2;
-		}else {
-			salida = ((WSRecuperarOperacionesSWAPAValuarResponse)o2).getRecuperarOperacionesSWAPAValuarResponse();
-		}
+		
+		RecuperoOperacionesNDFAValuarResponse  salida = ProviderDTO.getRecuperoOperacionesNDFAValuarResponse(xs.fromXML(nuevo));
+		
 		
 		
 		
