@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import rytsa.itau.db.factory.ProviderDTO;
 import rytsa.itau.dominio.Mtm;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.MiDoubleConverter;
@@ -14,6 +15,10 @@ import rytsa.itau.valuaciones.dto.RequestData;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
+import rytsa.itau.valuaciones.dto.ndf.WSRecuperarOperacionesNDFAValuarResponse;
+import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
+import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
+import rytsa.itau.valuaciones.dto.swap.WSRecuperarOperacionesSWAPAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -142,6 +147,15 @@ public class ValuacionesNDF extends Valuaciones {
 				RequestData.class);
 		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
 				"requestDataList");
+		
+		//Nuevos alias para WS_
+		xs.alias("respuesta", WSRecuperarOperacionesNDFAValuarResponse.class);
+		xs.alias("RecuperarOperacionesNDFAValuarResponse", RecuperoOperacionesNDFAValuarResponse.class);
+		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class, "cod-retorno");
+		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class, "mensajes");
+		xs.alias("OperacionNDFAValuarData", OperacionNDFAValuarData.class);
+		xs.aliasField("RecuperarOperacionesNDFAValuarResult", RecuperoOperacionesNDFAValuarResponse.class, "NDF");
+		
 		return xs;
 	}
 
@@ -179,8 +193,7 @@ public class ValuacionesNDF extends Valuaciones {
 				client.execute(esbRequest, esbResponse);
 				sRta = esbResponse.getResult();
 				if (sRta != null && !sRta.startsWith("<error")) {
-					salida = (RecuperoOperacionesNDFAValuarResponse) xs
-							.fromXML(sRta);
+					salida = ProviderDTO.getRecuperoOperacionesNDFAValuarResponse(xs.fromXML(sRta));
 				} else {
 					MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: "
 							+ sRta);

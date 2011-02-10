@@ -1,0 +1,24 @@
+<respuesta>
+<RecuperarAgendaCuponesOperacionesSWAPAValuarResponse xmlns="http://api.patron.mae.com.ar/sistemasexternos/itau">
+  <RecuperarAgendaCuponesOperacionesSWAPAValuarResult>
+    <AgendaCuponOperacioneSWAPAValuarData>
+      <NumeroOperacion>0</NumeroOperacion>
+      <idCupon>0</idCupon>
+      <TipoFlujo>X</TipoFlujo>
+      <FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+      <FechaVencimiento>2010-10-08 00:00:00.0</FechaVencimiento>
+      <FechaIndiceInicio>2010-10-08 00:00:00.0</FechaIndiceInicio>
+      <FechaIndiceFin>2010-10-08 00:00:00.0</FechaIndiceFin>
+    </AgendaCuponOperacioneSWAPAValuarData>
+    <AgendaCuponOperacioneSWAPAValuarData>
+   <NumeroOperacion>0</NumeroOperacion>
+      <idCupon>0</idCupon>
+      <TipoFlujo>X</TipoFlujo>
+      <FechaInicio>2010-10-08 00:00:00.0</FechaInicio>
+      <FechaVencimiento>2010-10-08 00:00:00.0</FechaVencimiento>
+      <FechaIndiceInicio>2010-10-08 00:00:00.0</FechaIndiceInicio>
+      <FechaIndiceFin>2010-10-08 00:00:00.0</FechaIndiceFin>
+    </AgendaCuponOperacioneSWAPAValuarData>
+  </RecuperarAgendaCuponesOperacionesSWAPAValuarResult>
+</RecuperarAgendaCuponesOperacionesSWAPAValuarResponse>
+</respuesta>

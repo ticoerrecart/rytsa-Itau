@@ -1,0 +1,148 @@
+<respuesta originId="PCRODRIGO_1753.0" code="WS_OPERACIONES_SWAPS_PATRON_LISTADO">
+	<cod-retorno>00</cod-retorno>
+	<mensajes />
+	<RecuperarOperacionesSWAPAValuarResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://api.patron.mae.com.ar/sistemasexternos/itau">
+		<RecuperarOperacionesSWAPAValuarResult>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>205</IdOperacion>
+				<NumeroOperacion>745</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Fija</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>C</TipoOperacion>
+				<CantidadVN>1500000.00</CantidadVN>
+				<Precio>11.00000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>206</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>206</IdOperacion>
+				<NumeroOperacion>746</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Variable</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>V</TipoOperacion>
+				<CantidadVN>-1500000.00</CantidadVN>
+				<Precio>1.00000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>205</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>208</IdOperacion>
+				<NumeroOperacion>747</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Fija</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>C</TipoOperacion>
+				<CantidadVN>1500000.00</CantidadVN>
+				<Precio>11.20000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>209</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>209</IdOperacion>
+				<NumeroOperacion>748</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Variable</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>V</TipoOperacion>
+				<CantidadVN>-1500000.00</CantidadVN>
+				<Precio>1.00000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>208</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>210</IdOperacion>
+				<NumeroOperacion>749</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Fija</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Variable</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>V</TipoOperacion>
+				<CantidadVN>-2000000.00</CantidadVN>
+				<Precio>10.62000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>211</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>211</IdOperacion>
+				<NumeroOperacion>750</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Variable</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Variable</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>C</TipoOperacion>
+				<CantidadVN>2000000.00</CantidadVN>
+				<Precio>1.00000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>210</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>212</IdOperacion>
+				<NumeroOperacion>751</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Fija</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>C</TipoOperacion>
+				<CantidadVN>2555555.00</CantidadVN>
+				<Precio>11.00100</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>213</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>213</IdOperacion>
+				<NumeroOperacion>752</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Variable</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>V</TipoOperacion>
+				<CantidadVN>-2555555.00</CantidadVN>
+				<Precio>1.00000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>212</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>214</IdOperacion>
+				<NumeroOperacion>753</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Fija</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>C</TipoOperacion>
+				<CantidadVN>1500000.00</CantidadVN>
+				<Precio>11.00000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>215</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+			<OperacionSWAPAValuarData>
+				<IdOperacion>215</IdOperacion>
+				<NumeroOperacion>754</NumeroOperacion>
+				<Mercado>Mercado Interno</Mercado>
+				<MetodoFixing>Tasa Variable</MetodoFixing>
+				<Moneda>ARP</Moneda>
+				<BIBAPaga>Tasa Fija</BIBAPaga>
+				<MonedaLiquidacion>ARP</MonedaLiquidacion>
+				<TipoOperacion>V</TipoOperacion>
+				<CantidadVN>-1500000.00</CantidadVN>
+				<Precio>1.00000</Precio>
+				<Base>365</Base>
+				<IdOperacionRelacionada>214</IdOperacionRelacionada>
+			</OperacionSWAPAValuarData>
+		</RecuperarOperacionesSWAPAValuarResult>
+	</RecuperarOperacionesSWAPAValuarResponse>
+</respuesta>

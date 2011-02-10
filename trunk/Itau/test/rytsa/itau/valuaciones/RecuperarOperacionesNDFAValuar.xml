@@ -1,0 +1,28 @@
+<respuesta>
+	<RecuperarOperacionesNDFAValuarResponse xmlns="http://api.patron.mae.com.ar/sistemasexternos/itau">
+	  <RecuperarOperacionesNDFAValuarResult>
+	    <OperacionNDFAValuarData>
+	      <IDOperacion>0</IDOperacion>
+	      <NumeroOperacion>0</NumeroOperacion>
+	      <Mercado>X</Mercado>
+	      <Moneda>X</Moneda>
+	      <MonedaLiquidacion>ARS</MonedaLiquidacion>
+	      <FechaVencimiento>2010-10-08 00:00:00.0</FechaVencimiento>
+	      <CantidadVN>0.0</CantidadVN>
+	      <Precio>0.0</Precio>
+	      <TipoOperacion>C</TipoOperacion>
+	    </OperacionNDFAValuarData>
+	    <OperacionNDFAValuarData>
+	      <IDOperacion>0</IDOperacion>
+	      <NumeroOperacion>0</NumeroOperacion>
+	      <Mercado>X</Mercado>
+	      <Moneda>X</Moneda>
+	      <MonedaLiquidacion>ARS</MonedaLiquidacion>
+	      <FechaVencimiento>2010-10-08 00:00:00.0</FechaVencimiento>
+	      <CantidadVN>0.0</CantidadVN>
+	      <Precio>0.0</Precio>
+	      <TipoOperacion>C</TipoOperacion>
+	    </OperacionNDFAValuarData>
+	  </RecuperarOperacionesNDFAValuarResult>
+	</RecuperarOperacionesNDFAValuarResponse>
+</respuesta>
