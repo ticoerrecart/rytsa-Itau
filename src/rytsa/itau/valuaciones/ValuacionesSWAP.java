@@ -24,6 +24,7 @@ import rytsa.itau.valuaciones.dto.swap.DisponibilizacionFeriadosXmlRequestData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
+import rytsa.itau.valuaciones.dto.swap.WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.WSRecuperarOperacionesSWAPAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
@@ -361,6 +362,15 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.omitField(
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
 				"count");
+		
+		//Nuevos alias para WS_
+		xs.alias("respuesta", WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.alias("RecuperarAgendaCuponesOperacionesSWAPAValuarResponse", RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.omitField(WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "cod-retorno");
+		xs.omitField(WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "mensajes");
+		xs.alias("AgendaCuponOperacioneSWAPAValuarData", AgendaCuponOperacioneSWAPAValuarData.class);
+		xs.aliasField("FechaVencimiento", AgendaCuponOperacioneSWAPAValuarData.class, "fechavencimiento");
+		xs.aliasField("RecuperarAgendaCuponesOperacionesSWAPAValuarResult", RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "Swaps");
 		return xs;
 	}
 
@@ -499,8 +509,7 @@ public class ValuacionesSWAP extends Valuaciones {
 				String sRtaAgendaCupones = esbResponse.getResult();
 				if (sRtaAgendaCupones != null
 						&& !sRtaAgendaCupones.startsWith("<error")) {
-					salida = (RecuperarAgendaCuponesOperacionesSWAPAValuarResponse) xs
-							.fromXML(sRtaAgendaCupones);
+					salida = ProviderDTO.getRecuperarAgendaCuponesOperacionesSWAPAValuarResponse(xs.fromXML(sRtaAgendaCupones));
 				} else {
 					MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: "
 							+ sRtaAgendaCupones);
