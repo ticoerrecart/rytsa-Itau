@@ -10,9 +10,7 @@ import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.MiDoubleConverter;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
-import rytsa.itau.valuaciones.dto.LoginSesionResponseData;
 import rytsa.itau.valuaciones.dto.RequestData;
-import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
 import rytsa.itau.valuaciones.dto.ndf.WSRecuperarOperacionesNDFAValuarResponse;
@@ -125,10 +123,6 @@ public class ValuacionesNDF extends Valuaciones {
 		xs.alias("response", RecuperoOperacionesNDFAValuarResponse.class);
 		xs.alias("Operacion", OperacionNDFAValuarData.class);
 		xs.omitField(RecuperoOperacionesNDFAValuarResponse.class, "count");
-		xs.alias("respuesta", SeguridadResponse.class);
-		xs.omitField(SeguridadResponse.class, "cod-retorno");
-		xs.omitField(SeguridadResponse.class, "mensajes");
-		xs.alias("LoginSesionResponseData", LoginSesionResponseData.class);
 		xs.alias("InformarNovedadesValuacionesXmlRequest", InformarNovedadesValuacionesXmlRequest.class);
 		xs.alias("RequestData", RequestData.class);
 		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class, "requestDataList");
@@ -140,7 +134,6 @@ public class ValuacionesNDF extends Valuaciones {
 		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class, "mensajes");
 		xs.alias("OperacionNDFAValuarData", OperacionNDFAValuarData.class);
 		xs.aliasField("RecuperarOperacionesNDFAValuarResult", RecuperoOperacionesNDFAValuarResponse.class, "NDF");
-		
 		return xs;
 	}
 

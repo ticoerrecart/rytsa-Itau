@@ -6,9 +6,15 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import rytsa.itau.utils.MiDoubleConverter;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
+import rytsa.itau.valuaciones.dto.LoginSesionResponseData;
+import rytsa.itau.valuaciones.dto.RequestData;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
+import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
+import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
+import rytsa.itau.valuaciones.dto.ndf.WSRecuperarOperacionesNDFAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -16,6 +22,8 @@ import ar.com.itau.esb.client.ESBRequest;
 import ar.com.itau.esb.client.ESBResponse;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.basic.DateConverter;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * @author rerrecart
@@ -104,19 +112,16 @@ public abstract class Valuaciones {
 		ESBResponse esbResponse = new ESBResponse();
 		try {
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client.createRequest(resourceBundle
-					.getString("servicios.Login.nombreServicio"));
-			esbRequest.setParameter("UserName",
-					resourceBundle.getString("ws.userName"));
-			esbRequest.setParameter("Password",
-					resourceBundle.getString("ws.password"));
+			esbRequest = client.createRequest(resourceBundle.getString("servicios.Login.nombreServicio"));
+			esbRequest.setParameter("UserName",resourceBundle.getString("ws.userName"));
+			esbRequest.setParameter("Password",resourceBundle.getString("ws.password"));
 			esbRequest.setParameter("Ip", resourceBundle.getString("ws.ip"));
 			esbRequest.setParameter("IdAplicacion", "2");
 
 			MyLogger.log("Se ejecuto ESB Login ");
 			client.execute(esbRequest, esbResponse);
 			String sRta = esbResponse.getResult();
-			XStream xs = ValuacionesNDF.getXStream();
+			XStream xs = Valuaciones.getXStreamLogin();
 			SeguridadResponse seg = (SeguridadResponse) xs.fromXML(sRta);
 			return seg.getLoginSesionResponseData().getIdSesion();
 
@@ -132,7 +137,16 @@ public abstract class Valuaciones {
 		return null;
 
 	}
-
+	
+	protected static XStream getXStreamLogin() {
+		XStream xs = new XStream(new DomDriver());
+		xs.alias("respuesta", SeguridadResponse.class);
+		xs.omitField(SeguridadResponse.class, "cod-retorno");
+		xs.omitField(SeguridadResponse.class, "mensajes");
+		xs.alias("LoginSesionResponseData", LoginSesionResponseData.class);
+		return xs;
+	}
+	
 	protected static String informarValuaciones(String xml) {
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
