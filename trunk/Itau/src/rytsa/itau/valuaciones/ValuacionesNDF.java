@@ -16,9 +16,6 @@ import rytsa.itau.valuaciones.dto.SeguridadResponse;
 import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
 import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
 import rytsa.itau.valuaciones.dto.ndf.WSRecuperarOperacionesNDFAValuarResponse;
-import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
-import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
-import rytsa.itau.valuaciones.dto.swap.WSRecuperarOperacionesSWAPAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -124,29 +121,17 @@ public class ValuacionesNDF extends Valuaciones {
 	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
 		xs.registerConverter(new MiDoubleConverter());
-		xs.registerConverter(new DateConverter("yyyy-MM-dd hh:mm:ss.S",
-				new String[0]));
-		xs.alias(resourceBundle
-				.getString("servicios.RecuperoOperacionesNDFAValuarResponse"),
-				RecuperoOperacionesNDFAValuarResponse.class);
-		xs.alias(resourceBundle.getString("servicios.OperacionNDFAValuarData"),
-				OperacionNDFAValuarData.class);
+		xs.registerConverter(new DateConverter("yyyy-MM-dd hh:mm:ss.S", new String[0]));
+		xs.alias("response", RecuperoOperacionesNDFAValuarResponse.class);
+		xs.alias("Operacion", OperacionNDFAValuarData.class);
 		xs.omitField(RecuperoOperacionesNDFAValuarResponse.class, "count");
-		xs.alias(resourceBundle.getString("servicios.LoginResponse"),
-				SeguridadResponse.class);
+		xs.alias("respuesta", SeguridadResponse.class);
 		xs.omitField(SeguridadResponse.class, "cod-retorno");
 		xs.omitField(SeguridadResponse.class, "mensajes");
-		xs.alias(resourceBundle.getString("servicios.LoginSesionResponseData"),
-				LoginSesionResponseData.class);
-		xs.alias(
-				resourceBundle
-						.getString("servicios.informarNovedades.InformarNovedadesValuacionesXmlRequest"),
-				InformarNovedadesValuacionesXmlRequest.class);
-		xs.alias(resourceBundle
-				.getString("servicios.informarNovedades.requestData"),
-				RequestData.class);
-		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
-				"requestDataList");
+		xs.alias("LoginSesionResponseData", LoginSesionResponseData.class);
+		xs.alias("InformarNovedadesValuacionesXmlRequest", InformarNovedadesValuacionesXmlRequest.class);
+		xs.alias("RequestData", RequestData.class);
+		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class, "requestDataList");
 		
 		//Nuevos alias para WS_
 		xs.alias("respuesta", WSRecuperarOperacionesNDFAValuarResponse.class);
@@ -175,21 +160,16 @@ public class ValuacionesNDF extends Valuaciones {
 			String idSession = getIdSession();
 			if (idSession != null) {
 				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-				esbRequest = client
-						.createRequest(resourceBundle
-								.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio"));
-				esbRequest
-						.setParameter(
-								resourceBundle
-										.getString("servicios.RecuperoOperacionesNDFAValuar.paramIdSession"),
-								idSession);
-				esbRequest
-						.setParameter(
-								resourceBundle
-										.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso"),
-								DateUtils
-										.dateToString(pFechaProceso,
-												DATE_MASK_OPERACIONES_NDF_PATRON_LISTADO));
+				
+				String servicio = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio");
+				String nombreParamIdSession = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.paramIdSession");
+				String nombreParamFechaProceso = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso");
+				String maskFechaProceso = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.dateMask");
+				
+				esbRequest = client.createRequest(servicio);
+				esbRequest.setParameter(nombreParamIdSession,idSession);
+				esbRequest.setParameter(nombreParamFechaProceso,DateUtils.dateToString(pFechaProceso,maskFechaProceso));
+				
 				client.execute(esbRequest, esbResponse);
 				sRta = esbResponse.getResult();
 				if (sRta != null && !sRta.startsWith("<error")) {
