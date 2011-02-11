@@ -111,7 +111,7 @@ public class ComunicacionESBTest extends TestCase {
 
 			String rta = readFile("E:\\DESARROLLO\\Workspace\\Itau\\test\\rytsa\\itau\\valuaciones\\Feri.xml");
 
-			XStream xs = ValuacionesSWAP.getXStreamOperacionesYFeriados();
+			XStream xs = ValuacionesSWAP.getXStreamFeriados();
 
 			esbRequest = client.createRequest("WS_FERIADOS_PATRON_LISTADO");
 			esbRequest.setParameter("IdSesion",
