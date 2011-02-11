@@ -300,16 +300,11 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 	}
 
-	public static XStream getXStreamOperacionesYFeriados() {
+	public static XStream getXStreamOperaciones() {
 		XStream xs = new XStream(new DomDriver());
-		xs.alias("respuesta",FeriadosResponse.class);
-		xs.alias("DisponibilizacionFeriadosXmlResponseData",FechaData.class);
 		xs.alias("response",RecuperarOperacionesSWAPAValuarResponse.class);
 		xs.alias("Operacion",OperacionSWAPAValuarData.class);
 		xs.omitField(RecuperarOperacionesSWAPAValuarResponse.class, "count");
-		xs.omitField(FeriadosResponse.class, "cod-retorno");
-		xs.omitField(FeriadosResponse.class, "mensajes");
-		xs.alias("DisponibilizacionFeriadosXmlRequestData",DisponibilizacionFeriadosXmlRequestData.class);
 		//Nuevos alias para WS_
 		xs.alias("respuesta", WSRecuperarOperacionesSWAPAValuarResponse.class);
 		xs.alias("RecuperarOperacionesSWAPAValuarResponse", RecuperarOperacionesSWAPAValuarResponse.class);
@@ -320,6 +315,17 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.aliasField("IdOperacion", OperacionSWAPAValuarData.class, "IDOperacion");
 		xs.aliasField("RecuperarOperacionesSWAPAValuarResult", RecuperarOperacionesSWAPAValuarResponse.class, "Swaps");
 		
+		return xs;
+	}
+
+	
+	public static XStream getXStreamFeriados() {
+		XStream xs = new XStream(new DomDriver());
+		xs.alias("respuesta",FeriadosResponse.class);
+		xs.alias("DisponibilizacionFeriadosXmlResponseData",FechaData.class);
+		xs.omitField(FeriadosResponse.class, "cod-retorno");
+		xs.omitField(FeriadosResponse.class, "mensajes");
+		xs.alias("DisponibilizacionFeriadosXmlRequestData",DisponibilizacionFeriadosXmlRequestData.class);
 		return xs;
 	}
 
@@ -408,7 +414,7 @@ public class ValuacionesSWAP extends Valuaciones {
 	}
 
 	public static FeriadosResponse getDias(Date pFechaDesde, Date pFechaHasta) {
-		XStream xs = getXStreamOperacionesYFeriados();
+		XStream xs = getXStreamFeriados();
 
 		String idSession = Valuaciones.getIdSession();
 
@@ -503,7 +509,7 @@ public class ValuacionesSWAP extends Valuaciones {
 
 	public static List<OperacionSWAPAValuarData> operacionesSWAP(
 			Date pFechaProceso) {
-		XStream xs = getXStreamOperacionesYFeriados();
+		XStream xs = getXStreamOperaciones();
 		RecuperarOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
 		ESBRequest esbRequest = null;
