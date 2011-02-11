@@ -16,7 +16,7 @@ public class DisponibilizacionFeriadosXmlRequestDataTest extends TestCase {
 			feriadosXml.setFechaIni(fecha1);
 			feriadosXml.setFechaFin(fecha2);
 			feriadosXml.setIdCalendario("1");
-			String xml = ValuacionesSWAP.getXStreamOperacionesYFeriados()
+			String xml = ValuacionesSWAP.getXStreamFeriados()
 					.toXML(feriadosXml);
 			xml = xml.replace("\n", "");
 			assertNotNull(xml);

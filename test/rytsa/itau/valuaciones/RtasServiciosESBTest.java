@@ -33,7 +33,7 @@ public class RtasServiciosESBTest extends TestCase {
 
 	public void testOperacionesSWAP() {
 		ValuacionesSWAP valuacionesSWAP = new ValuacionesSWAP();
-		XStream xs = valuacionesSWAP.getXStreamOperacionesYFeriados();
+		XStream xs = valuacionesSWAP.getXStreamOperaciones();
 		InputStream is = RtasServiciosESBTest.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/Swaps.xml");
 		RecuperarOperacionesSWAPAValuarResponse salida = (RecuperarOperacionesSWAPAValuarResponse) xs
@@ -42,7 +42,7 @@ public class RtasServiciosESBTest extends TestCase {
 
 	public void testFeriadosSWAP() {
 		ValuacionesSWAP valuacionesSWAP = new ValuacionesSWAP();
-		XStream xs = valuacionesSWAP.getXStreamOperacionesYFeriados();
+		XStream xs = valuacionesSWAP.getXStreamFeriados();
 		InputStream is = RtasServiciosESBTest.class
 				.getResourceAsStream("/rytsa/itau/valuaciones/Feriados.xml");
 		FeriadosResponse salida = (FeriadosResponse) xs.fromXML(is);
