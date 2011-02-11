@@ -355,6 +355,8 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.omitField(WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "mensajes");
 		xs.alias("AgendaCuponOperacioneSWAPAValuarData", AgendaCuponOperacioneSWAPAValuarData.class);
 		xs.aliasField("FechaVencimiento", AgendaCuponOperacioneSWAPAValuarData.class, "fechavencimiento");
+		xs.aliasField("IdCupon", AgendaCuponOperacioneSWAPAValuarData.class, "idCupon");
+		
 		xs.aliasField("RecuperarAgendaCuponesOperacionesSWAPAValuarResult", RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "Swaps");
 		return xs;
 	}
