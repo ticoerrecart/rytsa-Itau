@@ -6,15 +6,10 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import rytsa.itau.utils.MiDoubleConverter;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 import rytsa.itau.valuaciones.dto.LoginSesionResponseData;
-import rytsa.itau.valuaciones.dto.RequestData;
 import rytsa.itau.valuaciones.dto.SeguridadResponse;
-import rytsa.itau.valuaciones.dto.ndf.OperacionNDFAValuarData;
-import rytsa.itau.valuaciones.dto.ndf.RecuperoOperacionesNDFAValuarResponse;
-import rytsa.itau.valuaciones.dto.ndf.WSRecuperarOperacionesNDFAValuarResponse;
 import ar.com.itau.esb.client.ESBClient;
 import ar.com.itau.esb.client.ESBClientException;
 import ar.com.itau.esb.client.ESBClientFactory;
@@ -22,7 +17,6 @@ import ar.com.itau.esb.client.ESBRequest;
 import ar.com.itau.esb.client.ESBResponse;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
