@@ -119,12 +119,10 @@ public class ValuacionesNDF extends Valuaciones {
 	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
 		xs.registerConverter(new MiDoubleConverter());
-		String formatoFecha = "yyyy-MM-dd hh:mm:ss";
-		// xs.registerConverter(new DateConverter("yyyy-MM-dd hh:mm:ss.S", new
-		// String[0]));
-		xs.registerConverter(new DateConverter(formatoFecha, new String[0]));
+		String formatoFecha = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.dateMaskRespuesta");
 		MyLogger.log("Formato de fecha utilizado para XStream en NDF :'"
 				+ formatoFecha + "'");
+		xs.registerConverter(new DateConverter(formatoFecha, new String[0]));
 		xs.alias("response", RecuperoOperacionesNDFAValuarResponse.class);
 		xs.alias("Operacion", OperacionNDFAValuarData.class);
 		xs.omitField(RecuperoOperacionesNDFAValuarResponse.class, "count");
