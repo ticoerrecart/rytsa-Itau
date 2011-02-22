@@ -32,10 +32,10 @@ public class Mtm {
 		this.setOperacionNDF(pOperacionNDF);
 
 		this.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(pFechaProceso,
-				DAO.monedas.get(pOperacionNDF.getMoneda())));
+				DAO.obtenerMoneda(pOperacionNDF.getMoneda())));
 
 		this.setTipoCambioMoneda2(DAO.obtenerTipoCambioMoneda(pFechaProceso,
-				DAO.monedas.get(pOperacionNDF.getMonedaLiquidacion())));
+				DAO.obtenerMoneda(pOperacionNDF.getMonedaLiquidacion())));
 
 		if (this.getTipoCambioMoneda() == null) {
 			MyLogger.logError("tipoCambioMoneda es nulo");
@@ -54,13 +54,13 @@ public class Mtm {
 			throw new Exception("plazoRemanente es nulo");
 		}
 
-		this.setCurvaMoneda(DAO.obtenerFactorDesc(pFechaProceso,
-				this.getPlazoRemanente(),
-				FileUtils.getFileName(DAO.files.get(pOperacionNDF.getMoneda()))));
+		this.setCurvaMoneda(DAO.obtenerFactorDesc(pFechaProceso, this
+				.getPlazoRemanente(), FileUtils.getFileName(DAO
+				.obtenerFile(pOperacionNDF.getMoneda()))));
 
 		this.setCurvaMoneda2(DAO.obtenerFactorDesc(pFechaProceso, this
-				.getPlazoRemanente(), FileUtils.getFileName(DAO.files
-				.get(pOperacionNDF.getMonedaLiquidacion()))));
+				.getPlazoRemanente(), FileUtils.getFileName(DAO
+				.obtenerFile(pOperacionNDF.getMonedaLiquidacion()))));
 
 		this.calcularFwd();
 

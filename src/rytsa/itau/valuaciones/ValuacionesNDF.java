@@ -39,6 +39,9 @@ public class ValuacionesNDF extends Valuaciones {
 		return calculoMTM(pFechaProceso, operacionesNDF);
 	}
 
+	/*
+	 * Copié y comprometí la modificación hecha por Alexis. FE, Ene/2011
+	 */
 	private static InformarNovedadesValuacionesXmlRequest calculoMTM(
 			Date pFechaProceso,
 			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF)
@@ -69,8 +72,13 @@ public class ValuacionesNDF extends Valuaciones {
 			rd.setCodigo("MTMAC");
 			rd.setCodUsuario("FOX");
 			rd.setCorrida("1");
-			rd.setFecha(DateUtils.dateToString(mtm.getOperacionNDF()
-					.getFechaProceso(), Valuaciones.DATE_MASK_NOVEDADES));
+
+			// Modificación Alexis 17-01-2011
+			// rd.setFecha(DateUtils.dateToString(mtm.getOperacionNDF()
+			// .getFechaProceso(), Valuaciones.DATE_MASK_NOVEDADES));
+			rd.setFecha(DateUtils.dateToString(pFechaProceso,
+					Valuaciones.DATE_MASK_NOVEDADES));
+
 			rd.setIdOperacion(mtm.getOperacionNDF().getIDOperacion());
 			rd.setMonedaValuacion(1);
 			rd.setMTM(mtm.getMtm());
@@ -90,8 +98,11 @@ public class ValuacionesNDF extends Valuaciones {
 		}
 		informar.setCodFormula("MTMAC");
 		if (listaMtm != null && listaMtm.size() > 0) {
-			informar.setFechaProceso(DateUtils.dateToString(listaMtm.get(0)
-					.getOperacionNDF().getFechaProceso(),
+			// Modificación Alexis 17-01-2011
+			// informar.setFechaProceso(DateUtils.dateToString(listaMtm.get(0)
+			// .getOperacionNDF().getFechaProceso(),
+			// Valuaciones.DATE_MASK_NOVEDADES));
+			informar.setFechaProceso(DateUtils.dateToString(pFechaProceso,
 					Valuaciones.DATE_MASK_NOVEDADES));
 		}
 		XStream xs = ValuacionesNDF.getXStream();
@@ -119,24 +130,30 @@ public class ValuacionesNDF extends Valuaciones {
 	public static XStream getXStream() {
 		XStream xs = new XStream(new DomDriver());
 		xs.registerConverter(new MiDoubleConverter());
-		String formatoFecha = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.dateMaskRespuesta");
+		String formatoFecha = resourceBundle
+				.getString("servicios.RecuperoOperacionesNDFAValuar.dateMaskRespuesta");
 		MyLogger.log("Formato de fecha utilizado para XStream en NDF :'"
 				+ formatoFecha + "'");
 		xs.registerConverter(new DateConverter(formatoFecha, new String[0]));
 		xs.alias("response", RecuperoOperacionesNDFAValuarResponse.class);
 		xs.alias("Operacion", OperacionNDFAValuarData.class);
 		xs.omitField(RecuperoOperacionesNDFAValuarResponse.class, "count");
-		xs.alias("InformarNovedadesValuacionesXmlRequest", InformarNovedadesValuacionesXmlRequest.class);
+		xs.alias("InformarNovedadesValuacionesXmlRequest",
+				InformarNovedadesValuacionesXmlRequest.class);
 		xs.alias("RequestData", RequestData.class);
-		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class, "requestDataList");
-		
-		//Nuevos alias para WS_
+		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
+				"requestDataList");
+
+		// Nuevos alias para WS_
 		xs.alias("respuesta", WSRecuperarOperacionesNDFAValuarResponse.class);
-		xs.alias("RecuperarOperacionesNDFAValuarResponse", RecuperoOperacionesNDFAValuarResponse.class);
-		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class, "cod-retorno");
+		xs.alias("RecuperarOperacionesNDFAValuarResponse",
+				RecuperoOperacionesNDFAValuarResponse.class);
+		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class,
+				"cod-retorno");
 		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class, "mensajes");
 		xs.alias("OperacionNDFAValuarData", OperacionNDFAValuarData.class);
-		xs.aliasField("RecuperarOperacionesNDFAValuarResult", RecuperoOperacionesNDFAValuarResponse.class, "NDF");
+		xs.aliasField("RecuperarOperacionesNDFAValuarResult",
+				RecuperoOperacionesNDFAValuarResponse.class, "NDF");
 		return xs;
 	}
 
@@ -156,20 +173,28 @@ public class ValuacionesNDF extends Valuaciones {
 			String idSession = getIdSession();
 			if (idSession != null) {
 				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-				
-				String servicio = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio");
-				String nombreParamIdSession = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.paramIdSession");
-				String nombreParamFechaProceso = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso");
-				String maskFechaProceso = resourceBundle.getString("servicios.RecuperoOperacionesNDFAValuar.dateMask");
-				
+
+				String servicio = resourceBundle
+						.getString("servicios.RecuperoOperacionesNDFAValuar.nombreServicio");
+				String nombreParamIdSession = resourceBundle
+						.getString("servicios.RecuperoOperacionesNDFAValuar.paramIdSession");
+				String nombreParamFechaProceso = resourceBundle
+						.getString("servicios.RecuperoOperacionesNDFAValuar.paramFechaProceso");
+				String maskFechaProceso = resourceBundle
+						.getString("servicios.RecuperoOperacionesNDFAValuar.dateMask");
+
 				esbRequest = client.createRequest(servicio);
-				esbRequest.setParameter(nombreParamIdSession,idSession);
-				esbRequest.setParameter(nombreParamFechaProceso,DateUtils.dateToString(pFechaProceso,maskFechaProceso));
-				
+				esbRequest.setParameter(nombreParamIdSession, idSession);
+				esbRequest
+						.setParameter(nombreParamFechaProceso, DateUtils
+								.dateToString(pFechaProceso, maskFechaProceso));
+
 				client.execute(esbRequest, esbResponse);
 				sRta = esbResponse.getResult();
 				if (sRta != null && !sRta.startsWith("<error")) {
-					salida = ProviderDTO.getRecuperoOperacionesNDFAValuarResponse(xs.fromXML(sRta));
+					salida = ProviderDTO
+							.getRecuperoOperacionesNDFAValuarResponse(xs
+									.fromXML(sRta));
 				} else {
 					MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: "
 							+ sRta);
