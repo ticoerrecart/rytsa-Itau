@@ -23,9 +23,30 @@ import br.com.softsite.sfc.tini.persistence.Table;
 
 public class DAO {
 
-	public static HashMap<String, Integer> monedas = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> monedas = new HashMap<String, Integer>();
 
-	public static HashMap<String, String> files = new HashMap<String, String>();
+	private static HashMap<String, String> files = new HashMap<String, String>();
+
+	public static Integer obtenerMoneda(String key) throws Exception {
+		Integer moneda = monedas.get(key);
+		if (moneda == null) {
+			String err = "No se pudo obtener el código de Moneda para la moneda "
+					+ key;
+			MyLogger.logError(err);
+			throw new Exception(err);
+		}
+		return moneda;
+	}
+
+	public static String obtenerFile(String key) throws Exception {
+		String file = files.get(key);
+		if (file == null) {
+			String err = "No se pudo obtener el path para la moneda " + key;
+			MyLogger.logError(err);
+			throw new Exception(err);
+		}
+		return file;
+	}
 
 	public static void crearTipoDeCambio() {
 		Connection conn = null;
@@ -80,7 +101,7 @@ public class DAO {
 			 */
 
 		} catch (Exception e) {
-			MyLogger.logError(e.toString());
+			MyLogger.logError(e.toString() + " | crearTipoDeCambio");
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -129,7 +150,7 @@ public class DAO {
 			}
 
 		} catch (Exception e) {
-			MyLogger.logError(e.toString());
+			MyLogger.logError(e.toString() + " | crearTasasDeBadlar");
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -162,7 +183,7 @@ public class DAO {
 				crearCurva(conn, ps, moneda.trim());
 			}
 		} catch (Exception e) {
-			MyLogger.logError(e.toString());
+			MyLogger.logError(e.toString() + " | crearCurvas");
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -232,7 +253,7 @@ public class DAO {
 				}
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
 			} catch (Exception e) {
-				MyLogger.logError(e.toString());
+				MyLogger.logError(e.toString() + " | crearCupon4");
 			}
 		}
 
@@ -285,12 +306,13 @@ public class DAO {
 			String codigoPatron) throws Exception {
 		Table t = null;
 		try {
-			t = new Table(files.get(codigoPatron));
-			String tabla = FileUtils.getFileName(files.get(codigoPatron));
+			t = new Table(DAO.obtenerFile(codigoPatron));
+			String tabla = FileUtils.getFileName(DAO.obtenerFile(codigoPatron));
 			MyLogger.log("CREANDO LA TABLA " + tabla);
 			crearTabla(tabla, t, conn, ps);
 		} catch (EOFException eofE) {
-			MyLogger.logError("No existe la tabla " + files.get(codigoPatron));
+			MyLogger.logError("No existe la tabla "
+					+ DAO.obtenerFile(codigoPatron));
 		} finally {
 			if (t != null) {
 				t.close();
@@ -428,7 +450,7 @@ public class DAO {
 			}
 
 		} catch (Exception e) {
-			MyLogger.logError(e.toString());
+			MyLogger.logError(e.toString() + " | crearTasaFWD");
 		} finally {
 			try {
 				DatabaseFactory.closeConnectionForBulk(conn, ps);
@@ -490,7 +512,7 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ? AND PLAZO > 1;");
+					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ? AND PLAZO >= 1;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicioTF, -23)));
 			ps.setDate(2,

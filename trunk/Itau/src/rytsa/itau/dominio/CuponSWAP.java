@@ -126,7 +126,7 @@ public class CuponSWAP {
 	}
 
 	public Double getTasaFijaParteFija() {
-		return new Double(this.getOperacionParteFija().getTasaFija());
+		return new Double(this.getOperacionParteFija().getPrecio());
 	}
 
 	public Double getBaseParteFija() {
@@ -202,7 +202,7 @@ public class CuponSWAP {
 	}
 
 	public Double getTasaFijaParteVariable() {
-		return new Double(this.getOperacionParteVariable().getTasaFija());
+		return new Double(this.getOperacionParteVariable().getPrecio());
 	}
 
 	public Double getBaseParteVariable() {

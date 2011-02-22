@@ -219,10 +219,15 @@ public class ValuacionesSWAP extends Valuaciones {
 								MyLogger.log("ID Operaci�n Relacionada: "
 										+ parteVariable
 												.getIdoperacionrelacionada());
-								MyLogger.log("Fecha de Inicio: "
-										+ parteVariable.getFechaInicio());
-								MyLogger.log("Fecha Vencimiento: "
-										+ parteVariable.getFechaVencimiento());
+								// comentado a ra�z de la eliminaci�n de
+								// atributos hecha por Alexis en ene/2011
+								/*
+								 * MyLogger.log("Fecha de Inicio: " +
+								 * parteVariable.getFechaInicio());
+								 * MyLogger.log("Fecha Vencimiento: " +
+								 * parteVariable.getFechaVencimiento());
+								 */
+
 								MyLogger.log("Cantidad VN: "
 										+ parteVariable.getCantidadVN());
 								MyLogger.log("Metodo de Fixing: "
@@ -240,10 +245,14 @@ public class ValuacionesSWAP extends Valuaciones {
 										+ parteFija.getNumeroBoleto());
 								MyLogger.log("ID Operaci�n Relacionada: "
 										+ parteFija.getIdoperacionrelacionada());
-								MyLogger.log("Fecha de Inicio: "
-										+ parteFija.getFechaInicio());
-								MyLogger.log("Fecha Vencimiento: "
-										+ parteFija.getFechaVencimiento());
+								// comentado a ra�z de la eliminaci�n de
+								// atributos hecha por Alexis en ene/2011
+								/*
+								 * MyLogger.log("Fecha de Inicio: " +
+								 * parteFija.getFechaInicio());
+								 * MyLogger.log("Fecha Vencimiento: " +
+								 * parteFija.getFechaVencimiento());
+								 */
 								MyLogger.log("Cantidad VN: "
 										+ parteFija.getCantidadVN());
 								MyLogger.log("Metodo de Fixing: "
@@ -302,62 +311,81 @@ public class ValuacionesSWAP extends Valuaciones {
 
 	public static XStream getXStreamOperaciones() {
 		XStream xs = new XStream(new DomDriver());
-		xs.alias("response",RecuperarOperacionesSWAPAValuarResponse.class);
-		xs.alias("Operacion",OperacionSWAPAValuarData.class);
+		xs.alias("response", RecuperarOperacionesSWAPAValuarResponse.class);
+		xs.alias("Operacion", OperacionSWAPAValuarData.class);
 		xs.omitField(RecuperarOperacionesSWAPAValuarResponse.class, "count");
-		//Nuevos alias para WS_
+		// Nuevos alias para WS_
 		xs.alias("respuesta", WSRecuperarOperacionesSWAPAValuarResponse.class);
-		xs.alias("RecuperarOperacionesSWAPAValuarResponse", RecuperarOperacionesSWAPAValuarResponse.class);
-		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class, "cod-retorno");
-		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class, "mensajes");
+		xs.alias("RecuperarOperacionesSWAPAValuarResponse",
+				RecuperarOperacionesSWAPAValuarResponse.class);
+		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class,
+				"cod-retorno");
+		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class,
+				"mensajes");
 		xs.alias("OperacionSWAPAValuarData", OperacionSWAPAValuarData.class);
-		xs.aliasField("IdOperacionRelacionada",OperacionSWAPAValuarData.class , "idoperacionrelacionada");
-		xs.aliasField("IdOperacion", OperacionSWAPAValuarData.class, "IDOperacion");
-		xs.aliasField("RecuperarOperacionesSWAPAValuarResult", RecuperarOperacionesSWAPAValuarResponse.class, "Swaps");
-		
+		xs.aliasField("IdOperacionRelacionada", OperacionSWAPAValuarData.class,
+				"idoperacionrelacionada");
+		xs.aliasField("IdOperacion", OperacionSWAPAValuarData.class,
+				"IDOperacion");
+		xs.aliasField("RecuperarOperacionesSWAPAValuarResult",
+				RecuperarOperacionesSWAPAValuarResponse.class, "Swaps");
+
 		return xs;
 	}
 
-	
 	public static XStream getXStreamFeriados() {
 		XStream xs = new XStream(new DomDriver());
-		xs.alias("respuesta",FeriadosResponse.class);
-		xs.alias("DisponibilizacionFeriadosXmlResponseData",FechaData.class);
+		xs.alias("respuesta", FeriadosResponse.class);
+		xs.alias("DisponibilizacionFeriadosXmlResponseData", FechaData.class);
 		xs.omitField(FeriadosResponse.class, "cod-retorno");
 		xs.omitField(FeriadosResponse.class, "mensajes");
-		xs.alias("DisponibilizacionFeriadosXmlRequestData",DisponibilizacionFeriadosXmlRequestData.class);
+		xs.alias("DisponibilizacionFeriadosXmlRequestData",
+				DisponibilizacionFeriadosXmlRequestData.class);
 		return xs;
 	}
 
-	
-	
-	
 	public static XStream getXStreamInformarNovedades() {
 		XStream xs = new XStream(new DomDriver());
 		xs.registerConverter(new MiDoubleConverter());
-		xs.alias("InformarNovedadesValuacionesXmlRequest",InformarNovedadesValuacionesXmlRequest.class);
-		xs.alias("RequestData",RequestData.class);
-		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,"requestDataList");
+		xs.alias("InformarNovedadesValuacionesXmlRequest",
+				InformarNovedadesValuacionesXmlRequest.class);
+		xs.alias("RequestData", RequestData.class);
+		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
+				"requestDataList");
 		return xs;
 	}
 
 	public static XStream getXStreamAgenda() {
 		XStream xs = new XStream(new DomDriver());
-		xs.alias("response",RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.alias("Cupon",AgendaCuponOperacioneSWAPAValuarData.class);
+		xs.alias("response",
+				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.alias("Cupon", AgendaCuponOperacioneSWAPAValuarData.class);
 
-		xs.omitField(RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,"count");
-		
-		//Nuevos alias para WS_
-		xs.alias("respuesta", WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.alias("RecuperarAgendaCuponesOperacionesSWAPAValuarResponse", RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.omitField(WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "cod-retorno");
-		xs.omitField(WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "mensajes");
-		xs.alias("AgendaCuponOperacioneSWAPAValuarData", AgendaCuponOperacioneSWAPAValuarData.class);
-		xs.aliasField("FechaVencimiento", AgendaCuponOperacioneSWAPAValuarData.class, "fechavencimiento");
-		xs.aliasField("IdCupon", AgendaCuponOperacioneSWAPAValuarData.class, "idCupon");
-		
-		xs.aliasField("RecuperarAgendaCuponesOperacionesSWAPAValuarResult", RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "Swaps");
+		xs.omitField(
+				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
+				"count");
+
+		// Nuevos alias para WS_
+		xs.alias("respuesta",
+				WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.alias("RecuperarAgendaCuponesOperacionesSWAPAValuarResponse",
+				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.omitField(
+				WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
+				"cod-retorno");
+		xs.omitField(
+				WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
+				"mensajes");
+		xs.alias("AgendaCuponOperacioneSWAPAValuarData",
+				AgendaCuponOperacioneSWAPAValuarData.class);
+		xs.aliasField("FechaVencimiento",
+				AgendaCuponOperacioneSWAPAValuarData.class, "fechavencimiento");
+		xs.aliasField("IdCupon", AgendaCuponOperacioneSWAPAValuarData.class,
+				"idCupon");
+
+		xs.aliasField("RecuperarAgendaCuponesOperacionesSWAPAValuarResult",
+				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
+				"Swaps");
 		return xs;
 	}
 
@@ -426,17 +454,21 @@ public class ValuacionesSWAP extends Valuaciones {
 		ESBResponse esbResponse = new ESBResponse();
 		try {
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-			esbRequest = client.createRequest(resourceBundle.getString("servicios.Feriados.nombreServicio"));
-			esbRequest.setParameter(resourceBundle.getString("servicios.Feriados.paramIdSession"), idSession);
+			esbRequest = client.createRequest(resourceBundle
+					.getString("servicios.Feriados.nombreServicio"));
+			esbRequest.setParameter(resourceBundle
+					.getString("servicios.Feriados.paramIdSession"), idSession);
 
 			DisponibilizacionFeriadosXmlRequestData feriadosXml = new DisponibilizacionFeriadosXmlRequestData();
 			feriadosXml.setFechaIni(pFechaDesde);
 			feriadosXml.setFechaFin(pFechaHasta);
-			feriadosXml.setIdCalendario(resourceBundle.getString("servicios.Feriados.idCalendarioValue"));
+			feriadosXml.setIdCalendario(resourceBundle
+					.getString("servicios.Feriados.idCalendarioValue"));
 
 			String xml = xs.toXML(feriadosXml);
 			xml = xml.replace("\n", "");
-			esbRequest.setParameter(resourceBundle.getString("servicios.Feriados.paramXmlRequest"), xml);
+			esbRequest.setParameter(resourceBundle
+					.getString("servicios.Feriados.paramXmlRequest"), xml);
 
 			client.execute(esbRequest, esbResponse);
 
@@ -471,19 +503,23 @@ public class ValuacionesSWAP extends Valuaciones {
 			String idSession = getIdSession();
 			if (idSession != null) {
 				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-				String servicio = resourceBundle.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.nombreServicio");
-				String nombreParamIdSession = resourceBundle.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramIdSession");
+				String servicio = resourceBundle
+						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.nombreServicio");
+				String nombreParamIdSession = resourceBundle
+						.getString("servicios.RecuperoAgendaCuponesOperacionesSWAPAValuar.paramIdSession");
 
 				esbRequest = client.createRequest(servicio);
-				esbRequest.setParameter(nombreParamIdSession,idSession);
-				
+				esbRequest.setParameter(nombreParamIdSession, idSession);
+
 				client.execute(esbRequest, esbResponse);
 				MyLogger.log("Se ejecuto ESB Agenda Operaciones SWAP ");
 
 				String sRtaAgendaCupones = esbResponse.getResult();
 				if (sRtaAgendaCupones != null
 						&& !sRtaAgendaCupones.startsWith("<error")) {
-					salida = ProviderDTO.getRecuperarAgendaCuponesOperacionesSWAPAValuarResponse(xs.fromXML(sRtaAgendaCupones));
+					salida = ProviderDTO
+							.getRecuperarAgendaCuponesOperacionesSWAPAValuarResponse(xs
+									.fromXML(sRtaAgendaCupones));
 				} else {
 					MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: "
 							+ sRtaAgendaCupones);
@@ -520,23 +556,33 @@ public class ValuacionesSWAP extends Valuaciones {
 			String idSession = getIdSession();
 			if (idSession != null) {
 				client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
-				
-				String servicio = resourceBundle.getString("servicios.RecuperoOperacionesSWAPAValuar.nombreServicio");
-				String nombreParamIdSession = resourceBundle.getString("servicios.RecuperoOperacionesSWAPAValuar.paramIdSession");
-				String nombreParamFechaProceso = resourceBundle.getString("servicios.RecuperoOperacionesSWAPAValuar.paramFechaProceso");
-				String maskFechaProceso = resourceBundle.getString("servicios.RecuperoOperacionesSWAPAValuar.dateMask");
+
+				String servicio = resourceBundle
+						.getString("servicios.RecuperoOperacionesSWAPAValuar.nombreServicio");
+				String nombreParamIdSession = resourceBundle
+						.getString("servicios.RecuperoOperacionesSWAPAValuar.paramIdSession");
+				String nombreParamFechaProceso = resourceBundle
+						.getString("servicios.RecuperoOperacionesSWAPAValuar.paramFechaProceso");
+				String maskFechaProceso = resourceBundle
+						.getString("servicios.RecuperoOperacionesSWAPAValuar.dateMask");
 				esbRequest = client.createRequest(servicio);
-				esbRequest.setParameter(nombreParamIdSession,idSession);
-				esbRequest.setParameter(nombreParamFechaProceso,DateUtils.dateToString(pFechaProceso,maskFechaProceso));
+				esbRequest.setParameter(nombreParamIdSession, idSession);
+				esbRequest
+						.setParameter(nombreParamFechaProceso, DateUtils
+								.dateToString(pFechaProceso, maskFechaProceso));
 
 				client.execute(esbRequest, esbResponse);
 				MyLogger.log("Se ejecuto ESB Operaciones SWAP a Valuar");
 
 				String sRtaOperaciones = esbResponse.getResult();
-				if (sRtaOperaciones != null  && !sRtaOperaciones.startsWith("<error")) {
-					salida = ProviderDTO.getRecuperarOperacionesSWAPAValuarResponse(xs.fromXML(sRtaOperaciones));
+				if (sRtaOperaciones != null
+						&& !sRtaOperaciones.startsWith("<error")) {
+					salida = ProviderDTO
+							.getRecuperarOperacionesSWAPAValuarResponse(xs
+									.fromXML(sRtaOperaciones));
 				} else {
-					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: " + sRtaOperaciones);
+					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
+							+ sRtaOperaciones);
 				}
 			} else {
 				MyLogger.logError("No se pudo obtener el IdSession para recuperar las Operaciones SWAP a Valuar");

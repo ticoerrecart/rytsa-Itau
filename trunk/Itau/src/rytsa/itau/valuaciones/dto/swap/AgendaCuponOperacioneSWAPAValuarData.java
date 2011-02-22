@@ -7,8 +7,6 @@ public class AgendaCuponOperacioneSWAPAValuarData {
 
 	public String TipoFlujo;
 
-	public String ReceivedOPayment;
-
 	public String FechaInicio;
 
 	public String fechavencimiento;
@@ -16,10 +14,6 @@ public class AgendaCuponOperacioneSWAPAValuarData {
 	public String FechaIndiceInicio;
 
 	public String FechaIndiceFin;
-
-	public String FechaConcertacion;
-
-	public String Cierre;
 
 	public AgendaCuponOperacioneSWAPAValuarData() {
 	}
@@ -72,14 +66,6 @@ public class AgendaCuponOperacioneSWAPAValuarData {
 		NumeroOperacion = numeroOperacion;
 	}
 
-	public String getReceivedOPayment() {
-		return ReceivedOPayment;
-	}
-
-	public void setReceivedOPayment(String receivedOPayment) {
-		ReceivedOPayment = receivedOPayment;
-	}
-
 	public String getTipoFlujo() {
 		return TipoFlujo;
 	}
@@ -88,19 +74,4 @@ public class AgendaCuponOperacioneSWAPAValuarData {
 		TipoFlujo = tipoFlujo;
 	}
 
-	public String getFechaConcertacion() {
-		return FechaConcertacion;
-	}
-
-	public void setFechaConcertacion(String fechaConcertacion) {
-		FechaConcertacion = fechaConcertacion;
-	}
-
-	public String getCierre() {
-		return Cierre;
-	}
-
-	public void setCierre(String cierre) {
-		Cierre = cierre;
-	}
 }
