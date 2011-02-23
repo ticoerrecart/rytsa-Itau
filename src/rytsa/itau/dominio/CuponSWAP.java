@@ -32,8 +32,7 @@ public class CuponSWAP {
 
 	private Double fraCliRf;
 
-	public CuponSWAP(Date pFechaProceso,
-			AgendaCuponOperacioneSWAPAValuarData pAgendaCupon,
+	public CuponSWAP(Date pFechaProceso, AgendaCuponOperacioneSWAPAValuarData pAgendaCupon,
 			OperacionSWAPAValuarData pOperacionParteFija,
 			OperacionSWAPAValuarData pOperacionParteVariable) throws Exception {
 		this.setFechaProceso(pFechaProceso);
@@ -64,9 +63,8 @@ public class CuponSWAP {
 			MyLogger.logError("FechaProceso es nula");
 			throw new Exception("FechaProceso es nula");
 		}
-		this.setPlazoResidual(DateUtils.diferenciaEntreFechas(DateUtils
-				.stringToDate(this.getAgendaCupon().getFechavencimiento(),
-						Valuaciones.DATE_MASK_CUPON_SWAP), this
+		this.setPlazoResidual(DateUtils.diferenciaEntreFechas(DateUtils.stringToDate(this
+				.getAgendaCupon().getFechavencimiento(), Valuaciones.DATE_MASK_CUPON_SWAP), this
 				.getFechaProceso()));
 	}
 
@@ -102,19 +100,18 @@ public class CuponSWAP {
 
 		if (this.getFechaIndiceFin().compareTo(this.getFechaProceso()) <= 0) {
 			// todas las tasas son anteriores (Badlar)
-			this.setTnaIndex(DAO.obtenerPromedioTasasDeBadlar(
-					this.getFechaIndiceInicio(), this.getFechaIndiceFin()));
+			this.setTnaIndex(DAO.obtenerPromedioTasasDeBadlar(this.getFechaIndiceInicio(),
+					this.getFechaIndiceFin()));
 		} else {
 			if (this.getFechaIndiceInicio().compareTo(this.getFechaProceso()) > 0) {
 				// todas las tasas son posteriores (FWD)
-				this.setTnaIndex(DAO.obtenerPromedioTasasFWD(
-						this.getFechaIndiceInicio(), this.getFechaIndiceFin()));
+				this.setTnaIndex(DAO.obtenerPromedioTasasFWD(this.getFechaIndiceInicio(),
+						this.getFechaIndiceFin()));
 			} else {
 				// algunas tasas son anteriores (Badlar) y otras son posteriores
 				// (FWD)
-				Double promedio = DAO.obtenerPromedioBadlarYTasasFWD(
-						this.getFechaIndiceInicio(), this.getFechaProceso(),
-						DateUtils.addDays(this.getFechaProceso(), 1),
+				Double promedio = DAO.obtenerPromedioBadlarYTasasFWD(this.getFechaIndiceInicio(),
+						this.getFechaProceso(), DateUtils.addDays(this.getFechaProceso(), 1),
 						this.getFechaIndiceFin());
 				this.setTnaIndex(promedio);
 			}
@@ -125,11 +122,27 @@ public class CuponSWAP {
 		return this.getOperacionParteFija().getCantidadVN();
 	}
 
-	public Double getTasaFijaParteFija() {
+	public Double getTasaFijaParteFija() throws Exception {
+		if (this.getOperacionParteFija() == null) {
+			MyLogger.logError("OperacionParteFija es nula");
+			throw new Exception("OperacionParteFija es nula");
+		}
+		if (this.getOperacionParteFija().getPrecio() == null) {
+			MyLogger.logError("TasaFijaParteFija es nula");
+			throw new Exception("TasaFijaParteFija es nula");
+		}
 		return new Double(this.getOperacionParteFija().getPrecio());
 	}
 
-	public Double getBaseParteFija() {
+	public Double getBaseParteFija() throws Exception {
+		if (this.getOperacionParteFija() == null) {
+			MyLogger.logError("OperacionParteFija es nula");
+			throw new Exception("OperacionParteFija es nula");
+		}
+		if (this.getOperacionParteFija().getBase() == null) {
+			MyLogger.logError("BaseParteFija es nula");
+			throw new Exception("BaseParteFija es nula");
+		}
 		return new Double(this.getOperacionParteFija().getBase());
 	}
 
@@ -155,11 +168,15 @@ public class CuponSWAP {
 			throw new Exception("BaseParteFija es nula");
 		}
 
+		if (this.getBaseParteFija() == 0) {
+			MyLogger.logError("BaseParteFija NO puede ser cero");
+			throw new Exception("BaseParteFija NO puede ser cero");
+		}
+
 		this.setVFutCli(this.getCantidadVNParteFija()
 				* this.getTasaFijaParteFija()
 				* (DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(),
-						this.getFechaInicio()))
-				/ (this.getBaseParteFija() * 100));
+						this.getFechaInicio())) / (this.getBaseParteFija() * 100));
 	}
 
 	public void calcularFraCli() throws SQLException, Exception {
@@ -175,8 +192,7 @@ public class CuponSWAP {
 		// FIXME se calculo el FactorDesc con la fecha de Proceso o con la de
 		// Inicio del Cupon Parte Fija???
 		this.setFraCli(this.getVFutCli()
-				* DAO.obtenerFactorDesc(this.getFechaProceso(),
-						this.getPlazoResidual(),
+				* DAO.obtenerFactorDesc(this.getFechaProceso(), this.getPlazoResidual(),
 						Valuaciones.TABLA_FACTOR_DESC_FRACLI_FRACLIRF));
 	}
 
@@ -192,8 +208,7 @@ public class CuponSWAP {
 		// FIXME se calculo el FactorDesc con la fecha de Proceso o con la de
 		// Inicio del Cupon Parte Variable???
 		this.setFraCliRf(this.getVFutCliRf()
-				* DAO.obtenerFactorDesc(this.getFechaProceso(),
-						this.getPlazoResidual(),
+				* DAO.obtenerFactorDesc(this.getFechaProceso(), this.getPlazoResidual(),
 						Valuaciones.TABLA_FACTOR_DESC_FRACLI_FRACLIRF));
 	}
 
@@ -201,11 +216,27 @@ public class CuponSWAP {
 		return this.getOperacionParteVariable().getCantidadVN();
 	}
 
-	public Double getTasaFijaParteVariable() {
+	public Double getTasaFijaParteVariable() throws Exception {
+		if (this.getOperacionParteVariable() == null) {
+			MyLogger.logError("OperacionParteVariable es nula");
+			throw new Exception("OperacionParteVariable es nula");
+		}
+		if (this.getOperacionParteVariable().getPrecio() == null) {
+			MyLogger.logError("TasaFijaParteVariable es nula");
+			throw new Exception("TasaFijaParteVariable es nula");
+		}
 		return new Double(this.getOperacionParteVariable().getPrecio());
 	}
 
-	public Double getBaseParteVariable() {
+	public Double getBaseParteVariable() throws Exception {
+		if (this.getOperacionParteVariable() == null) {
+			MyLogger.logError("OperacionParteVariable es nula");
+			throw new Exception("OperacionParteVariable es nula");
+		}
+		if (this.getOperacionParteVariable().getBase() == null) {
+			MyLogger.logError("BaseParteVariable es nula");
+			throw new Exception("BaseParteVariable es nula");
+		}
 		return new Double(this.getOperacionParteVariable().getBase());
 	}
 
@@ -226,10 +257,14 @@ public class CuponSWAP {
 			MyLogger.logError("BaseParteVariable es nula");
 			throw new Exception("BaseParteVariable es nula");
 		}
+		if (this.getBaseParteVariable() == 0) {
+			MyLogger.logError("BaseParteVariable NO puede ser cero");
+			throw new Exception("BaseParteVariable NO puede ser cero");
+		}
+
 		this.setVFutCliRf(this.getCantidadVNParteVariable()
 				* this.getTnaIndex()
-				* DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(),
-						this.getFechaInicio())
+				* DateUtils.diferenciaEntreFechas(this.getFechaVencimiento(), this.getFechaInicio())
 				/ (this.getBaseParteVariable() * 100));
 	}
 
@@ -277,8 +312,7 @@ public class CuponSWAP {
 		return operacionParteFija;
 	}
 
-	public void setOperacionParteFija(
-			OperacionSWAPAValuarData operacionParteFija) {
+	public void setOperacionParteFija(OperacionSWAPAValuarData operacionParteFija) {
 		this.operacionParteFija = operacionParteFija;
 	}
 
@@ -286,8 +320,7 @@ public class CuponSWAP {
 		return operacionParteVariable;
 	}
 
-	public void setOperacionParteVariable(
-			OperacionSWAPAValuarData operacionParteVariable) {
+	public void setOperacionParteVariable(OperacionSWAPAValuarData operacionParteVariable) {
 		this.operacionParteVariable = operacionParteVariable;
 	}
 
