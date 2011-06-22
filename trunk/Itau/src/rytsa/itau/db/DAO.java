@@ -539,7 +539,7 @@ public class DAO {
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
-		if (totalB != 0 && totalTF != 0) {
+		if (totalB != 0 || totalTF != 0) {
 			MyLogger.log("Promedio Badlar y Tasas FWD entre las fechas ("
 					+ DateUtils.dateToString(pfInicioB) + ","
 					+ DateUtils.dateToString(pfFinB) + ","
