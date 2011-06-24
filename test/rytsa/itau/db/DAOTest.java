@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import junit.framework.TestCase;
 import rytsa.itau.db.factory.DatabaseFactory;
@@ -13,7 +15,12 @@ public class DAOTest extends TestCase {
 
 	public DAOTest() {
 		DAO.crearCupon4();
-		DAO.crearCurvas();
+		try {
+			DAO.crearCurvas(DateUtils.stringToDate("17/10/2010"));
+		} catch (Exception e) {
+
+		}
+
 		DAO.crearTipoDeCambio();
 		DAO.crearTasasDeBadlar();
 	}
@@ -24,11 +31,10 @@ public class DAOTest extends TestCase {
 
 	public void testObtenerTipoCambioMoneda() throws Exception {
 
-		Double d = DAO.obtenerTipoCambioMoneda(DateUtils.convertDate(DateUtils
-				.stringToDate("17/10/2010")), 6);
+		Double d = DAO.obtenerTipoCambioMoneda(
+				DateUtils.convertDate(DateUtils.stringToDate("17/10/2010")), 6);
 		//assertEquals(5.530064, d.doubleValue());
 		assertEquals(5.519598, d.doubleValue());
-		
 
 	}
 
@@ -46,4 +52,13 @@ public class DAOTest extends TestCase {
 		}
 	}
 
+	public void testNoExisteEntradaEnProperties() {
+		ResourceBundle rb = ResourceBundle.getBundle("config");
+		try {
+			String nombreTabla = rb.getString("aaa");
+		} catch (MissingResourceException e) {
+
+		}
+
+	}
 }

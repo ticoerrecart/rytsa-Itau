@@ -31,4 +31,13 @@ public class CargarTablasTest extends TestCase {
 			fail(e.toString());
 		}
 	}
+	
+	public void testDouble(){
+		Double d1 = new Double("0");
+		Double d2 = new Double("0.0");
+		assertTrue(d1==0);
+		assertTrue(d1==0.0);
+		assertTrue(d2==0);
+		assertTrue(d2==0.0);
+	}
 }
