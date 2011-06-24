@@ -490,10 +490,10 @@ public class DAO {
 					+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
 			return suma / total;
 		} else {
-			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar entre la fecha "
 					+ pfInicio + " y la fecha " + pfFin);
 			throw new Exception(
-					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+					"No se pudo obtener el Promedio de Tasas de Badlar entre la fecha "
 							+ pfInicio + " y la fecha " + pfFin);
 		}
 	}
@@ -595,10 +595,10 @@ public class DAO {
 					+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
 			return suma / total;
 		} else {
-			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+			MyLogger.logError("No se pudo obtener el Promedio de Tasas FWD entre las fecha "
 					+ pfInicio + " y la fecha " + pfFin);
 			throw new Exception(
-					"No se pudo obtener el Promedio de Tasas de Badlar entre las fecha "
+					"No se pudo obtener el Promedio de Tasas de FWD entre la fecha "
 							+ pfInicio + " y la fecha " + pfFin);
 		}
 	}
