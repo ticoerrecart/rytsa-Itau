@@ -60,8 +60,8 @@ public class ValuacionesSWAP extends Valuaciones {
 	 * 
 	 * 
 	 */
-	public static InformarNovedadesValuacionesXmlRequest calcularMTM(
-			Date pFechaProceso) throws Exception {
+	public static InformarNovedadesValuacionesXmlRequest calcularMTM(Date pFechaProceso)
+			throws Exception {
 
 		MyLogger.log("Comienza Calculo MTM para SWAPS para la fecha: "
 				+ DateUtils.dateToString(pFechaProceso));
@@ -89,19 +89,18 @@ public class ValuacionesSWAP extends Valuaciones {
 		return calculoMTM(pFechaProceso);
 	}
 
-	public static InformarNovedadesValuacionesXmlRequest calculoMTM(
-			Date pFechaProceso) throws ParseException {
+	public static InformarNovedadesValuacionesXmlRequest calculoMTM(Date pFechaProceso)
+			throws ParseException {
 		// reseteo mtmFija y Variable.
 
 		String SWAPS = "SWAPS";
-		String fechaProceso = DateUtils.dateToString(pFechaProceso,
-				Valuaciones.DATE_MASK_NOVEDADES);
+		String fechaProceso = DateUtils
+				.dateToString(pFechaProceso, Valuaciones.DATE_MASK_NOVEDADES);
 		InformarNovedadesValuacionesXmlRequest listaNovedadesRD = new InformarNovedadesValuacionesXmlRequest();
 		for (String numeroOperacion : agendaCuponOperaciones.keySet()) {
 			mtmFija = new Double(0);
 			mtmVariable = new Double(0);
-			List<CuponSWAP> listaCuponesSWAP = agendaCuponOperaciones
-					.get(numeroOperacion);
+			List<CuponSWAP> listaCuponesSWAP = agendaCuponOperaciones.get(numeroOperacion);
 			for (CuponSWAP cuponSWAP : listaCuponesSWAP) {
 				if (cuponSWAP.getOperacionParteFija() != null) {
 					mtmFija = mtmFija + cuponSWAP.getFraCli();
@@ -177,39 +176,57 @@ public class ValuacionesSWAP extends Valuaciones {
 		return listaNovedadesRD;
 	}
 
-	private static void armarAgendaCuponOperaciones(
-			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP,
-			Date pFechaProceso) throws Exception {
-		if (pOperacionesSWAP != null) {
-			for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
+	/*	private static AgendaCuponOperacioneSWAPAValuarData recuperarSegundoCupon(List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP){
+			AgendaCuponOperacioneSWAPAValuarData segundoCupon = null;
+			if(pOperacionesSWAP==null || pOperacionesSWAP.size()<2){
+				MyLogger.logError("No hay suficientes cupones SWAP para realizar la operación");
+			}else{
+				return pOperacionesSWAP.get(1);//recupero el segundo CUPON SWAP.
+			}
+			return segundoCupon;
+		}
 
+		
+		private static AgendaCuponOperacioneSWAPAValuarData recuperarUltimoCupon(List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP){
+			AgendaCuponOperacioneSWAPAValuarData ultimoCupon = null;
+			for (AgendaCuponOperacioneSWAPAValuarData agendaCuponOperacioneSWAPAValuarData : pOperacionesSWAP.subList(1, pOperacionesSWAP.size())) {
+				
+			}
+			
+			return ultimoCupon;
+		}
+	*/
+
+	private static void armarAgendaCuponOperaciones(
+			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP, Date pFechaProceso)
+			throws Exception {
+		if (pOperacionesSWAP != null) {
+			//AgendaCuponOperacioneSWAPAValuarData segundoCupon = recuperarSegundoCupon(pOperacionesSWAP);
+			int contCupones = 0;
+			AgendaCuponOperacioneSWAPAValuarData agendaCuponAnterior = null;
+			for (AgendaCuponOperacioneSWAPAValuarData agendaCupon : pOperacionesSWAP) {
+				contCupones++;
 				if (!agendaCupon.getNumeroOperacion().equals("0")
-						&& DateUtils.stringToDate(
-								agendaCupon.getFechavencimiento(),
-								Valuaciones.DATE_MASK_CUPON_SWAP).after(
-								pFechaProceso)) {
+						&& DateUtils.stringToDate(agendaCupon.getFechavencimiento(),
+								Valuaciones.DATE_MASK_CUPON_SWAP).after(pFechaProceso)) {
 					try {
 						MyLogger.log("------------------------------------");
-						MyLogger.log("Procesando Cupon Numero:"
-								+ agendaCupon.getNumeroOperacion());
+						MyLogger.log("Procesando Cupon Numero:" + agendaCupon.getNumeroOperacion());
 
 						OperacionSWAPAValuarData parteVariable = operacionesParteVariable
 								.get(agendaCupon.getNumeroOperacion());
-						OperacionSWAPAValuarData parteFija = operacionesParteFija
-								.get(agendaCupon.getNumeroOperacion());
+						OperacionSWAPAValuarData parteFija = operacionesParteFija.get(agendaCupon
+								.getNumeroOperacion());
 						// busco la lista
 						if (parteVariable != null || parteFija != null) {
-							List<CuponSWAP> lista = agendaCuponOperaciones
-									.get(agendaCupon.getNumeroOperacion());
+							List<CuponSWAP> lista = agendaCuponOperaciones.get(agendaCupon
+									.getNumeroOperacion());
 							if (lista == null) {// si la lista no existe la creo
 								lista = new ArrayList<CuponSWAP>();
-								agendaCuponOperaciones
-										.put(agendaCupon.getNumeroOperacion(),
-												lista);
+								agendaCuponOperaciones.put(agendaCupon.getNumeroOperacion(), lista);
 							}
 
-							if (agendaCupon.getTipoFlujo().equalsIgnoreCase(
-									"Variable")) {
+							if (agendaCupon.getTipoFlujo().equalsIgnoreCase("Variable")) {
 
 								MyLogger.log("************Parte Variable***********");
 								MyLogger.log("Nï¿½mero Operaciï¿½n: "
@@ -217,8 +234,7 @@ public class ValuacionesSWAP extends Valuaciones {
 								MyLogger.log("Nï¿½mero de Boleto: "
 										+ parteVariable.getNumeroBoleto());
 								MyLogger.log("ID Operaciï¿½n Relacionada: "
-										+ parteVariable
-												.getIdoperacionrelacionada());
+										+ parteVariable.getIdoperacionrelacionada());
 								// comentado a raï¿½z de la eliminaciï¿½n de
 								// atributos hecha por Alexis en ene/2011
 								/*
@@ -228,21 +244,17 @@ public class ValuacionesSWAP extends Valuaciones {
 								 * parteVariable.getFechaVencimiento());
 								 */
 
-								MyLogger.log("Cantidad VN: "
-										+ parteVariable.getCantidadVN());
-								MyLogger.log("Metodo de Fixing: "
-										+ parteVariable.getMetodoFixing());
+								MyLogger.log("Cantidad VN: " + parteVariable.getCantidadVN());
+								MyLogger.log("Metodo de Fixing: " + parteVariable.getMetodoFixing());
 								MyLogger.log("Base: " + parteVariable.getBase());
 								MyLogger.log("*************************************");
 							}
 
-							if (agendaCupon.getTipoFlujo().equalsIgnoreCase(
-									"Fijo")) {
+							if (agendaCupon.getTipoFlujo().equalsIgnoreCase("Fijo")) {
 								MyLogger.log("************Parte Fija***********");
 								MyLogger.log("Nï¿½mero Operaciï¿½n: "
 										+ parteFija.getNumeroOperacion());
-								MyLogger.log("Nï¿½mero de Boleto: "
-										+ parteFija.getNumeroBoleto());
+								MyLogger.log("Nï¿½mero de Boleto: " + parteFija.getNumeroBoleto());
 								MyLogger.log("ID Operaciï¿½n Relacionada: "
 										+ parteFija.getIdoperacionrelacionada());
 								// comentado a raï¿½z de la eliminaciï¿½n de
@@ -253,25 +265,26 @@ public class ValuacionesSWAP extends Valuaciones {
 								 * MyLogger.log("Fecha Vencimiento: " +
 								 * parteFija.getFechaVencimiento());
 								 */
-								MyLogger.log("Cantidad VN: "
-										+ parteFija.getCantidadVN());
-								MyLogger.log("Metodo de Fixing: "
-										+ parteFija.getMetodoFixing());
+								MyLogger.log("Cantidad VN: " + parteFija.getCantidadVN());
+								MyLogger.log("Metodo de Fixing: " + parteFija.getMetodoFixing());
 								MyLogger.log("Base: " + parteFija.getBase());
 								MyLogger.log("*************************************");
 							}
 
-							CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso,
-									agendaCupon, parteFija, parteVariable);
+							//AgendaCuponOperacioneSWAPAValuarData ultimoCupon = recuperarUltimoCupon(pOperacionesSWAP);
+							if (contCupones >= 2 && agendaCuponAnterior != null) {
+								//asignar a la fecha de inicio la fecha de vencimiento del cupón anterior (opción 1)
+								agendaCupon.setFechaInicio(agendaCuponAnterior
+										.getFechavencimiento());
+							}
+							CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso, agendaCupon,
+									parteFija, parteVariable);
 							MyLogger.log("************Cupon Swap***********");
-							MyLogger.log("Plazo Residual: "
-									+ cuponSWAP.getPlazoResidual());
-							MyLogger.log("TNA Index: "
-									+ cuponSWAP.getTnaIndex());
+							MyLogger.log("Plazo Residual: " + cuponSWAP.getPlazoResidual());
+							MyLogger.log("TNA Index: " + cuponSWAP.getTnaIndex());
 							MyLogger.log("VFutCli: " + cuponSWAP.getVFutCli());
 							MyLogger.log("FraCli: " + cuponSWAP.getFraCli());
-							MyLogger.log("VFutCliRf: "
-									+ cuponSWAP.getVFutCliRf());
+							MyLogger.log("VFutCliRf: " + cuponSWAP.getVFutCliRf());
 							MyLogger.log("FraCliRf: " + cuponSWAP.getFraCliRf());
 							MyLogger.log("*************************************");
 
@@ -283,10 +296,13 @@ public class ValuacionesSWAP extends Valuaciones {
 						MyLogger.logError(e.toString());
 					}
 				} else {
-					MyLogger.log("Cupon Ignorado. Cupon Numero:"
-							+ agendaCupon.getNumeroOperacion());
+					MyLogger.log("Cupon Ignorado. Cupon Numero:" + agendaCupon.getNumeroOperacion());
 				}
-			}
+
+				if (agendaCupon != agendaCuponAnterior) {
+					agendaCuponAnterior = agendaCupon;
+				}
+			}//end for
 		}
 	}
 
@@ -296,13 +312,10 @@ public class ValuacionesSWAP extends Valuaciones {
 			for (OperacionSWAPAValuarData operacionSWAP : pOperacionesSWAP) {
 
 				if (mercadoValido(operacionSWAP.getMercado())) {
-					if (operacionSWAP.getMetodoFixing().equalsIgnoreCase(
-							"Tasa Fija")) {
-						operacionesParteFija.put(
-								operacionSWAP.getIDOperacion(), operacionSWAP);
+					if (operacionSWAP.getMetodoFixing().equalsIgnoreCase("Tasa Fija")) {
+						operacionesParteFija.put(operacionSWAP.getIDOperacion(), operacionSWAP);
 					} else {
-						operacionesParteVariable.put(
-								operacionSWAP.getIDOperacion(), operacionSWAP);
+						operacionesParteVariable.put(operacionSWAP.getIDOperacion(), operacionSWAP);
 					}
 				}
 			}
@@ -318,15 +331,12 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.alias("respuesta", WSRecuperarOperacionesSWAPAValuarResponse.class);
 		xs.alias("RecuperarOperacionesSWAPAValuarResponse",
 				RecuperarOperacionesSWAPAValuarResponse.class);
-		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class,
-				"cod-retorno");
-		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class,
-				"mensajes");
+		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class, "cod-retorno");
+		xs.omitField(WSRecuperarOperacionesSWAPAValuarResponse.class, "mensajes");
 		xs.alias("OperacionSWAPAValuarData", OperacionSWAPAValuarData.class);
 		xs.aliasField("IdOperacionRelacionada", OperacionSWAPAValuarData.class,
 				"idoperacionrelacionada");
-		xs.aliasField("IdOperacion", OperacionSWAPAValuarData.class,
-				"IDOperacion");
+		xs.aliasField("IdOperacion", OperacionSWAPAValuarData.class, "IDOperacion");
 		xs.aliasField("RecuperarOperacionesSWAPAValuarResult",
 				RecuperarOperacionesSWAPAValuarResponse.class, "Swaps");
 
@@ -350,42 +360,30 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.alias("InformarNovedadesValuacionesXmlRequest",
 				InformarNovedadesValuacionesXmlRequest.class);
 		xs.alias("RequestData", RequestData.class);
-		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
-				"requestDataList");
+		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class, "requestDataList");
 		return xs;
 	}
 
 	public static XStream getXStreamAgenda() {
 		XStream xs = new XStream(new DomDriver());
-		xs.alias("response",
-				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.alias("response", RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
 		xs.alias("Cupon", AgendaCuponOperacioneSWAPAValuarData.class);
 
-		xs.omitField(
-				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
-				"count");
+		xs.omitField(RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "count");
 
 		// Nuevos alias para WS_
-		xs.alias("respuesta",
-				WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
+		xs.alias("respuesta", WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
 		xs.alias("RecuperarAgendaCuponesOperacionesSWAPAValuarResponse",
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class);
-		xs.omitField(
-				WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
-				"cod-retorno");
-		xs.omitField(
-				WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
-				"mensajes");
-		xs.alias("AgendaCuponOperacioneSWAPAValuarData",
-				AgendaCuponOperacioneSWAPAValuarData.class);
-		xs.aliasField("FechaVencimiento",
-				AgendaCuponOperacioneSWAPAValuarData.class, "fechavencimiento");
-		xs.aliasField("IdCupon", AgendaCuponOperacioneSWAPAValuarData.class,
-				"idCupon");
+		xs.omitField(WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "cod-retorno");
+		xs.omitField(WSRecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "mensajes");
+		xs.alias("AgendaCuponOperacioneSWAPAValuarData", AgendaCuponOperacioneSWAPAValuarData.class);
+		xs.aliasField("FechaVencimiento", AgendaCuponOperacioneSWAPAValuarData.class,
+				"fechavencimiento");
+		xs.aliasField("IdCupon", AgendaCuponOperacioneSWAPAValuarData.class, "idCupon");
 
 		xs.aliasField("RecuperarAgendaCuponesOperacionesSWAPAValuarResult",
-				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class,
-				"Swaps");
+				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "Swaps");
 		return xs;
 	}
 
@@ -396,8 +394,7 @@ public class ValuacionesSWAP extends Valuaciones {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static List<FeriadosResponse> diasHabiles(Date pFechaProceso)
-			throws ParseException {
+	public static List<FeriadosResponse> diasHabiles(Date pFechaProceso) throws ParseException {
 		List<FeriadosResponse> lista = new ArrayList<FeriadosResponse>();
 
 		FeriadosResponse fr = new FeriadosResponse();
@@ -410,32 +407,27 @@ public class ValuacionesSWAP extends Valuaciones {
 		Date fechaHasta = null;
 
 		fechaHasta = DateUtils.addDays(fechaDesde, DIAS * 2);
-		FeriadosResponse feriadosResponse = getDias(
-				DateUtils.addDays(fechaDesde, -60), fechaHasta);
+		FeriadosResponse feriadosResponse = getDias(DateUtils.addDays(fechaDesde, -60), fechaHasta);
 
 		// esto es para que me compare en vez de 5/5 , 4/5 a las 16:00 para que
 		// no de problema de gmt
 		fechaDesde = DateUtils.addHours(DateUtils.addDays(fechaDesde, -1), 16);
 
 		if (feriadosResponse != null) {
-			Iterator<FechaData> itr = feriadosResponse.getFeriadosResult()
-					.iterator();
+			Iterator<FechaData> itr = feriadosResponse.getFeriadosResult().iterator();
 			while (itr.hasNext()) {
 				FechaData fechaData = itr.next();
 				if (!fechaData.getEsFeriado()) {// si es habil
 					frTodos.addFechaData(fechaData);
-					if (fechaDesde.before(DateUtils.stringToDate(
-							fechaData.getFecha(),
-							Valuaciones.DATE_MASK_RTA_FERIADOS))
-							&& diasHabiles < DIAS) {
+					if (fechaDesde.before(DateUtils.stringToDate(fechaData.getFecha(),
+							Valuaciones.DATE_MASK_RTA_FERIADOS)) && diasHabiles < DIAS) {
 						fr.addFechaData(fechaData);
 						diasHabiles++;
 					}
 				}
 			}
 
-			MyLogger.log("Dias Habiles. Total: "
-					+ fr.getFeriadosResult().size());
+			MyLogger.log("Dias Habiles. Total: " + fr.getFeriadosResult().size());
 			MyLogger.log("Dias Habiles Necesarios Para el calculo. Total: "
 					+ frTodos.getFeriadosResult().size());
 		}
@@ -456,8 +448,8 @@ public class ValuacionesSWAP extends Valuaciones {
 			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
 			esbRequest = client.createRequest(resourceBundle
 					.getString("servicios.Feriados.nombreServicio"));
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramIdSession"), idSession);
+			esbRequest.setParameter(resourceBundle.getString("servicios.Feriados.paramIdSession"),
+					idSession);
 
 			DisponibilizacionFeriadosXmlRequestData feriadosXml = new DisponibilizacionFeriadosXmlRequestData();
 			feriadosXml.setFechaIni(pFechaDesde);
@@ -467,8 +459,8 @@ public class ValuacionesSWAP extends Valuaciones {
 
 			String xml = xs.toXML(feriadosXml);
 			xml = xml.replace("\n", "");
-			esbRequest.setParameter(resourceBundle
-					.getString("servicios.Feriados.paramXmlRequest"), xml);
+			esbRequest.setParameter(resourceBundle.getString("servicios.Feriados.paramXmlRequest"),
+					xml);
 
 			client.execute(esbRequest, esbResponse);
 
@@ -515,14 +507,11 @@ public class ValuacionesSWAP extends Valuaciones {
 				MyLogger.log("Se ejecuto ESB Agenda Operaciones SWAP ");
 
 				String sRtaAgendaCupones = esbResponse.getResult();
-				if (sRtaAgendaCupones != null
-						&& !sRtaAgendaCupones.startsWith("<error")) {
-					salida = ProviderDTO
-							.getRecuperarAgendaCuponesOperacionesSWAPAValuarResponse(xs
-									.fromXML(sRtaAgendaCupones));
+				if (sRtaAgendaCupones != null && !sRtaAgendaCupones.startsWith("<error")) {
+					salida = ProviderDTO.getRecuperarAgendaCuponesOperacionesSWAPAValuarResponse(xs
+							.fromXML(sRtaAgendaCupones));
 				} else {
-					MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: "
-							+ sRtaAgendaCupones);
+					MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: " + sRtaAgendaCupones);
 				}
 			} else {
 				MyLogger.logError("No se pudo obtener el IdSession para recuperar la Agenda Operaciones SWAP");
@@ -538,15 +527,13 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 
 		if (salida != null) {
-			return salida
-					.getRecuperoAgendaCuponesOperacionesSWAPAValuarResult();
+			return salida.getRecuperoAgendaCuponesOperacionesSWAPAValuarResult();
 		} else {
 			return null;
 		}
 	}
 
-	public static List<OperacionSWAPAValuarData> operacionesSWAP(
-			Date pFechaProceso) {
+	public static List<OperacionSWAPAValuarData> operacionesSWAP(Date pFechaProceso) {
 		XStream xs = getXStreamOperaciones();
 		RecuperarOperacionesSWAPAValuarResponse salida = null;
 		ESBClient client = null;
@@ -567,22 +554,18 @@ public class ValuacionesSWAP extends Valuaciones {
 						.getString("servicios.RecuperoOperacionesSWAPAValuar.dateMask");
 				esbRequest = client.createRequest(servicio);
 				esbRequest.setParameter(nombreParamIdSession, idSession);
-				esbRequest
-						.setParameter(nombreParamFechaProceso, DateUtils
-								.dateToString(pFechaProceso, maskFechaProceso));
+				esbRequest.setParameter(nombreParamFechaProceso,
+						DateUtils.dateToString(pFechaProceso, maskFechaProceso));
 
 				client.execute(esbRequest, esbResponse);
 				MyLogger.log("Se ejecuto ESB Operaciones SWAP a Valuar");
 
 				String sRtaOperaciones = esbResponse.getResult();
-				if (sRtaOperaciones != null
-						&& !sRtaOperaciones.startsWith("<error")) {
-					salida = ProviderDTO
-							.getRecuperarOperacionesSWAPAValuarResponse(xs
-									.fromXML(sRtaOperaciones));
+				if (sRtaOperaciones != null && !sRtaOperaciones.startsWith("<error")) {
+					salida = ProviderDTO.getRecuperarOperacionesSWAPAValuarResponse(xs
+							.fromXML(sRtaOperaciones));
 				} else {
-					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
-							+ sRtaOperaciones);
+					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: " + sRtaOperaciones);
 				}
 			} else {
 				MyLogger.logError("No se pudo obtener el IdSession para recuperar las Operaciones SWAP a Valuar");
@@ -604,8 +587,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 	}
 
-	private static void construccionTasasFWD(
-			FeriadosResponse pDiasHabilesACalcular,
+	private static void construccionTasasFWD(FeriadosResponse pDiasHabilesACalcular,
 			FeriadosResponse pDiasHabilesParaTasaFWD, Date pFechaProceso) {
 
 		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
@@ -613,15 +595,13 @@ public class ValuacionesSWAP extends Valuaciones {
 		for (FechaData fechaData : pDiasHabilesACalcular.getFeriadosResult()) {
 			try {
 
-				TasaFWD tasa = new TasaFWD(
-						pDiasHabilesParaTasaFWD.getFeriadosResult());
+				TasaFWD tasa = new TasaFWD(pDiasHabilesParaTasaFWD.getFeriadosResult());
 				// 1) Armado de fechas PUBLIC_T + Factor de Actualizaciï¿½n
 				// (Obtenido de Cupon_4).
 				MyLogger.log("************************************");
 				MyLogger.log("Calcular Factor de Actualizacion...");
-				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils
-						.stringToDate(fechaData.getFecha(),
-								Valuaciones.DATE_MASK_RTA_FERIADOS));
+				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils.stringToDate(
+						fechaData.getFecha(), Valuaciones.DATE_MASK_RTA_FERIADOS));
 				// 2) Obtener fechas de mercado (Fecha ï¿½Tï¿½)
 				MyLogger.log("Calcular Fecha de Mercado...");
 				tasa.calcularFechaMercado();

@@ -20,6 +20,7 @@ import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 public class Test {
 
 	public static String path;
+
 	private static ResourceBundle resourceBundle = null;
 
 	public Test() {
@@ -27,26 +28,26 @@ public class Test {
 
 	public static void main(String[] args) {
 		try {
-			if (args[0] != null && args[1] != null && !"".equals(args[0])
-					&& !"".equals(args[1])) {
-				if (DateUtils.isValidDateStr(args[1])) {
+			if (args[0] != null && args[1] != null && !"".equals(args[0]) && !"".equals(args[1])) {
+				String tipoOperacion = args[0];
+				String fechaProceso = args[1];
+				if (DateUtils.isValidDateStr(fechaProceso)) {
 					String root = System.getProperty("user.dir");
-					Test test = new Test(root);
-					if ("SWAP".equalsIgnoreCase(args[0])) {
-						test.calcularMTMSwap(args[1]);
+					Test test = new Test(root, fechaProceso);
+					if ("SWAP".equalsIgnoreCase(tipoOperacion)) {
+						test.calcularMTMSwap(fechaProceso);
 					} else {
-						if ("NDF".equalsIgnoreCase(args[0])) {
-							test.calcularMTMNdf(args[1]);
+						if ("NDF".equalsIgnoreCase(tipoOperacion)) {
+							test.calcularMTMNdf(fechaProceso);
 						} else {
-							MyLogger.logError("Error de parametro de entrada: '"
-									+ args[0]
+							MyLogger.logError("Error de parametro de entrada: '" + tipoOperacion
 									+ "'.  Valores válidos [SWAP, NDF]");
 						}
 					}
 				}
 			} else {
-				MyLogger.logError("Error en los par�metros de entrada.  Arg0: '"
-						+ args[0] + "', Arg1: '" + args[1] + "'");
+				MyLogger.logError("Error en los par�metros de entrada.  Arg0: '" + args[0]
+						+ "', Arg1: '" + args[1] + "'");
 			}
 
 		} catch (ParseException e) {
@@ -56,33 +57,35 @@ public class Test {
 		}
 	}
 
-	public Test(String pPath) {
+	public Test(String pPath, String pFechaProceso) {
 		Test.path = pPath + File.separator;
+		Date dateFechaProceso = DateUtils.stringToDate(pFechaProceso);
+
 		MyLogger.log("SE EMPIEZAN A CREAR LAS TABLAS...");
 		MyLogger.log("SE CREA CUPON_4...");
-		DAO.crearCupon4();
+		DAO.crearCupon4(dateFechaProceso);
 		MyLogger.log("SE CREAN LAS CURVAS...");
-		DAO.crearCurvas();
+		DAO.crearCurvas(dateFechaProceso);
 		MyLogger.log("SE CREA EL TIPO DE CAMBIO (Calib_div_h)...");
-		DAO.crearTipoDeCambio();
+		DAO.crearTipoDeCambio(dateFechaProceso);
 		MyLogger.log("SE CREAN LAS TASAS DE BADLAR (Calib_index_h)...");
-		DAO.crearTasasDeBadlar();
+		DAO.crearTasasDeBadlar(dateFechaProceso);
 		MyLogger.log("SE TERMINAN DE CREAR LAS TABLAS...");
 	}
 
 	@WebMethod
 	public InformarNovedadesValuacionesXmlRequest calcularMTMSwap(String pDate)
 			throws ParseException, Exception {
-		InformarNovedadesValuacionesXmlRequest listaSWAP = ValuacionesSWAP
-				.calcularMTM(DateUtils.stringToDate(pDate));// "02/03/2010"
+		InformarNovedadesValuacionesXmlRequest listaSWAP = ValuacionesSWAP.calcularMTM(DateUtils
+				.stringToDate(pDate));// "02/03/2010"
 		return listaSWAP;
 	}
 
 	@WebMethod
 	public InformarNovedadesValuacionesXmlRequest calcularMTMNdf(String pDate)
 			throws ParseException, Exception {
-		InformarNovedadesValuacionesXmlRequest listaNDF = ValuacionesNDF
-				.calcularMTM(DateUtils.stringToDate(pDate));// "03/06/2010"
+		InformarNovedadesValuacionesXmlRequest listaNDF = ValuacionesNDF.calcularMTM(DateUtils
+				.stringToDate(pDate));// "03/06/2010"
 		return listaNDF;
 	}
 
@@ -112,20 +115,17 @@ public class Test {
 		origenes.append("Cupon 4: " + resourceBundle.getString("cupon_4") + ",");
 		String linea = resourceBundle.getString("codMonedas");
 		for (String moneda : linea.split(",")) {
-			origenes.append(moneda + ":"
-					+ resourceBundle.getString(moneda.trim()).split(",")[1]
+			origenes.append(moneda + ":" + resourceBundle.getString(moneda.trim()).split(",")[1]
 					+ ",");
 		}
-		origenes.append("Calib_div_h: "
-				+ resourceBundle.getString("calib_div_h") + ",");
-		origenes.append("Calib_index_h: "
-				+ resourceBundle.getString("calib_index_h") + ",");
+		origenes.append("Calib_div_h: " + resourceBundle.getString("calib_div_h") + ",");
+		origenes.append("Calib_index_h: " + resourceBundle.getString("calib_index_h") + ",");
 
 		MyLogger.log("Tablas Cargadas Con exito. Ubicacion de la BBDD:"
-				+ resourceBundle.getString("bbdd.path")
-				+ ". Ubicacion de archivos de Origen:" + origenes.toString());
+				+ resourceBundle.getString("bbdd.path") + ". Ubicacion de archivos de Origen:"
+				+ origenes.toString());
 		return "Tablas Cargadas Con exito. Ubicacion de la BBDD:"
-				+ resourceBundle.getString("bbdd.path")
-				+ ". Ubicacion de archivos de Origen:" + origenes.toString();
+				+ resourceBundle.getString("bbdd.path") + ". Ubicacion de archivos de Origen:"
+				+ origenes.toString();
 	}
 }
