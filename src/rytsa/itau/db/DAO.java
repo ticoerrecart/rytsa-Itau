@@ -41,8 +41,7 @@ public class DAO {
 	public static Integer obtenerMoneda(String key) throws Exception {
 		Integer moneda = monedas.get(key);
 		if (moneda == null) {
-			String err = "No se pudo obtener el c√≥digo de Moneda para la moneda "
-					+ key;
+			String err = "No se pudo obtener el c√≥digo de Moneda para la moneda " + key;
 			MyLogger.logError(err);
 			throw new Exception(err);
 		}
@@ -66,13 +65,11 @@ public class DAO {
 		ps.executeUpdate();
 	}
 
-	private static void insertarTipoDeCambio(Table t, Connection conn,
-			PreparedStatement ps) throws FileNotFoundException, IOException,
-			TableCorruptException, SQLException, FieldNotFoundException,
-			FieldTypeException {
-		String sql = "INSERT INTO " + CALIB_DIV_H + " VALUES(?, ?, ?);";
+	private static void insertarTipoDeCambio(Table t, Date pFechaProceso, Connection conn,
+			PreparedStatement ps) throws FileNotFoundException, IOException, TableCorruptException,
+			SQLException, FieldNotFoundException, FieldTypeException {
 		int numRecords = t.getNumberOfRecords();
-
+		String sql = "INSERT INTO " + CALIB_DIV_H + " VALUES(?, ?, ?);";
 		// System.out.println(t.getNumberOfRecords() + " registros");
 		for (int i = 0; i < numRecords; i++) {
 			t.nextRecord();
@@ -97,14 +94,14 @@ public class DAO {
 
 	}
 
-	private static void crearTipoDeCambioContingencia(Connection conn,
-			PreparedStatement ps, Date pFechaProceso) throws Exception {
+	private static void crearTipoDeCambioContingencia(Connection conn, PreparedStatement ps,
+			Date pFechaProceso) throws Exception {
 		ResourceBundle rb = ResourceBundle.getBundle("config");
 		String pathTabla = rb.getString(CALIB_DIV_H + CONTINGENCIA);
 		Table t = new Table(pathTabla);
 
 		borrarTipoDeCambio(conn, ps);
-		insertarTipoDeCambio(t, conn, ps);
+		insertarTipoDeCambio(t, pFechaProceso, conn, ps);
 
 	}
 
@@ -121,10 +118,15 @@ public class DAO {
 			ResourceBundle rb = ResourceBundle.getBundle("config");
 			pathTabla = rb.getString(CALIB_DIV_H);
 			t = new Table(pathTabla);
-			insertarTipoDeCambio(t, conn, ps);
+			boolean fechaOk = fechaTablaValida(t, pFechaProceso);
+
+			if (fechaOk) {
+				insertarTipoDeCambio(t, pFechaProceso, conn, ps);
+			} else {
+				crearTipoDeCambioContingencia(conn, ps, pFechaProceso);
+			}
 		} catch (EOFException eofE) {
-			MyLogger.logError("No existe la tabla "
-					+ DAO.obtenerFile(pathTabla));
+			MyLogger.logError("No existe la tabla " + DAO.obtenerFile(pathTabla));
 
 			crearTipoDeCambioContingencia(conn, ps, pFechaProceso);
 
@@ -142,20 +144,19 @@ public class DAO {
 		}
 	}
 
-	private static void borrarTasasDeBadlar(Connection conn,
-			PreparedStatement ps) throws SQLException {
+	private static void borrarTasasDeBadlar(Connection conn, PreparedStatement ps)
+			throws SQLException {
 		String sqlDelete = "DELETE FROM " + CALIB_INDEX_H + ";";// http://www.sqlite.org/lang_delete.html#trucateopt
 		ps = conn.prepareStatement(sqlDelete);
 		ps.executeUpdate();
 	}
 
-	private static void insertarTasasDeBadlar(Table t, Connection conn,
-			PreparedStatement ps) throws IOException, FieldTypeException,
-			SQLException {
+	private static void insertarTasasDeBadlar(Table t, Connection conn, PreparedStatement ps)
+			throws IOException, FieldTypeException, SQLException {
+		int numRecords = t.getNumberOfRecords();
+
 		String sql = "INSERT INTO " + CALIB_INDEX_H
 				+ " (C_INDEX, PRICE, D_PROC, D_PUBLIC) VALUES(?, ?, ?, ?);";
-
-		int numRecords = t.getNumberOfRecords();
 
 		for (int i = 0; i < numRecords; i++) {
 			t.nextRecord();
@@ -179,9 +180,8 @@ public class DAO {
 
 	}
 
-	private static void crearTasasDeBadlarContingencia(Connection conn,
-			PreparedStatement ps, Date pFechaProceso)
-			throws FileNotFoundException, IOException, TableCorruptException,
+	private static void crearTasasDeBadlarContingencia(Connection conn, PreparedStatement ps,
+			Date pFechaProceso) throws FileNotFoundException, IOException, TableCorruptException,
 			SQLException, FieldTypeException {
 		ResourceBundle rb = ResourceBundle.getBundle("config");
 		String pathTabla = rb.getString(CALIB_INDEX_H + CONTINGENCIA);
@@ -203,7 +203,12 @@ public class DAO {
 			ResourceBundle rb = ResourceBundle.getBundle("config");
 			pathTabla = rb.getString(CALIB_INDEX_H);
 			t = new Table(pathTabla);
-			insertarTasasDeBadlar(t, conn, ps);
+			boolean fechaOk = fechaTablaValida(t, pFechaProceso);
+			if (fechaOk) {
+				insertarTasasDeBadlar(t, conn, ps);
+			} else {
+				crearTasasDeBadlarContingencia(conn, ps, pFechaProceso);
+			}
 
 		} catch (EOFException eofE) {
 			MyLogger.logError("No existe la tabla " + CALIB_INDEX_H);
@@ -236,10 +241,9 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
 			for (String moneda : linea.split(",")) {
-				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron
-						.getString(moneda.trim()).split(",")[0]));
-				DAO.files.put(moneda.trim(),
-						codigosPatron.getString(moneda.trim()).split(",")[1]);
+				DAO.monedas.put(moneda.trim(), new Integer(codigosPatron.getString(moneda.trim())
+						.split(",")[0]));
+				DAO.files.put(moneda.trim(), codigosPatron.getString(moneda.trim()).split(",")[1]);
 				crearCurva(conn, ps, moneda.trim(), pFechaProceso);
 			}
 		} catch (Exception e) {
@@ -258,8 +262,7 @@ public class DAO {
 	 * Cupon_4)
 	 */
 	private static void crearTablaSiNoExisteOBorrarla(Connection pConnection,
-			PreparedStatement pPreparedStatement, String pTabla)
-			throws SQLException {
+			PreparedStatement pPreparedStatement, String pTabla) throws SQLException {
 		ResultSet rs = null;
 		try {
 			pPreparedStatement = pConnection
@@ -267,9 +270,8 @@ public class DAO {
 			pPreparedStatement.setString(1, pTabla);
 			rs = pPreparedStatement.executeQuery();
 			if (!rs.next()) {// si no existe la tabla la creo.
-				String sqlCreate = "CREATE TABLE " + pTabla + "("
-						+ "PLAZO NUMERIC NULL," + "TNA DOUBLE NULL,"
-						+ "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
+				String sqlCreate = "CREATE TABLE " + pTabla + "(" + "PLAZO NUMERIC NULL,"
+						+ "TNA DOUBLE NULL," + "F_DESC DOUBLE NULL," + "F_ACT DOUBLE NULL,"
 						+ "D_PROC DATETIME NULL)";
 				pPreparedStatement = pConnection.prepareStatement(sqlCreate);
 				pPreparedStatement.executeUpdate();
@@ -299,7 +301,12 @@ public class DAO {
 		try {
 			t = new Table(dbfPath);
 			conn = DatabaseFactory.getConnectionForBulk();
-			crearTabla(CUPON_4, t, conn, ps, pFechaProceso);
+			boolean ok = fechaTablaValida(t, pFechaProceso);
+			if (ok) {
+				crearTabla(CUPON_4, t, conn, ps);
+			} else {
+				crearCurvaContingencia(conn, ps, CUPON_4, pFechaProceso);
+			}
 		} catch (EOFException eofE) {
 			MyLogger.logError("No existe la tabla " + CUPON_4);
 
@@ -319,17 +326,47 @@ public class DAO {
 
 	}
 
+	/**
+	 * Este mÈtodo determina si la fecha D_PROC del primer registro de la tabla es igual a la fecha de Proceso recibida como par·metro
+	 * @param pTabla
+	 * @param fechaProceso
+	 * @return
+	 * @throws IOException
+	 * @throws FieldNotFoundException
+	 * @throws FieldTypeException
+	 */
+	private static boolean fechaTablaValida(Table pTabla, Date fechaProceso) throws IOException,
+			FieldNotFoundException, FieldTypeException {
+		if (pTabla != null && pTabla.nextRecord()) {
+			Date dProc = pTabla.getFieldDate("D_PROC");
+			MyLogger.log("Se compara la fecha '" + dProc + "' del primer registro de la tabla '"
+					+ pTabla.tableName + "' con la fecha de Proceso '" + fechaProceso + "'");
+			long diferencia = DateUtils.diferenciaEntreFechas(fechaProceso, dProc);
+
+			//reseteo el puntero denuevo al primer registro
+			pTabla.goTop();
+			if (diferencia > 0) {
+				MyLogger.log("Las fechas son IGUALES");
+			} else {
+				MyLogger.log("Las fechas son DISTINTAS.  Se va a buscar a la tabla de contingencia");
+			}
+			return (diferencia > 0);
+		} else {
+			return false;
+		}
+
+	}
+
 	/*
 	 * Este m√©todo crea e inserta en las tablas Curva_x y Cupon_4.
 	 */
-	private static void crearTabla(String pNombreTabla, Table pTabla,
-			Connection pConn, PreparedStatement pPs, Date fechaProceso)
-			throws IOException, FieldNotFoundException, FieldTypeException,
+	private static void crearTabla(String pNombreTabla, Table pTabla, Connection pConn,
+			PreparedStatement pPs) throws IOException, FieldNotFoundException, FieldTypeException,
 			SQLException, ParseException {
 
+		int numRecords = pTabla.getNumberOfRecords();
 		crearTablaSiNoExisteOBorrarla(pConn, pPs, pNombreTabla);
 		String sql = "INSERT INTO " + pNombreTabla + " VALUES(?, ?, ?, ?, ?);";
-		int numRecords = pTabla.getNumberOfRecords();
 
 		// System.out.println(t.getNumberOfRecords() + " registros");
 		for (int i = 0; i < numRecords; i++) {
@@ -375,11 +412,10 @@ public class DAO {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	private static void crearCurvaContingencia(Connection conn,
-			PreparedStatement ps, String codigoPatron, Date pFechaProceso)
-			throws Exception {
+	private static void crearCurvaContingencia(Connection conn, PreparedStatement ps,
+			String codigoPatron, Date pFechaProceso) throws Exception {
 		String nombreTabla = codigoPatron + CONTINGENCIA;
-		MyLogger.log("Se va a buscar LA TABLA de contingencia" + nombreTabla);
+		MyLogger.log("Se va a buscar LA TABLA de contingencia " + nombreTabla);
 		String tabla = null;
 		Table t = null;
 		try {
@@ -388,8 +424,8 @@ public class DAO {
 				String pathTabla = rb.getString(nombreTabla);
 				t = new Table(pathTabla);
 				tabla = FileUtils.getFileName(pathTabla);
-				MyLogger.log("CREANDO LA TABLA de contingencia" + tabla);
-				crearTabla(tabla, t, conn, ps, pFechaProceso);
+				MyLogger.log("CREANDO LA TABLA de contingencia " + tabla);
+				crearTabla(tabla, t, conn, ps);
 			} catch (MissingResourceException e) {
 				MyLogger.logError("No se pudo encontrar una entrada en el archivo de configuraciÔøΩn para la tabla de contingencia "
 						+ nombreTabla);
@@ -405,18 +441,21 @@ public class DAO {
 		}
 	}
 
-	private static void crearCurva(Connection conn, PreparedStatement ps,
-			String codigoPatron, Date pFechaProceso) throws Exception {
+	private static void crearCurva(Connection conn, PreparedStatement ps, String codigoPatron,
+			Date pFechaProceso) throws Exception {
 		Table t = null;
 		try {
 			t = new Table(DAO.obtenerFile(codigoPatron));
 			String tabla = FileUtils.getFileName(DAO.obtenerFile(codigoPatron));
-
-			MyLogger.log("CREANDO LA TABLA " + tabla);
-			crearTabla(tabla, t, conn, ps, pFechaProceso);
+			boolean ok = fechaTablaValida(t, pFechaProceso);
+			if (ok) {
+				MyLogger.log("CREANDO LA TABLA " + tabla);
+				crearTabla(tabla, t, conn, ps);
+			} else {
+				crearCurvaContingencia(conn, ps, codigoPatron, pFechaProceso);
+			}
 		} catch (EOFException eofE) {
-			MyLogger.logError("No existe la tabla "
-					+ DAO.obtenerFile(codigoPatron));
+			MyLogger.logError("No existe la tabla " + DAO.obtenerFile(codigoPatron));
 
 			crearCurvaContingencia(conn, ps, codigoPatron, pFechaProceso);
 		} finally {
@@ -427,8 +466,7 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorAct(Date pFecha, Long pPlazo)
-			throws SQLException, Exception {
+	public static Double obtenerFactorAct(Date pFecha, Long pPlazo) throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -444,8 +482,8 @@ public class DAO {
 				factorAct = rs.getDouble("F_ACT");
 				Date d = rs.getDate("D_PROC");
 
-				MyLogger.log("Se obtuvo el FactorAct para la fecha "
-						+ DateUtils.dateToString(d) + ", plazo " + pPlazo);
+				MyLogger.log("Se obtuvo el FactorAct para la fecha " + DateUtils.dateToString(d)
+						+ ", plazo " + pPlazo);
 			} else {
 				MyLogger.logError("No se pudo obtener el factor de actualizaciÔøΩn para la fecha: "
 						+ pFecha.toString() + " y el plazo " + pPlazo);
@@ -460,8 +498,8 @@ public class DAO {
 
 	}
 
-	public static Double obtenerFactorDesc(Date pFecha, Long pPlazo,
-			String pTabla) throws SQLException, Exception {
+	public static Double obtenerFactorDesc(Date pFecha, Long pPlazo, String pTabla)
+			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -476,17 +514,14 @@ public class DAO {
 			if (rs.next()) {
 				factorDesc = rs.getDouble("F_DESC");
 				Date d = rs.getDate("D_PROC");
-				MyLogger.log("Se obtuvo el FactorDesc para la fecha "
-						+ DateUtils.dateToString(d) + ", plazo " + pPlazo
-						+ ", tabla " + pTabla);
+				MyLogger.log("Se obtuvo el FactorDesc para la fecha " + DateUtils.dateToString(d)
+						+ ", plazo " + pPlazo + ", tabla " + pTabla);
 
 			} else {
 				MyLogger.logError("No se pudo obtener el factor de descuento para la fecha "
 						+ pFecha + ", plazo " + pPlazo + " y tabla " + pTabla);
-				throw new Exception(
-						"No se pudo obtener el factor de descuento para la fecha "
-								+ pFecha + ", plazo " + pPlazo + " y tabla "
-								+ pTabla);
+				throw new Exception("No se pudo obtener el factor de descuento para la fecha "
+						+ pFecha + ", plazo " + pPlazo + " y tabla " + pTabla);
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -495,20 +530,17 @@ public class DAO {
 
 	}
 
-	public static Double obtenerTipoCambioMoneda(Date pFechaProceso,
-			Integer codDiv) throws SQLException, Exception {
+	public static Double obtenerTipoCambioMoneda(Date pFechaProceso, Integer codDiv)
+			throws SQLException, Exception {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Double precio = null;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn
-					.prepareStatement("SELECT PRICE, D_PROC FROM "
-							+ CALIB_DIV_H
-							+ "  WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
-			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(
-					pFechaProceso, 23)));
+			ps = conn.prepareStatement("SELECT PRICE, D_PROC FROM " + CALIB_DIV_H
+					+ "  WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pFechaProceso, 23)));
 			ps.setLong(2, codDiv);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -518,13 +550,9 @@ public class DAO {
 						+ DateUtils.dateToString(d) + ", codDiv " + codDiv);
 			} else {
 				MyLogger.logError("No se pudo obtener el Tipo Cambio Moneda para el codigo "
-						+ codDiv
-						+ " y para la fecha "
-						+ DateUtils.dateToString(pFechaProceso));
-				throw new Exception(
-						"No se pudo obtener el Tipo Cambio Moneda para el codigo "
-								+ codDiv + " y para la fecha "
-								+ DateUtils.dateToString(pFechaProceso));
+						+ codDiv + " y para la fecha " + DateUtils.dateToString(pFechaProceso));
+				throw new Exception("No se pudo obtener el Tipo Cambio Moneda para el codigo "
+						+ codDiv + " y para la fecha " + DateUtils.dateToString(pFechaProceso));
 			}
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
@@ -567,8 +595,7 @@ public class DAO {
 		}
 	}
 
-	public static Double obtenerPromedioTasasDeBadlar(Date pfInicio, Date pfFin)
-			throws Exception {
+	public static Double obtenerPromedioTasasDeBadlar(Date pfInicio, Date pfFin) throws Exception {
 		Double suma = new Double(0);
 		ResultSet rs = null;
 		Connection conn = null;
@@ -579,8 +606,7 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn.prepareStatement("SELECT PRICE  FROM " + CALIB_INDEX_H
 					+ " WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
-			ps.setDate(1,
-					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -593,20 +619,19 @@ public class DAO {
 		}
 		if (total != 0) {
 			MyLogger.log("Promedio Tasas de Badlar entre las fechas ("
-					+ DateUtils.dateToString(pfInicio) + ","
-					+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
+					+ DateUtils.dateToString(pfInicio) + "," + DateUtils.dateToString(pfFin)
+					+ ") :" + suma / total);
 			return suma / total;
 		} else {
 			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar entre la fecha "
 					+ pfInicio + " y la fecha " + pfFin);
-			throw new Exception(
-					"No se pudo obtener el Promedio de Tasas de Badlar entre la fecha "
-							+ pfInicio + " y la fecha " + pfFin);
+			throw new Exception("No se pudo obtener el Promedio de Tasas de Badlar entre la fecha "
+					+ pfInicio + " y la fecha " + pfFin);
 		}
 	}
 
-	public static Double obtenerPromedioBadlarYTasasFWD(Date pfInicioB,
-			Date pfFinB, Date pfInicioTF, Date pfFinTF) throws Exception {
+	public static Double obtenerPromedioBadlarYTasasFWD(Date pfInicioB, Date pfFinB,
+			Date pfInicioTF, Date pfFinTF) throws Exception {
 		Double sumaTF = new Double(0);
 		Double sumaB = new Double(0);
 		ResultSet rs = null;
@@ -620,10 +645,8 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ? AND PLAZO >= 1;");
-			ps.setDate(1,
-					DateUtils.convertDate(DateUtils.addHours(pfInicioTF, -23)));
-			ps.setDate(2,
-					DateUtils.convertDate(DateUtils.addHours(pfFinTF, 23)));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicioTF, -23)));
+			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFinTF, 23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				tasaFWD = rs.getDouble("TASA_FWD");
@@ -633,8 +656,7 @@ public class DAO {
 
 			ps = conn.prepareStatement("SELECT PRICE  FROM " + CALIB_INDEX_H
 					+ " WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
-			ps.setDate(1,
-					DateUtils.convertDate(DateUtils.addHours(pfInicioB, -23)));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicioB, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFinB, 23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -648,11 +670,10 @@ public class DAO {
 		}
 		if (totalB != 0 || totalTF != 0) {
 			MyLogger.log("Promedio Badlar y Tasas FWD entre las fechas ("
-					+ DateUtils.dateToString(pfInicioB) + ","
-					+ DateUtils.dateToString(pfFinB) + ","
-					+ DateUtils.dateToString(pfInicioTF) + ","
-					+ DateUtils.dateToString(pfFinTF) + ") :"
-					+ (sumaB + sumaTF) / (totalB + totalTF));
+					+ DateUtils.dateToString(pfInicioB) + "," + DateUtils.dateToString(pfFinB)
+					+ "," + DateUtils.dateToString(pfInicioTF) + ","
+					+ DateUtils.dateToString(pfFinTF) + ") :" + (sumaB + sumaTF)
+					/ (totalB + totalTF));
 			return (sumaB + sumaTF) / (totalB + totalTF);
 		} else {
 			MyLogger.logError("No se pudo obtener el Promedio de Tasas de Badlar Y FWD entre las fechas ["
@@ -672,8 +693,7 @@ public class DAO {
 		}
 	}
 
-	public static Double obtenerPromedioTasasFWD(Date pfInicio, Date pfFin)
-			throws Exception {
+	public static Double obtenerPromedioTasasFWD(Date pfInicio, Date pfFin) throws Exception {
 		Double suma = new Double(0);
 		ResultSet rs = null;
 		Connection conn = null;
@@ -684,8 +704,7 @@ public class DAO {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
 					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ? AND PLAZO > 1;");
-			ps.setDate(1,
-					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
+			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -697,16 +716,14 @@ public class DAO {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
 		if (total != 0) {
-			MyLogger.log("Promedio Tasas FWD entre las fechas ("
-					+ DateUtils.dateToString(pfInicio) + ","
-					+ DateUtils.dateToString(pfFin) + ") :" + suma / total);
+			MyLogger.log("Promedio Tasas FWD entre las fechas (" + DateUtils.dateToString(pfInicio)
+					+ "," + DateUtils.dateToString(pfFin) + ") :" + suma / total);
 			return suma / total;
 		} else {
 			MyLogger.logError("No se pudo obtener el Promedio de Tasas FWD entre las fecha "
 					+ pfInicio + " y la fecha " + pfFin);
-			throw new Exception(
-					"No se pudo obtener el Promedio de Tasas de FWD entre la fecha "
-							+ pfInicio + " y la fecha " + pfFin);
+			throw new Exception("No se pudo obtener el Promedio de Tasas de FWD entre la fecha "
+					+ pfInicio + " y la fecha " + pfFin);
 		}
 	}
 }

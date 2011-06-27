@@ -14,15 +14,20 @@ import rytsa.itau.utils.DateUtils;
 public class DAOTest extends TestCase {
 
 	public DAOTest() {
-		DAO.crearCupon4();
 		try {
-			DAO.crearCurvas(DateUtils.stringToDate("17/10/2010"));
+			Date fecha = DateUtils.convertDate(DateUtils.stringToDate("17/10/2010"));
+			DAO.crearCupon4(fecha);
+			try {
+				DAO.crearCurvas(DateUtils.stringToDate("17/10/2010"));
+			} catch (Exception e) {
+
+			}
+			DAO.crearTipoDeCambio(fecha);
+			DAO.crearTasasDeBadlar(fecha);
 		} catch (Exception e) {
 
 		}
 
-		DAO.crearTipoDeCambio();
-		DAO.crearTasasDeBadlar();
 	}
 
 	@Override
