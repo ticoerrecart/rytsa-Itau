@@ -32,6 +32,12 @@ public class DAO {
 
 	private static String CONTINGENCIA = ".contingencia";
 
+	private static String CUPON_4 = "cupon_4";
+
+	private static String CALIB_DIV_H = "calib_div_h";
+
+	private static String CALIB_INDEX_H = "calib_index_h";
+
 	public static Integer obtenerMoneda(String key) throws Exception {
 		Integer moneda = monedas.get(key);
 		if (moneda == null) {
@@ -53,51 +59,74 @@ public class DAO {
 		return file;
 	}
 
+	private static void borrarTipoDeCambio(Connection conn, PreparedStatement ps)
+			throws SQLException {
+		String sqlDelete = "DELETE FROM " + CALIB_DIV_H;// http://www.sqlite.org/lang_delete.html#trucateopt
+		ps = conn.prepareStatement(sqlDelete);
+		ps.executeUpdate();
+	}
+
+	private static void insertarTipoDeCambio(Table t, Connection conn,
+			PreparedStatement ps) throws FileNotFoundException, IOException,
+			TableCorruptException, SQLException, FieldNotFoundException,
+			FieldTypeException {
+		String sql = "INSERT INTO " + CALIB_DIV_H + " VALUES(?, ?, ?);";
+		int numRecords = t.getNumberOfRecords();
+
+		// System.out.println(t.getNumberOfRecords() + " registros");
+		for (int i = 0; i < numRecords; i++) {
+			t.nextRecord();
+			try {
+				Integer div = t.getFieldInteger("C_DIV");
+				Double price = t.getFieldDouble("PRICE");
+				Date dProc = t.getFieldDate("D_PROC");
+				/*
+				 * System.out.println(plazo + " | " + tna + " | " + fDesc +
+				 * " | " + fAct + " | " + dProc);
+				 */
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, div);
+				ps.setDouble(2, price);
+				ps.setDate(3, DateUtils.convertDate(dProc));
+
+				ps.executeUpdate();
+			} catch (NumberFormatException nfe) {
+				MyLogger.log("NumberFormatException en crearTipoDeCambio");
+			}
+		}
+
+	}
+
+	private static void crearTipoDeCambioContingencia(Connection conn,
+			PreparedStatement ps, Date pFechaProceso) throws Exception {
+		ResourceBundle rb = ResourceBundle.getBundle("config");
+		String pathTabla = rb.getString(CALIB_DIV_H + CONTINGENCIA);
+		Table t = new Table(pathTabla);
+
+		borrarTipoDeCambio(conn, ps);
+		insertarTipoDeCambio(t, conn, ps);
+
+	}
+
 	public static void crearTipoDeCambio(Date pFechaProceso) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Table t = null;
-		String nomTabla = "calib_div_h";
+
 		String pathTabla = null;
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
-			String sqlDelete = "DELETE FROM Calib_div_h;";// http://www.sqlite.org/lang_delete.html#trucateopt
-			ps = conn.prepareStatement(sqlDelete);
-			ps.executeUpdate();
+			borrarTipoDeCambio(conn, ps);
 
-			String sql = "INSERT INTO Calib_div_h VALUES(?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
-			pathTabla = rb.getString(nomTabla);
+			pathTabla = rb.getString(CALIB_DIV_H);
 			t = new Table(pathTabla);
-			int numRecords = t.getNumberOfRecords();
-
-			// System.out.println(t.getNumberOfRecords() + " registros");
-			for (int i = 0; i < numRecords; i++) {
-				t.nextRecord();
-				try {
-					Integer div = t.getFieldInteger("C_DIV");
-					Double price = t.getFieldDouble("PRICE");
-					Date dProc = t.getFieldDate("D_PROC");
-					/*
-					 * System.out.println(plazo + " | " + tna + " | " + fDesc +
-					 * " | " + fAct + " | " + dProc);
-					 */
-					ps = conn.prepareStatement(sql);
-					ps.setInt(1, div);
-					ps.setDouble(2, price);
-					ps.setDate(3, DateUtils.convertDate(dProc));
-
-					ps.executeUpdate();
-				} catch (NumberFormatException nfe) {
-					MyLogger.log("NumberFormatException en crearTipoDeCambio");
-				}
-			}
-
+			insertarTipoDeCambio(t, conn, ps);
 		} catch (EOFException eofE) {
 			MyLogger.logError("No existe la tabla "
 					+ DAO.obtenerFile(pathTabla));
 
-			crearTipoDeCambioContingencia(conn, ps, nomTabla, pFechaProceso);
+			crearTipoDeCambioContingencia(conn, ps, pFechaProceso);
 
 		} catch (Exception e) {
 			MyLogger.logError(e.toString() + " | crearTipoDeCambio");
@@ -113,48 +142,73 @@ public class DAO {
 		}
 	}
 
+	private static void borrarTasasDeBadlar(Connection conn,
+			PreparedStatement ps) throws SQLException {
+		String sqlDelete = "DELETE FROM " + CALIB_INDEX_H + ";";// http://www.sqlite.org/lang_delete.html#trucateopt
+		ps = conn.prepareStatement(sqlDelete);
+		ps.executeUpdate();
+	}
+
+	private static void insertarTasasDeBadlar(Table t, Connection conn,
+			PreparedStatement ps) throws IOException, FieldTypeException,
+			SQLException {
+		String sql = "INSERT INTO " + CALIB_INDEX_H
+				+ " (C_INDEX, PRICE, D_PROC, D_PUBLIC) VALUES(?, ?, ?, ?);";
+
+		int numRecords = t.getNumberOfRecords();
+
+		for (int i = 0; i < numRecords; i++) {
+			t.nextRecord();
+			try {
+				Integer cIndex = t.getFieldInteger("C_INDEX");
+				Double price = t.getFieldDouble("PRICE");
+				Date dProc = t.getFieldDate("D_PROC");
+				Date dPublic = t.getFieldDate("D_PUBLIC");
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, cIndex);
+				ps.setDouble(2, price);
+				ps.setDate(3, DateUtils.convertDate(dProc));
+				ps.setDate(4, DateUtils.convertDate(dPublic));
+				ps.executeUpdate();
+			} catch (FieldNotFoundException fnfe) {
+				MyLogger.log("FieldNotFoundException (D_PUBLIC) en crearTasasDeBadlar");
+			} catch (NumberFormatException nfe) {
+				MyLogger.log("NumberFormatException en crearTasasDeBadlar");
+			}
+		}
+
+	}
+
+	private static void crearTasasDeBadlarContingencia(Connection conn,
+			PreparedStatement ps, Date pFechaProceso)
+			throws FileNotFoundException, IOException, TableCorruptException,
+			SQLException, FieldTypeException {
+		ResourceBundle rb = ResourceBundle.getBundle("config");
+		String pathTabla = rb.getString(CALIB_INDEX_H + CONTINGENCIA);
+		Table t = new Table(pathTabla);
+		borrarTasasDeBadlar(conn, ps);
+
+		insertarTasasDeBadlar(t, conn, ps);
+	}
+
 	public static void crearTasasDeBadlar(Date pFechaProceso) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Table t = null;
-		String nomTabla = "calib_index_h";
 		String pathTabla = null;
 		try {
 			conn = DatabaseFactory.getConnectionForBulk();
-			String sqlDelete = "DELETE FROM Calib_index_h;";// http://www.sqlite.org/lang_delete.html#trucateopt
-			ps = conn.prepareStatement(sqlDelete);
-			ps.executeUpdate();
+			borrarTasasDeBadlar(conn, ps);
 
-			String sql = "INSERT INTO Calib_index_h (C_INDEX, PRICE, D_PROC, D_PUBLIC) VALUES(?, ?, ?, ?);";
 			ResourceBundle rb = ResourceBundle.getBundle("config");
-			pathTabla = rb.getString(nomTabla);
+			pathTabla = rb.getString(CALIB_INDEX_H);
 			t = new Table(pathTabla);
-			int numRecords = t.getNumberOfRecords();
-
-			for (int i = 0; i < numRecords; i++) {
-				t.nextRecord();
-				try {
-					Integer cIndex = t.getFieldInteger("C_INDEX");
-					Double price = t.getFieldDouble("PRICE");
-					Date dProc = t.getFieldDate("D_PROC");
-					Date dPublic = t.getFieldDate("D_PUBLIC");
-					ps = conn.prepareStatement(sql);
-					ps.setInt(1, cIndex);
-					ps.setDouble(2, price);
-					ps.setDate(3, DateUtils.convertDate(dProc));
-					ps.setDate(4, DateUtils.convertDate(dPublic));
-					ps.executeUpdate();
-				} catch (FieldNotFoundException fnfe) {
-					MyLogger.log("FieldNotFoundException (D_PUBLIC) en crearTasasDeBadlar");
-				} catch (NumberFormatException nfe) {
-					MyLogger.log("NumberFormatException en crearTasasDeBadlar");
-				}
-			}
+			insertarTasasDeBadlar(t, conn, ps);
 
 		} catch (EOFException eofE) {
-			MyLogger.logError("No existe la tabla " + nomTabla);
+			MyLogger.logError("No existe la tabla " + CALIB_INDEX_H);
 
-			crearTasasDeBadlarContingencia(conn, ps, nomTabla, pFechaProceso);
+			crearTasasDeBadlarContingencia(conn, ps, pFechaProceso);
 		} catch (Exception e) {
 			MyLogger.logError(e.toString() + " | crearTasasDeBadlar");
 		} finally {
@@ -237,20 +291,19 @@ public class DAO {
 	 */
 	public static void crearCupon4(Date pFechaProceso) throws Exception {
 		ResourceBundle codigosPatron = ResourceBundle.getBundle("config");
-		String dbfPath = codigosPatron.getString("cupon_4");
+		String dbfPath = codigosPatron.getString(CUPON_4);
 
 		Connection conn = null;
 		PreparedStatement ps = null;
 		Table t = null;
-		String nomTabla = "cupon_4";
 		try {
 			t = new Table(dbfPath);
 			conn = DatabaseFactory.getConnectionForBulk();
-			crearTabla(nomTabla, t, conn, ps, pFechaProceso);
+			crearTabla(CUPON_4, t, conn, ps, pFechaProceso);
 		} catch (EOFException eofE) {
-			MyLogger.logError("No existe la tabla " + nomTabla);
+			MyLogger.logError("No existe la tabla " + CUPON_4);
 
-			crearCurvaContingencia(conn, ps, nomTabla, pFechaProceso);
+			crearCurvaContingencia(conn, ps, CUPON_4, pFechaProceso);
 		} catch (Exception e) {
 			MyLogger.logError(e.toString());
 		} finally {
@@ -451,7 +504,9 @@ public class DAO {
 		try {
 			conn = DatabaseFactory.getConnection();
 			ps = conn
-					.prepareStatement("SELECT PRICE, D_PROC FROM Calib_div_h WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
+					.prepareStatement("SELECT PRICE, D_PROC FROM "
+							+ CALIB_DIV_H
+							+ "  WHERE D_PROC <= ? AND C_DIV = ? ORDER BY D_PROC DESC;");
 			ps.setDate(1, DateUtils.convertDate(DateUtils.addHours(
 					pFechaProceso, 23)));
 			ps.setLong(2, codDiv);
@@ -522,8 +577,8 @@ public class DAO {
 		Integer total = 0;
 		try {
 			conn = DatabaseFactory.getConnection();
-			ps = conn
-					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
+			ps = conn.prepareStatement("SELECT PRICE  FROM " + CALIB_INDEX_H
+					+ " WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicio, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFin, 23)));
@@ -576,8 +631,8 @@ public class DAO {
 				totalTF++;
 			}
 
-			ps = conn
-					.prepareStatement("SELECT PRICE  FROM Calib_index_h WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
+			ps = conn.prepareStatement("SELECT PRICE  FROM " + CALIB_INDEX_H
+					+ " WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
 			ps.setDate(1,
 					DateUtils.convertDate(DateUtils.addHours(pfInicioB, -23)));
 			ps.setDate(2, DateUtils.convertDate(DateUtils.addHours(pfFinB, 23)));
