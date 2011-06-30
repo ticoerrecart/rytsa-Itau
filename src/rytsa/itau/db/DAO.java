@@ -400,6 +400,17 @@ public class DAO {
 	}
 
 	/**
+	 * Cuando creo las curvas, el nombre de la tabla en la BD lo creo a partir del nombre del archivo.  Es por ésto
+	 * que para las curvas históricas, curva_x_h.dbf, le tengo que eliminar el "_h" para crear la tabla curva_x en la BD.
+	 * @param pNombreTabla
+	 * @return
+	 */
+	public static String eliminarSufijoCurvaHistorica(String pNombreTabla) {
+		int sufijo = pNombreTabla.lastIndexOf("_h");
+		return pNombreTabla.substring(0, sufijo) + pNombreTabla.substring(sufijo + 2);
+	}
+
+	/**
 	 * Si no encuentra la curva en el path "comun", entonces va a buscarla al
 	 * path de contingencia. Dichas curvas son histï¿½ricas, con lo cual, se
 	 * deberï¿½a realizar un filtro por la mï¿½xima fecha de proceso para llegar a
@@ -407,14 +418,14 @@ public class DAO {
 	 * 
 	 * @param conn
 	 * @param ps
-	 * @param codigoPatron
+	 * @param nomTabla
 	 * @throws TableCorruptException
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
 	private static void crearCurvaContingencia(Connection conn, PreparedStatement ps,
-			String codigoPatron, Date pFechaProceso) throws Exception {
-		String nombreTabla = codigoPatron + CONTINGENCIA;
+			String nomTabla, Date pFechaProceso) throws Exception {
+		String nombreTabla = nomTabla + CONTINGENCIA;
 		MyLogger.log("Se va a buscar LA TABLA de contingencia " + nombreTabla);
 		String tabla = null;
 		Table t = null;
@@ -423,8 +434,9 @@ public class DAO {
 			try {
 				String pathTabla = rb.getString(nombreTabla);
 				t = new Table(pathTabla);
-				tabla = FileUtils.getFileName(pathTabla);
+				tabla = eliminarSufijoCurvaHistorica(FileUtils.getFileName(pathTabla));
 				MyLogger.log("CREANDO LA TABLA de contingencia " + tabla);
+
 				crearTabla(tabla, t, conn, ps);
 			} catch (MissingResourceException e) {
 				MyLogger.logError("No se pudo encontrar una entrada en el archivo de configuraciï¿½n para la tabla de contingencia "
