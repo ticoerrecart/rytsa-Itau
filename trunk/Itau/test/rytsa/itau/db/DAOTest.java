@@ -64,6 +64,12 @@ public class DAOTest extends TestCase {
 		} catch (MissingResourceException e) {
 
 		}
+	}
 
+	public void testEliminarSufijoTablaHistorica() {
+		String tablaH = "c:\\aaaaa_h.dbf";
+		String tabla = "c:\\aaaaa.dbf";
+		String tt = DAO.eliminarSufijoCurvaHistorica(tablaH);
+		assertEquals(tabla, tt);
 	}
 }
