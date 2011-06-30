@@ -94,16 +94,17 @@ public class DAO {
 
 	}
 
-	private static void crearTipoDeCambioContingencia(Connection conn, PreparedStatement ps,
-			Date pFechaProceso) throws Exception {
-		ResourceBundle rb = ResourceBundle.getBundle("config");
-		String pathTabla = rb.getString(CALIB_DIV_H + CONTINGENCIA);
-		Table t = new Table(pathTabla);
+	/*	private static void crearTipoDeCambioContingencia(Connection conn, PreparedStatement ps,
+				Date pFechaProceso) throws Exception {
+			ResourceBundle rb = ResourceBundle.getBundle("config");
+			String pathTabla = rb.getString(CALIB_DIV_H + CONTINGENCIA);
+			Table t = new Table(pathTabla);
 
-		borrarTipoDeCambio(conn, ps);
-		insertarTipoDeCambio(t, pFechaProceso, conn, ps);
+			borrarTipoDeCambio(conn, ps);
+			insertarTipoDeCambio(t, pFechaProceso, conn, ps);
 
-	}
+		}
+	*/
 
 	public static void crearTipoDeCambio(Date pFechaProceso) throws Exception {
 		Connection conn = null;
@@ -118,17 +119,10 @@ public class DAO {
 			ResourceBundle rb = ResourceBundle.getBundle("config");
 			pathTabla = rb.getString(CALIB_DIV_H);
 			t = new Table(pathTabla);
-			boolean fechaOk = fechaTablaValida(t, pFechaProceso);
 
-			if (fechaOk) {
-				insertarTipoDeCambio(t, pFechaProceso, conn, ps);
-			} else {
-				crearTipoDeCambioContingencia(conn, ps, pFechaProceso);
-			}
+			insertarTipoDeCambio(t, pFechaProceso, conn, ps);
 		} catch (EOFException eofE) {
 			MyLogger.logError("No existe la tabla " + DAO.obtenerFile(pathTabla));
-
-			crearTipoDeCambioContingencia(conn, ps, pFechaProceso);
 
 		} catch (Exception e) {
 			MyLogger.logError(e.toString() + " | crearTipoDeCambio");
@@ -203,17 +197,11 @@ public class DAO {
 			ResourceBundle rb = ResourceBundle.getBundle("config");
 			pathTabla = rb.getString(CALIB_INDEX_H);
 			t = new Table(pathTabla);
-			boolean fechaOk = fechaTablaValida(t, pFechaProceso);
-			if (fechaOk) {
-				insertarTasasDeBadlar(t, conn, ps);
-			} else {
-				crearTasasDeBadlarContingencia(conn, ps, pFechaProceso);
-			}
+			insertarTasasDeBadlar(t, conn, ps);
 
 		} catch (EOFException eofE) {
 			MyLogger.logError("No existe la tabla " + CALIB_INDEX_H);
 
-			crearTasasDeBadlarContingencia(conn, ps, pFechaProceso);
 		} catch (Exception e) {
 			MyLogger.logError(e.toString() + " | crearTasasDeBadlar");
 		} finally {
@@ -368,15 +356,26 @@ public class DAO {
 		crearTablaSiNoExisteOBorrarla(pConn, pPs, pNombreTabla);
 		String sql = "INSERT INTO " + pNombreTabla + " VALUES(?, ?, ?, ?, ?);";
 
+		pTabla.goBottom();
 		// System.out.println(t.getNumberOfRecords() + " registros");
+		Date testigo = null;
+
 		for (int i = 0; i < numRecords; i++) {
-			pTabla.nextRecord();
+			pTabla.priorRecord();
 			try {
 				Integer plazo = pTabla.getFieldInteger("PLAZO");
 				Double tna = pTabla.getFieldDouble("TNA");
 				Double fDesc = pTabla.getFieldDouble("F_DESC");
 				Double fAct = pTabla.getFieldDouble("F_ACT");
 				Date dProc = pTabla.getFieldDate("D_PROC");
+
+				if (testigo == null) {
+					testigo = dProc;
+				}
+				if (!dProc.equals(testigo)) {
+					break;
+				}
+
 				/*
 				 * System.out.println(plazo + " | " + tna + " | " + fDesc +
 				 * " | " + fAct + " | " + dProc);
