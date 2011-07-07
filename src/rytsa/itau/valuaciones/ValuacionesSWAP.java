@@ -181,29 +181,6 @@ public class ValuacionesSWAP extends Valuaciones {
 		return listaNovedadesRD;
 	}
 
-	/*
-	 * private static AgendaCuponOperacioneSWAPAValuarData
-	 * recuperarSegundoCupon(List<AgendaCuponOperacioneSWAPAValuarData>
-	 * pOperacionesSWAP){ AgendaCuponOperacioneSWAPAValuarData segundoCupon =
-	 * null; if(pOperacionesSWAP==null || pOperacionesSWAP.size()<2){
-	 * MyLogger.logError
-	 * ("No hay suficientes cupones SWAP para realizar la operaci�n"); }else{
-	 * return pOperacionesSWAP.get(1);//recupero el segundo CUPON SWAP. } return
-	 * segundoCupon; }
-	 * 
-	 * 
-	 * private static AgendaCuponOperacioneSWAPAValuarData
-	 * recuperarUltimoCupon(List<AgendaCuponOperacioneSWAPAValuarData>
-	 * pOperacionesSWAP){ AgendaCuponOperacioneSWAPAValuarData ultimoCupon =
-	 * null; for (AgendaCuponOperacioneSWAPAValuarData
-	 * agendaCuponOperacioneSWAPAValuarData : pOperacionesSWAP.subList(1,
-	 * pOperacionesSWAP.size())) {
-	 * 
-	 * }
-	 * 
-	 * return ultimoCupon; }
-	 */
-
 	private static void armarAgendaCuponOperaciones(
 			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP,
 			Date pFechaProceso) throws Exception {
@@ -312,6 +289,8 @@ public class ValuacionesSWAP extends Valuaciones {
 							MyLogger.log("VFutCliRf: "
 									+ cuponSWAP.getVFutCliRf());
 							MyLogger.log("FraCliRf: " + cuponSWAP.getFraCliRf());
+							MyLogger.log("Fecha de Inicio: " + cuponSWAP.getFechaIndiceInicio());
+							MyLogger.log("Fecha Vencimiento: "	+ cuponSWAP.getFechaVencimiento());
 							MyLogger.log("*************************************");
 
 							lista.add(cuponSWAP);
@@ -568,6 +547,7 @@ public class ValuacionesSWAP extends Valuaciones {
 					salida = ProviderDTO
 							.getRecuperarAgendaCuponesOperacionesSWAPAValuarResponse(xs
 									.fromXML(sRtaAgendaCupones));
+						MyLogger.log("RESPUESTA XML OperacionSWAPAValuarData: " + sRtaAgendaCupones);			
 				} else {
 					MyLogger.logError("RESPUESTA XML Agenda Operaciones SWAP: "
 							+ sRtaAgendaCupones);
@@ -628,6 +608,7 @@ public class ValuacionesSWAP extends Valuaciones {
 					salida = ProviderDTO
 							.getRecuperarOperacionesSWAPAValuarResponse(xs
 									.fromXML(sRtaOperaciones));
+						MyLogger.log("RESPUESTA XML OperacionSWAPAValuarData: " + sRtaOperaciones);
 				} else {
 					MyLogger.logError("RESPUESTA XML Operaciones SWAP a Valuar: "
 							+ sRtaOperaciones);
