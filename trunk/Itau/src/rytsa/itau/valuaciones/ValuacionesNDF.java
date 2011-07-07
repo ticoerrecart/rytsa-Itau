@@ -195,6 +195,7 @@ public class ValuacionesNDF extends Valuaciones {
 					salida = ProviderDTO
 							.getRecuperoOperacionesNDFAValuarResponse(xs
 									.fromXML(sRta));
+					MyLogger.log("RESPUESTA XML operacionesNDFAValuar: " + sRta);
 				} else {
 					MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: "
 							+ sRta);
