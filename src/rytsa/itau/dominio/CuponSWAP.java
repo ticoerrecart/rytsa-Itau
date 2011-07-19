@@ -8,6 +8,9 @@ import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.Valuaciones;
+import rytsa.itau.valuaciones.ValuacionesSWAP;
+import rytsa.itau.valuaciones.dto.FechaData;
+import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 
@@ -88,6 +91,11 @@ public class CuponSWAP {
 				Valuaciones.DATE_MASK_CUPON_SWAP);
 	}
 
+	private boolean esDiaHabil(Date pFecha) throws ParseException {
+		FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha, DateUtils.addDays(pFecha, 1));
+		return !((FechaData) fr.getFeriadosResult().get(0)).getEsFeriado();
+	}
+
 	public void calcularTnaIndex() throws Exception {
 		if (this.getFechaIndiceInicio() == null) {
 			MyLogger.logError("FechaIndiceInicio es nula");
@@ -98,24 +106,36 @@ public class CuponSWAP {
 			throw new Exception("FechaIndiceFin es nula");
 		}
 
-		if (this.getFechaIndiceFin().compareTo(this.getFechaProceso()) <= 0) {
+		// le resto 2 dias habiles a fecha de proceso...
+		Date nuevaFechaProceso = this.getFechaProceso();
+		int cantDiasHabilesARestar = 2;
+		while (cantDiasHabilesARestar > 0) {
+			DateUtils.addDays(nuevaFechaProceso, -1);
+			if (esDiaHabil(nuevaFechaProceso)) {
+				cantDiasHabilesARestar--;
+			}
+		}
+
+		if (this.getFechaIndiceFin().compareTo(nuevaFechaProceso) <= 0) {
 			// todas las tasas son anteriores (Badlar)
 			this.setTnaIndex(DAO.obtenerPromedioTasasDeBadlar(this.getFechaIndiceInicio(),
 					this.getFechaIndiceFin()));
 		} else {
-			if (this.getFechaIndiceInicio().compareTo(this.getFechaProceso()) > 0) {
+			if (this.getFechaIndiceInicio().compareTo(nuevaFechaProceso) > 0) {
 				// todas las tasas son posteriores (FWD)
 				this.setTnaIndex(DAO.obtenerPromedioTasasFWD(this.getFechaIndiceInicio(),
 						this.getFechaIndiceFin()));
 			} else {
 				// algunas tasas son anteriores (Badlar) y otras son posteriores
 				// (FWD)
-				Double promedio = DAO.obtenerPromedioBadlarYTasasFWD(this.getFechaIndiceInicio(),
-						this.getFechaProceso(), DateUtils.addDays(this.getFechaProceso(), 1),
-						this.getFechaIndiceFin());
+				//cambio...
+				Double promedio = DAO.obtenerPromedioBadlarYTasasFWD(
+						DateUtils.addDays(this.getFechaIndiceInicio(), 1), nuevaFechaProceso,
+						DateUtils.addDays(nuevaFechaProceso, 1), this.getFechaIndiceFin());
 				this.setTnaIndex(promedio);
 			}
 		}
+
 	}
 
 	public Double getCantidadVNParteFija() {
