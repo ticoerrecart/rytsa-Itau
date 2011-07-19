@@ -181,9 +181,25 @@ public class ValuacionesSWAP extends Valuaciones {
 		return listaNovedadesRD;
 	}
 
+	
+	private static boolean esDiaHabil(Date pFecha) throws ParseException {
+		FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha, DateUtils.addDays(pFecha, 1));
+		return !((FechaData) fr.getFeriadosResult().get(0)).getEsFeriado();
+	}
+	
 	private static void armarAgendaCuponOperaciones(
 			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP,
 			Date pFechaProceso) throws Exception {
+		// le resto 2 dias habiles a fecha de proceso...
+		Date nuevaFechaProceso = pFechaProceso;
+		int cantDiasHabilesARestar = 2;
+		while (cantDiasHabilesARestar > 0) {
+			nuevaFechaProceso = DateUtils.addDays(nuevaFechaProceso, -1);
+			if (esDiaHabil(nuevaFechaProceso)) {
+				cantDiasHabilesARestar--;
+			}
+		}
+		
 		if (pOperacionesSWAP != null) {
 			// AgendaCuponOperacioneSWAPAValuarData segundoCupon =
 			// recuperarSegundoCupon(pOperacionesSWAP);
@@ -277,7 +293,7 @@ public class ValuacionesSWAP extends Valuaciones {
 								agendaCupon.setFechaInicio(agendaCuponAnterior
 										.getFechavencimiento());
 							}
-							CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso,
+							CuponSWAP cuponSWAP = new CuponSWAP(pFechaProceso,nuevaFechaProceso,
 									agendaCupon, parteFija, parteVariable);
 							MyLogger.log("************Cupon Swap***********");
 							MyLogger.log("Plazo Residual: "
