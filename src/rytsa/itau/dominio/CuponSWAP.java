@@ -8,9 +8,6 @@ import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.Valuaciones;
-import rytsa.itau.valuaciones.ValuacionesSWAP;
-import rytsa.itau.valuaciones.dto.FechaData;
-import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 
@@ -23,6 +20,8 @@ public class CuponSWAP {
 
 	private Date fechaProceso;
 
+	private Date nuevaFechaProceso;
+	
 	private Long plazoResidual;
 
 	private Double tnaIndex;
@@ -35,10 +34,11 @@ public class CuponSWAP {
 
 	private Double fraCliRf;
 
-	public CuponSWAP(Date pFechaProceso, AgendaCuponOperacioneSWAPAValuarData pAgendaCupon,
+	public CuponSWAP(Date pFechaProceso,Date pNuevaFechaProceso, AgendaCuponOperacioneSWAPAValuarData pAgendaCupon,
 			OperacionSWAPAValuarData pOperacionParteFija,
 			OperacionSWAPAValuarData pOperacionParteVariable) throws Exception {
 		this.setFechaProceso(pFechaProceso);
+		this.setNuevaFechaProceso(pNuevaFechaProceso);
 		this.operacionParteFija = pOperacionParteFija;
 		this.operacionParteVariable = pOperacionParteVariable;
 
@@ -91,10 +91,7 @@ public class CuponSWAP {
 				Valuaciones.DATE_MASK_CUPON_SWAP);
 	}
 
-	private boolean esDiaHabil(Date pFecha) throws ParseException {
-		FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha, DateUtils.addDays(pFecha, 1));
-		return !((FechaData) fr.getFeriadosResult().get(0)).getEsFeriado();
-	}
+
 
 	public void calcularTnaIndex() throws Exception {
 		if (this.getFechaIndiceInicio() == null) {
@@ -106,15 +103,7 @@ public class CuponSWAP {
 			throw new Exception("FechaIndiceFin es nula");
 		}
 
-		// le resto 2 dias habiles a fecha de proceso...
-		Date nuevaFechaProceso = this.getFechaProceso();
-		int cantDiasHabilesARestar = 2;
-		while (cantDiasHabilesARestar > 0) {
-			DateUtils.addDays(nuevaFechaProceso, -1);
-			if (esDiaHabil(nuevaFechaProceso)) {
-				cantDiasHabilesARestar--;
-			}
-		}
+
 
 		if (this.getFechaIndiceFin().compareTo(nuevaFechaProceso) <= 0) {
 			// todas las tasas son anteriores (Badlar)
@@ -366,6 +355,14 @@ public class CuponSWAP {
 
 	protected void setFraCliRf(Double fraCliRf) {
 		this.fraCliRf = fraCliRf;
+	}
+
+	public Date getNuevaFechaProceso() {
+		return nuevaFechaProceso;
+	}
+
+	public void setNuevaFechaProceso(Date nuevaFechaProceso) {
+		this.nuevaFechaProceso = nuevaFechaProceso;
 	}
 
 }
