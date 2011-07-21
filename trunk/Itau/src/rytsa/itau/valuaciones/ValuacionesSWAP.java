@@ -250,7 +250,7 @@ public class ValuacionesSWAP extends Valuaciones {
 							}
 
 							if (agendaCupon.getTipoFlujo().equalsIgnoreCase("Fijo")) {
-								
+
 								MyLogger.log("************Parte Fija***********");
 								MyLogger.log("N�mero Operaci�n: "
 										+ parteFija.getNumeroOperacion());
@@ -298,6 +298,10 @@ public class ValuacionesSWAP extends Valuaciones {
 							MyLogger.log("Fecha de Proceso: " + cuponSWAP.getFechaProceso());
 							MyLogger.log("Fecha Vencimiento: " + cuponSWAP.getFechaVencimiento());
 							MyLogger.log("Nueva Fecha de Proceso: " + nuevaFechaProceso);
+							MyLogger.log("Diferencia entre FechaVencimiento y FechaInicio: "
+									+ DateUtils.diferenciaEntreFechas(
+											cuponSWAP.getFechaVencimiento(),
+											cuponSWAP.getFechaInicio()));
 							MyLogger.log("*************************************");
 
 							lista.add(cuponSWAP);
