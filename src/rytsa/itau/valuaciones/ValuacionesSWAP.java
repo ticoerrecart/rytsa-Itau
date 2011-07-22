@@ -208,12 +208,14 @@ public class ValuacionesSWAP extends Valuaciones {
 				if (!agendaCupon.getNumeroOperacion().equals("0")
 						&& DateUtils.stringToDate(agendaCupon.getFechavencimiento(),
 								Valuaciones.DATE_MASK_CUPON_SWAP).after(pFechaProceso)) {
-					if (numeroOperacionAnterior == Integer
-							.valueOf(agendaCupon.getNumeroOperacion())) {
+
+					if (numeroOperacionAnterior == Integer.parseInt(agendaCupon
+							.getNumeroOperacion())) {
 						contCupones++;
 					} else {
 						contCupones = 1;
-						numeroOperacionAnterior = Integer.valueOf(agendaCupon.getNumeroOperacion());
+						numeroOperacionAnterior = Integer
+								.parseInt(agendaCupon.getNumeroOperacion());
 					}
 					try {
 						MyLogger.log("------------------------------------");
