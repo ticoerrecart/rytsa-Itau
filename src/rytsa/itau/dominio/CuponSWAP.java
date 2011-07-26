@@ -119,7 +119,7 @@ public class CuponSWAP {
 				// (FWD)
 				//cambio...
 				Double promedio = DAO.obtenerPromedioBadlarYTasasFWD(
-						DateUtils.addDays(this.getFechaIndiceInicio(), 1), nuevaFechaProceso,
+						this.getFechaIndiceInicio(), nuevaFechaProceso,
 						DateUtils.addDays(nuevaFechaProceso, 1), this.getFechaIndiceFin());
 				this.setTnaIndex(promedio);
 			}
