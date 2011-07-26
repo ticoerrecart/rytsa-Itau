@@ -104,14 +104,19 @@ public class ValuacionesNDF extends Valuaciones {
 			// Valuaciones.DATE_MASK_NOVEDADES));
 			informar.setFechaProceso(DateUtils.dateToString(pFechaProceso,
 					Valuaciones.DATE_MASK_NOVEDADES));
+
+			XStream xs = ValuacionesNDF.getXStream();
+			String xml = xs.toXML(informar);
+			xml = xml.replace("\n", "");
+			
+			String rta = informarValuaciones(xml);
+			
+			MyLogger.log(rta);
+		}else{
+			MyLogger.log("Sin operaciones para valuar ProcesadoCompletamente");
 		}
-		XStream xs = ValuacionesNDF.getXStream();
-		String xml = xs.toXML(informar);
-		xml = xml.replace("\n", "");
 
-		String rta = informarValuaciones(xml);
-
-		MyLogger.log(rta);
+		
 		return informar;
 	}
 
