@@ -300,13 +300,13 @@ public class ValuacionesSWAP extends Valuaciones {
 							MyLogger.log("FraCliRf: " + cuponSWAP.getFraCliRf());
 
 							MyLogger.log("Fecha de Indice Inicio: "
-									+ cuponSWAP.getFechaIndiceInicio());
-							MyLogger.log("Fecha de Indice Fin: " + cuponSWAP.getFechaIndiceFin());
+									+ DateUtils.dateToString(cuponSWAP.getFechaIndiceInicio()));
+							MyLogger.log("Fecha de Indice Fin: " + DateUtils.dateToString(cuponSWAP.getFechaIndiceFin()));
 
-							MyLogger.log("Fecha de Inicio: " + cuponSWAP.getFechaInicio());
-							MyLogger.log("Fecha de Proceso: " + cuponSWAP.getFechaProceso());
-							MyLogger.log("Fecha Vencimiento: " + cuponSWAP.getFechaVencimiento());
-							MyLogger.log("Nueva Fecha de Proceso: " + nuevaFechaProceso);
+							MyLogger.log("Fecha de Inicio: " + DateUtils.dateToString(cuponSWAP.getFechaInicio()));
+							MyLogger.log("Fecha de Proceso: " + DateUtils.dateToString(cuponSWAP.getFechaProceso()));
+							MyLogger.log("Fecha Vencimiento: " + DateUtils.dateToString(cuponSWAP.getFechaVencimiento()));
+							MyLogger.log("Nueva Fecha de Proceso: " + DateUtils.dateToString(nuevaFechaProceso));
 							MyLogger.log("Diferencia entre FechaVencimiento y FechaInicio: "
 									+ DateUtils.diferenciaEntreFechas(
 											cuponSWAP.getFechaVencimiento(),

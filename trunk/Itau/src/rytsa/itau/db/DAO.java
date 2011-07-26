@@ -691,7 +691,7 @@ public class DAO {
 		Integer totalB = 0;
 		try {
 			conn = DatabaseFactory.getConnection();
-			MyLogger.log("Busco las tasas futuras entre: " + DateUtils.dateToString(pfInicioTF) + " y " + DateUtils.dateToString(pfFinTF));
+			MyLogger.log("Busco las Tasas FWD entre: " + DateUtils.dateToString(pfInicioTF) + " y " + DateUtils.dateToString(pfFinTF));
 			ps = conn
 					.prepareStatement("SELECT TASA_FWD FROM Tasa_FWD WHERE FECHA >= ? AND FECHA <= ? AND PLAZO >= 1;");
 			ps.setDate(1,
@@ -704,9 +704,9 @@ public class DAO {
 				sumaTF = sumaTF + tasaFWD;
 				totalTF++;
 			}
-			MyLogger.log("Tasas Encontradas: " + totalTF.toString() + " Sumatoria: " + sumaTF.toString());
+			MyLogger.log("Tasas FWD Encontradas: " + totalTF.toString() + " Sumatoria: " + sumaTF.toString());
 			
-			MyLogger.log("Busco las tasas futuras entre: " + DateUtils.dateToString(pfInicioB) + " y " + DateUtils.dateToString(pfFinB));
+			MyLogger.log("Busco las Tasas de Badlar entre: " + DateUtils.dateToString(pfInicioB) + " y " + DateUtils.dateToString(pfFinB));
 			
 			ps = conn.prepareStatement("SELECT PRICE  FROM " + CALIB_INDEX_H
 					+ " WHERE C_INDEX = 3 AND D_PROC >= ? AND D_PROC <= ?;");
@@ -719,7 +719,7 @@ public class DAO {
 				sumaB = sumaB + precio;
 				totalB++;
 			}
-			MyLogger.log("Tasas Encontradas: " + totalB.toString() + " Sumatoria: " + sumaB.toString());
+			MyLogger.log("Tasas de Badlar Encontradas: " + totalB.toString() + " Sumatoria: " + sumaB.toString());
 		} finally {
 			DatabaseFactory.closeConnection(conn, ps, rs);
 		}
