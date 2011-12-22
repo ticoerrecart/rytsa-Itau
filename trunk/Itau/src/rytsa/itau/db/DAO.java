@@ -375,7 +375,6 @@ public class DAO {
 		Date testigo = null;
 
 		for (int i = 0; i < numRecords; i++) {
-			pTabla.priorRecord();
 			try {
 				Integer plazo = pTabla.getFieldInteger("PLAZO");
 				Double tna = pTabla.getFieldDouble("TNA");
@@ -405,6 +404,7 @@ public class DAO {
 				 * " registros procesados." + tabla); }
 				 */
 				pPs.executeUpdate();
+				pTabla.priorRecord();
 			} catch (NumberFormatException nfe) {
 				MyLogger.log(nfe.toString());
 			}
