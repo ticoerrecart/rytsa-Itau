@@ -375,13 +375,14 @@ public class DAO {
 		Date testigo = null;
 
 		for (int i = 0; i < numRecords; i++) {
+			
 			try {
 				Integer plazo = pTabla.getFieldInteger("PLAZO");
 				Double tna = pTabla.getFieldDouble("TNA");
 				Double fDesc = pTabla.getFieldDouble("F_DESC");
 				Double fAct = pTabla.getFieldDouble("F_ACT");
 				Date dProc = pTabla.getFieldDate("D_PROC");
-
+				
 				if (testigo == null) {
 					testigo = dProc;
 				}
@@ -404,9 +405,11 @@ public class DAO {
 				 * " registros procesados." + tabla); }
 				 */
 				pPs.executeUpdate();
-				pTabla.priorRecord();
+				
 			} catch (NumberFormatException nfe) {
 				MyLogger.log(nfe.toString());
+			} finally{
+				pTabla.priorRecord();
 			}
 		}
 
