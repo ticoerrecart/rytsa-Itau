@@ -19,8 +19,7 @@ public abstract class DateUtils {
 		return convertedDate;
 	}
 
-	public static Date stringToDate(String pFecha, String mask)
-			throws ParseException {
+	public static Date stringToDate(String pFecha, String mask) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(mask);
 		Date convertedDate = dateFormat.parse(pFecha);
 		return convertedDate;
@@ -32,8 +31,7 @@ public abstract class DateUtils {
 		return convertedDate;
 	}
 
-	public static String dateToString(Date pFecha, String mask)
-			throws ParseException {
+	public static String dateToString(Date pFecha, String mask) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(mask);
 		String convertedDate = dateFormat.format(pFecha);
 		return convertedDate;
@@ -76,21 +74,17 @@ public abstract class DateUtils {
 	public static long diferenciaEntreFechas(Date fecha1, Date fecha2) {
 		Double plazo = 0d;
 		if (fecha1.after(fecha2)) {
-			plazo = Math.floor((fecha1.getTime() - fecha2.getTime())
-					/ (MILLISECONDS_PER_DAY));
+			plazo = Math.floor((fecha1.getTime() - fecha2.getTime()) / (MILLISECONDS_PER_DAY));
 		} else {
-			plazo = Math.floor((fecha2.getTime() - fecha1.getTime())
-					/ (MILLISECONDS_PER_DAY));
+			plazo = Math.floor((fecha2.getTime() - fecha1.getTime()) / (MILLISECONDS_PER_DAY));
 		}
 		return Math.round(plazo);
 	}
 
-	public static XMLGregorianCalendar getXMLGregorianCalendar(Date date)
-			throws Exception {
+	public static XMLGregorianCalendar getXMLGregorianCalendar(Date date) throws Exception {
 		GregorianCalendar gcal = new GregorianCalendar();
 		gcal.setTime(date);
-		XMLGregorianCalendar xgcal = DatatypeFactory.newInstance()
-				.newXMLGregorianCalendar(gcal);
+		XMLGregorianCalendar xgcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
 		return xgcal;
 	}
 
@@ -131,4 +125,19 @@ public abstract class DateUtils {
 		return true;
 	}
 
+	/**
+	 * Devuelve una fecha nueva con el día seteado en el último día del mes.
+	 * @param pDate
+	 * @return
+	 */
+	public static Date ultimoDiaDelMes(Date pDate) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(pDate);
+		Integer ultimoDiaMes = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+		cal.set(Calendar.DAY_OF_MONTH, ultimoDiaMes);
+		Date newDate = new Date();
+		newDate.setTime(cal.getTime().getTime());
+		return newDate;
+	}
 }

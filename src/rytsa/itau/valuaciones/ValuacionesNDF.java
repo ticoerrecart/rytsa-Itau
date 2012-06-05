@@ -26,26 +26,43 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ValuacionesNDF extends Valuaciones {
 
-	public static InformarNovedadesValuacionesXmlRequest calcularMTM(
-			Date pFechaProceso) throws Exception {
+	public static InformarNovedadesValuacionesXmlRequest calcularMTM(Date pFechaProceso)
+			throws Exception {
 		RecuperoOperacionesNDFAValuarResponse operacionesNDF = operacionesNDFAValuar(pFechaProceso);
 		if (operacionesNDF != null) {
 			MyLogger.log("Comienza Calculo MTM para NDF para la fecha: "
-					+ DateUtils.dateToString(pFechaProceso)
-					+ ", cantidad de operaciones: "
-					+ operacionesNDF.getRecuperoOperacionesNDFAValuarResult()
-							.size());
+					+ DateUtils.dateToString(pFechaProceso) + ", cantidad de operaciones: "
+					+ operacionesNDF.getRecuperoOperacionesNDFAValuarResult().size());
 		}
 		return calculoMTM(pFechaProceso, operacionesNDF);
+	}
+
+	private static Date calcularFechaProcesoParaPlazoRemanente(Date pFechaProceso,
+			boolean esUltimoDiaHabilDelMes, boolean esUltimoDiaDelMes, Date fUltimoDiaDelMes) {
+		Date fechaProceso = pFechaProceso;
+		if (esUltimoDiaHabilDelMes) {//si es el ultimo dia habil del mes
+			if (!esUltimoDiaDelMes) {//si NO es el ultimo dia del mes
+				//calculo el plazo remanente con el ultimo dia del mes
+				fechaProceso = fUltimoDiaDelMes;
+			}
+		}
+		return fechaProceso;
+	}
+
+	private static Date calcularFechaProceso(Date pFechaProceso, boolean esUltimoDiaHabilDelMes,
+			Date fUltimoDiaDelMes) {
+		Date fechaProceso = pFechaProceso;
+		if (esUltimoDiaHabilDelMes) {//si es el ultimo dia habil del mes
+			fechaProceso = fUltimoDiaDelMes;
+		}
+		return fechaProceso;
 	}
 
 	/*
 	 * CopiÃ© y comprometÃ­ la modificaciÃ³n hecha por Alexis. FE, Ene/2011
 	 */
-	private static InformarNovedadesValuacionesXmlRequest calculoMTM(
-			Date pFechaProceso,
-			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF)
-			throws Exception {
+	private static InformarNovedadesValuacionesXmlRequest calculoMTM(Date pFechaProceso,
+			RecuperoOperacionesNDFAValuarResponse pOperacionesNDF) throws Exception {
 		if (pOperacionesNDF == null
 				|| pOperacionesNDF.getRecuperoOperacionesNDFAValuarResult() == null) {
 			MyLogger.logError("No hay operaciones NDF a Valuar");
@@ -53,18 +70,37 @@ public class ValuacionesNDF extends Valuaciones {
 		}
 		List<Mtm> listaMtm = new ArrayList<Mtm>();
 		if (pOperacionesNDF != null) {
+			//cambio 04/06/2012
+			boolean esUltimoDiaHabilDelMes = esFechaProcesoUltimoDiaHabilDelMes();
+			boolean esUltimoDiaDelMes = esFechaProcesoUltimoDiaDelMes();
+			Date fUltimoDiaDelMes = ultimoDiaDelMes();
+			MyLogger.log("La fecha de Proceso " + pFechaProceso
+					+ " es el último día hábil del mes: " + esUltimoDiaHabilDelMes
+					+ ", es el último día del mes: " + esUltimoDiaDelMes
+					+ " y el último día del mes calculado es: "
+					+ DateUtils.dateToString(fUltimoDiaDelMes));
+
+			Date fechaProcesoParaPlazoRemanente = calcularFechaProcesoParaPlazoRemanente(
+					pFechaProceso, esUltimoDiaHabilDelMes, esUltimoDiaDelMes, fUltimoDiaDelMes);
+			Date fechaProceso = calcularFechaProceso(pFechaProceso, esUltimoDiaHabilDelMes,
+					fUltimoDiaDelMes);
+
+			MyLogger.log("Fecha de Proceso calculada: " + DateUtils.dateToString(fechaProceso));
+			MyLogger.log("Fecha de Proceso para Plazo Remanente: "
+					+ DateUtils.dateToString(fechaProcesoParaPlazoRemanente));
+
 			for (OperacionNDFAValuarData operacionNDF : pOperacionesNDF
 					.getRecuperoOperacionesNDFAValuarResult()) {
 				if (mercadoValido(operacionNDF.getMercado())) {
-					Mtm mtm = new Mtm(pFechaProceso, operacionNDF);
+					Mtm mtm = new Mtm(fechaProceso, fechaProcesoParaPlazoRemanente, operacionNDF,
+							esUltimoDiaHabilDelMes, esUltimoDiaDelMes, fUltimoDiaDelMes);
 					listaMtm.add(mtm);
 				}
 			}
 		}
 
 		MyLogger.log("Filtro las operaciones con mercado vï¿½lido ("
-				+ resourceBundle.getString("mercados.validos")
-				+ ")... total:  " + listaMtm.size());
+				+ resourceBundle.getString("mercados.validos") + ")... total:  " + listaMtm.size());
 		InformarNovedadesValuacionesXmlRequest informar = new InformarNovedadesValuacionesXmlRequest();
 		for (Mtm mtm : listaMtm) {
 			// InformarNovedadesValuaciones.
@@ -76,8 +112,7 @@ public class ValuacionesNDF extends Valuaciones {
 			// ModificaciÃ³n Alexis 17-01-2011
 			// rd.setFecha(DateUtils.dateToString(mtm.getOperacionNDF()
 			// .getFechaProceso(), Valuaciones.DATE_MASK_NOVEDADES));
-			rd.setFecha(DateUtils.dateToString(pFechaProceso,
-					Valuaciones.DATE_MASK_NOVEDADES));
+			rd.setFecha(DateUtils.dateToString(pFechaProceso, Valuaciones.DATE_MASK_NOVEDADES));
 
 			rd.setIdOperacion(mtm.getOperacionNDF().getIDOperacion());
 			rd.setMonedaValuacion(1);
@@ -108,15 +143,14 @@ public class ValuacionesNDF extends Valuaciones {
 			XStream xs = ValuacionesNDF.getXStream();
 			String xml = xs.toXML(informar);
 			xml = xml.replace("\n", "");
-			
+
 			String rta = informarValuaciones(xml);
-			
+
 			MyLogger.log(rta);
-		}else{
+		} else {
 			MyLogger.log("Sin operaciones para valuar ProcesadoCompletamente");
 		}
 
-		
 		return informar;
 	}
 
@@ -137,8 +171,7 @@ public class ValuacionesNDF extends Valuaciones {
 		xs.registerConverter(new MiDoubleConverter());
 		String formatoFecha = resourceBundle
 				.getString("servicios.RecuperoOperacionesNDFAValuar.dateMaskRespuesta");
-		MyLogger.log("Formato de fecha utilizado para XStream en NDF :'"
-				+ formatoFecha + "'");
+		MyLogger.log("Formato de fecha utilizado para XStream en NDF :'" + formatoFecha + "'");
 		xs.registerConverter(new DateConverter(formatoFecha, new String[0]));
 		xs.alias("response", RecuperoOperacionesNDFAValuarResponse.class);
 		xs.alias("Operacion", OperacionNDFAValuarData.class);
@@ -146,15 +179,13 @@ public class ValuacionesNDF extends Valuaciones {
 		xs.alias("InformarNovedadesValuacionesXmlRequest",
 				InformarNovedadesValuacionesXmlRequest.class);
 		xs.alias("RequestData", RequestData.class);
-		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class,
-				"requestDataList");
+		xs.addImplicitCollection(InformarNovedadesValuacionesXmlRequest.class, "requestDataList");
 
 		// Nuevos alias para WS_
 		xs.alias("respuesta", WSRecuperarOperacionesNDFAValuarResponse.class);
 		xs.alias("RecuperarOperacionesNDFAValuarResponse",
 				RecuperoOperacionesNDFAValuarResponse.class);
-		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class,
-				"cod-retorno");
+		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class, "cod-retorno");
 		xs.omitField(WSRecuperarOperacionesNDFAValuarResponse.class, "mensajes");
 		xs.alias("OperacionNDFAValuarData", OperacionNDFAValuarData.class);
 		xs.aliasField("RecuperarOperacionesNDFAValuarResult",
@@ -165,8 +196,7 @@ public class ValuacionesNDF extends Valuaciones {
 	/*
 	 * Recupera las Operaciones NDF a Valuar utilizando ESB.
 	 */
-	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(
-			Date pFechaProceso) {
+	private static RecuperoOperacionesNDFAValuarResponse operacionesNDFAValuar(Date pFechaProceso) {
 		XStream xs = getXStream();
 
 		RecuperoOperacionesNDFAValuarResponse salida = null;
@@ -190,20 +220,16 @@ public class ValuacionesNDF extends Valuaciones {
 
 				esbRequest = client.createRequest(servicio);
 				esbRequest.setParameter(nombreParamIdSession, idSession);
-				esbRequest
-						.setParameter(nombreParamFechaProceso, DateUtils
-								.dateToString(pFechaProceso, maskFechaProceso));
+				esbRequest.setParameter(nombreParamFechaProceso,
+						DateUtils.dateToString(pFechaProceso, maskFechaProceso));
 
 				client.execute(esbRequest, esbResponse);
 				sRta = esbResponse.getResult();
 				if (sRta != null && !sRta.startsWith("<error")) {
-					salida = ProviderDTO
-							.getRecuperoOperacionesNDFAValuarResponse(xs
-									.fromXML(sRta));
+					salida = ProviderDTO.getRecuperoOperacionesNDFAValuarResponse(xs.fromXML(sRta));
 					MyLogger.log("RESPUESTA XML operacionesNDFAValuar: " + sRta);
 				} else {
-					MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: "
-							+ sRta);
+					MyLogger.logError("RESPUESTA XML operacionesNDFAValuar: " + sRta);
 				}
 			} else {
 				MyLogger.logError("No se pudo obtener el IdSession para recuperar las operacionesNDFAValuar");

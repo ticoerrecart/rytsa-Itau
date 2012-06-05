@@ -12,9 +12,6 @@ import rytsa.itau.db.DAO;
 import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.Valuaciones;
-import rytsa.itau.valuaciones.ValuacionesSWAP;
-import rytsa.itau.valuaciones.dto.FechaData;
-import rytsa.itau.valuaciones.dto.FeriadosResponse;
 
 public class TasaFWD {
 
@@ -29,63 +26,28 @@ public class TasaFWD {
 	private TasaFWD tasaParafechaPublicacionVencimiento;
 
 	private Double tasaFWD;
-	
+
 	private long plazo;
 
-	private List<FechaData> diasHabiles;
+	//private List<FechaData> diasHabiles;
 
-	public TasaFWD(List<FechaData> diasHabiles) {
+	/*public TasaFWD(List<FechaData> diasHabiles) {
 		this.diasHabiles = diasHabiles;
+	}*/
+
+	public TasaFWD() {
 	}
 
-	public void calcularFactorDeActualizacion(Date pFechaProceso, Date pFecha)
-			throws SQLException, Exception {
-		long plazo = DateUtils.diferenciaEntreFechas(pFecha, pFechaProceso);
+	public void calcularFactorDeActualizacion(Date pFechaProceso, Date pfechaProcesoPlazoRemanente,
+			Date pFecha) throws SQLException, Exception {
+		long plazo = DateUtils.diferenciaEntreFechas(pFecha, pfechaProcesoPlazoRemanente);
 		this.setPlazo(plazo);
 		this.setFechaPublicacion(pFecha);
-		this.setFactorDeActualizacion(DAO
-				.obtenerFactorAct(pFechaProceso, plazo));
-		MyLogger.log("Fecha de Proceso:"
-				+ DateUtils.dateToString(pFechaProceso));
+		this.setFactorDeActualizacion(DAO.obtenerFactorAct(pFechaProceso, plazo));
+		MyLogger.log("Fecha de Proceso:" + DateUtils.dateToString(pFechaProceso));
 		MyLogger.log("Fecha de Publicación:" + DateUtils.dateToString(pFecha));
 		MyLogger.log("Plazo:" + plazo);
-		MyLogger.log("Factor De Actualizacion: "
-				+ this.getFactorDeActualizacion());
-	}
-
-	private boolean esDiaHabil(Date pFecha) throws ParseException {
-		FechaData fechaData = null;
-
-		for (FechaData fd : this.diasHabiles) {
-			if (DateUtils.dateToString(
-					DateUtils.stringToDate(fd.getFecha(),
-							Valuaciones.DATE_MASK_RTA_FERIADOS),
-					Valuaciones.DATE_MASK_RTA_FERIADOS).equals(
-					DateUtils.dateToString(pFecha,
-							Valuaciones.DATE_MASK_RTA_FERIADOS))) {
-				fechaData = fd;
-				break;
-			}
-		}
-
-		if (fechaData == null) {
-			Date primerDia = DateUtils.stringToDate(this.diasHabiles.get(0)
-					.getFecha(), Valuaciones.DATE_MASK_RTA_FERIADOS);
-			Date ultimoDia = DateUtils.stringToDate(
-					this.diasHabiles.get(this.diasHabiles.size() - 1)
-							.getFecha(), Valuaciones.DATE_MASK_RTA_FERIADOS);
-			if (pFecha.after(ultimoDia) || pFecha.before(primerDia)) {
-				FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha,
-						DateUtils.addDays(pFecha, 1));
-				return !((FechaData) fr.getFeriadosResult().get(0))
-						.getEsFeriado();
-
-			} else {
-				return false;
-			}
-		}
-
-		return true;
+		MyLogger.log("Factor De Actualizacion: " + this.getFactorDeActualizacion());
 	}
 
 	private Date addDiasHabiles(Date pFecha, int pDays) throws ParseException {
@@ -97,7 +59,7 @@ public class TasaFWD {
 		pDays = Math.abs(pDays);
 		while (pDays != 0) {
 			fecha = DateUtils.addDays(fecha, factor);
-			if (esDiaHabil(fecha)) {
+			if (Valuaciones.esDiaHabil(fecha)) {
 				pDays--;
 			}
 		}
@@ -110,8 +72,7 @@ public class TasaFWD {
 			throw new Exception("fechaPublicacion es nula");
 		}
 		this.setFechaMercado(addDiasHabiles(this.getFechaPublicacion(), -2));
-		MyLogger.log("Fecha de Mercado: "
-				+ DateUtils.dateToString(this.getFechaMercado()));
+		MyLogger.log("Fecha de Mercado: " + DateUtils.dateToString(this.getFechaMercado()));
 	}
 
 	public void calcularFechaVencimientoPzoFijo() throws Exception {
@@ -121,7 +82,7 @@ public class TasaFWD {
 		}
 		Date fecha = DateUtils.addDays(this.getFechaMercado(), 30);
 
-		while (!esDiaHabil(fecha) || DateUtils.esFinDeSemana(fecha)) {
+		while (!Valuaciones.esDiaHabil(fecha) || DateUtils.esFinDeSemana(fecha)) {
 			fecha = DateUtils.addDays(fecha, 1);
 		}
 		this.setFechaVencimientoPlazoFijo(fecha);
@@ -130,23 +91,19 @@ public class TasaFWD {
 
 	}
 
-	public void calcularFechaPublicacionVencimiento(List<TasaFWD> tasas)
-			throws Exception {
+	public void calcularFechaPublicacionVencimiento(List<TasaFWD> tasas) throws Exception {
 		if (fechaVencimientoPlazoFijo == null) {
 			MyLogger.logError("fechaVencimientoPlazoFijo es nula");
 			throw new Exception("fechaVencimientoPlazoFijo es nula");
 		}
 		Date fecha = addDiasHabiles(this.getFechaVencimientoPlazoFijo(), 2);
 
-		MyLogger.log("Fecha de Publicacion Vencimiento: "
-				+ DateUtils.dateToString(fecha));
+		MyLogger.log("Fecha de Publicacion Vencimiento: " + DateUtils.dateToString(fecha));
 
-		TasaFWD tasaFwd = (TasaFWD) CollectionUtils
-				.find(tasas, new BeanPropertyValueEqualsPredicate(
-						"fechaPublicacion", fecha));
+		TasaFWD tasaFwd = (TasaFWD) CollectionUtils.find(tasas,
+				new BeanPropertyValueEqualsPredicate("fechaPublicacion", fecha));
 		if (tasaFwd == null) {
-			MyLogger.logError("No se encontró tasa fwd para fecha:"
-					+ DateUtils.dateToString(fecha));
+			MyLogger.logError("No se encontró tasa fwd para fecha:" + DateUtils.dateToString(fecha));
 			throw new Exception("No se encontró tasa fwd para fecha:"
 					+ DateUtils.dateToString(fecha));
 		}
@@ -157,26 +114,21 @@ public class TasaFWD {
 
 	public void calcularTasaFWD() throws ParseException {
 
-		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(),
-				this.getTasaParafechaPublicacionVencimiento()
-						.getFechaPublicacion());
+		long N = DateUtils.diferenciaEntreFechas(this.getFechaPublicacion(), this
+				.getTasaParafechaPublicacionVencimiento().getFechaPublicacion());
 
-		MyLogger.log("Fecha de Publicacion: "
-				+ DateUtils.dateToString(this.getFechaPublicacion()));
+		MyLogger.log("Fecha de Publicacion: " + DateUtils.dateToString(this.getFechaPublicacion()));
 		MyLogger.log("Fecha de Publicacion de Tasa FWD de Vencimiento: "
-				+ DateUtils.dateToString(this
-						.getTasaParafechaPublicacionVencimiento()
+				+ DateUtils.dateToString(this.getTasaParafechaPublicacionVencimiento()
 						.getFechaPublicacion()));
 		MyLogger.log("N: " + N);
 
-		this.setTasaFWD((((this.getTasaParafechaPublicacionVencimiento()
-				.getFactorDeActualizacion() / this.getFactorDeActualizacion()) - 1) * 365 / N) * 100);
+		this.setTasaFWD((((this.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion() / this
+				.getFactorDeActualizacion()) - 1) * 365 / N) * 100);
 
-		MyLogger.log("Factor de Actualizacion: "
-				+ this.getFactorDeActualizacion());
+		MyLogger.log("Factor de Actualizacion: " + this.getFactorDeActualizacion());
 		MyLogger.log("Factor de Actualizacion de Tasa FWD de Vencimiento: "
-				+ this.getTasaParafechaPublicacionVencimiento()
-						.getFactorDeActualizacion());
+				+ this.getTasaParafechaPublicacionVencimiento().getFactorDeActualizacion());
 		MyLogger.log("Tasa FWD: " + getTasaFWD());
 
 	}
@@ -225,8 +177,7 @@ public class TasaFWD {
 		return tasaParafechaPublicacionVencimiento;
 	}
 
-	private void setTasaParafechaPublicacionVencimiento(
-			TasaFWD tasaParafechaPublicacionVencimiento) {
+	private void setTasaParafechaPublicacionVencimiento(TasaFWD tasaParafechaPublicacionVencimiento) {
 		this.tasaParafechaPublicacionVencimiento = tasaParafechaPublicacionVencimiento;
 	}
 
