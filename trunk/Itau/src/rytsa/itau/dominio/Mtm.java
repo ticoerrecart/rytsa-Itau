@@ -27,15 +27,9 @@ public class Mtm {
 
 	private OperacionNDFAValuarData operacionNDF;
 
-	public Mtm(Date pFechaProceso, Date pFechaProcesoPlazoRemanente,
-			OperacionNDFAValuarData pOperacionNDF, boolean esUltimoDiaHabilDelMes,
-			boolean esUltimoDiaDelMes, Date fUltimoDiaDelMes) throws Exception {
-
+	public Mtm(Date pFechaProceso, OperacionNDFAValuarData pOperacionNDF)
+			throws Exception {
 		this.setOperacionNDF(pOperacionNDF);
-
-		//cambio 04/06/2012
-		calcularPlazoRemanente(pFechaProcesoPlazoRemanente, pOperacionNDF, esUltimoDiaHabilDelMes,
-				esUltimoDiaDelMes, fUltimoDiaDelMes);
 
 		this.setTipoCambioMoneda(DAO.obtenerTipoCambioMoneda(pFechaProceso,
 				DAO.obtenerMoneda(pOperacionNDF.getMoneda())));
@@ -52,11 +46,21 @@ public class Mtm {
 			throw new Exception("tipoCambioMoneda2 es nulo");
 		}
 
-		this.setCurvaMoneda(DAO.obtenerFactorDesc(pFechaProceso, this.getPlazoRemanente(),
-				FileUtils.getFileName(DAO.obtenerFile(pOperacionNDF.getMoneda()))));
+		this.setPlazoRemanente(DateUtils.diferenciaEntreFechas(
+				pOperacionNDF.getFechaVencimiento(), pFechaProceso));
 
-		this.setCurvaMoneda2(DAO.obtenerFactorDesc(pFechaProceso, this.getPlazoRemanente(),
-				FileUtils.getFileName(DAO.obtenerFile(pOperacionNDF.getMonedaLiquidacion()))));
+		if (this.getPlazoRemanente() == null) {
+			MyLogger.logError("plazoRemanente es nulo");
+			throw new Exception("plazoRemanente es nulo");
+		}
+
+		this.setCurvaMoneda(DAO.obtenerFactorDesc(pFechaProceso, this
+				.getPlazoRemanente(), FileUtils.getFileName(DAO
+				.obtenerFile(pOperacionNDF.getMoneda()))));
+
+		this.setCurvaMoneda2(DAO.obtenerFactorDesc(pFechaProceso, this
+				.getPlazoRemanente(), FileUtils.getFileName(DAO
+				.obtenerFile(pOperacionNDF.getMonedaLiquidacion()))));
 
 		this.calcularFwd();
 
@@ -72,27 +76,8 @@ public class Mtm {
 
 	}
 
-	private void calcularPlazoRemanente(Date pFechaProceso, OperacionNDFAValuarData pOperacionNDF,
-			boolean esUltimoDiaHabilDelMes, boolean esUltimoDiaDelMes, Date fUltimoDiaDelMes)
-			throws Exception {
-		Date fechaProceso = pFechaProceso;
-		if (esUltimoDiaHabilDelMes) {//si es el ultimo dia habil del mes
-			if (!esUltimoDiaDelMes) {//si NO es el ultimo dia del mes
-				//calculo el plazo remanente con el ultimo dia del mes
-				fechaProceso = fUltimoDiaDelMes;
-			}
-		}
-
-		this.setPlazoRemanente(DateUtils.diferenciaEntreFechas(pOperacionNDF.getFechaVencimiento(),
-				fechaProceso));
-
-		if (this.getPlazoRemanente() == null) {
-			MyLogger.logError("plazoRemanente es nulo");
-			throw new Exception("plazoRemanente es nulo");
-		}
-	}
-
-	public void calcularFwd() throws NumberFormatException, SQLException, Exception {
+	public void calcularFwd() throws NumberFormatException, SQLException,
+			Exception {
 		this.setFwd((this.getTipoCambioMoneda() / this.getTipoCambioMoneda2())
 				* (this.getCurvaMoneda() / this.getCurvaMoneda2()));
 	}
@@ -101,8 +86,8 @@ public class Mtm {
 		// CantidadVN * (FWD-Precio) * Curva Moneda 2 (Plazo Remanente) * Tipo
 		// de Cambio Moneda 2
 		this.setMtm(this.getOperacionNDF().getCantidadVN()
-				* (this.getFwd() - this.getOperacionNDF().getPrecio()) * this.getCurvaMoneda2()
-				* this.getTipoCambioMoneda2());
+				* (this.getFwd() - this.getOperacionNDF().getPrecio())
+				* this.getCurvaMoneda2() * this.getTipoCambioMoneda2());
 	}
 
 	public Long getPlazoRemanente() {

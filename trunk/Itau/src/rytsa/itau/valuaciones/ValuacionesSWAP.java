@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +16,11 @@ import rytsa.itau.utils.DateUtils;
 import rytsa.itau.utils.MiDoubleConverter;
 import rytsa.itau.utils.MyLogger;
 import rytsa.itau.valuaciones.dto.FechaData;
+import rytsa.itau.valuaciones.dto.FeriadosResponse;
 import rytsa.itau.valuaciones.dto.InformarNovedadesValuacionesXmlRequest;
 import rytsa.itau.valuaciones.dto.RequestData;
 import rytsa.itau.valuaciones.dto.swap.AgendaCuponOperacioneSWAPAValuarData;
+import rytsa.itau.valuaciones.dto.swap.DisponibilizacionFeriadosXmlRequestData;
 import rytsa.itau.valuaciones.dto.swap.OperacionSWAPAValuarData;
 import rytsa.itau.valuaciones.dto.swap.RecuperarAgendaCuponesOperacionesSWAPAValuarResponse;
 import rytsa.itau.valuaciones.dto.swap.RecuperarOperacionesSWAPAValuarResponse;
@@ -74,10 +77,9 @@ public class ValuacionesSWAP extends Valuaciones {
 				+ operacionesParteFija.size() + "  Partes Variables : "
 				+ operacionesParteVariable.size());
 
-		//List<FeriadosResponse> lista = diasHabiles(pFechaProceso);
+		List<FeriadosResponse> lista = diasHabiles(pFechaProceso);
 
-		//construccionTasasFWD(listaDiasHabiles.get(0), listaDiasHabiles.get(1), pFechaProceso);
-		construccionTasasFWD(pFechaProceso);
+		construccionTasasFWD(lista.get(0), lista.get(1), pFechaProceso);
 
 		MyLogger.log("Comienza Armado de Agenda para Calculo de MTM");
 		armarAgendaCuponOperaciones(agendaSWAP(), pFechaProceso);
@@ -178,11 +180,10 @@ public class ValuacionesSWAP extends Valuaciones {
 		return listaNovedadesRD;
 	}
 
-	/*	private static boolean esDiaHabil(Date pFecha) throws ParseException {
-			FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha, DateUtils.addDays(pFecha, 1));
-			return !((FechaData) fr.getFeriadosResult().get(0)).getEsFeriado();
-		}
-	*/
+	private static boolean esDiaHabil(Date pFecha) throws ParseException {
+		FeriadosResponse fr = ValuacionesSWAP.getDias(pFecha, DateUtils.addDays(pFecha, 1));
+		return !((FechaData) fr.getFeriadosResult().get(0)).getEsFeriado();
+	}
 
 	private static void armarAgendaCuponOperaciones(
 			List<AgendaCuponOperacioneSWAPAValuarData> pOperacionesSWAP, Date pFechaProceso)
@@ -192,7 +193,7 @@ public class ValuacionesSWAP extends Valuaciones {
 		int cantDiasHabilesARestar = 2;
 		while (cantDiasHabilesARestar > 0) {
 			nuevaFechaProceso = DateUtils.addDays(nuevaFechaProceso, -1);
-			if (Valuaciones.esDiaHabil(nuevaFechaProceso)) {
+			if (esDiaHabil(nuevaFechaProceso)) {
 				cantDiasHabilesARestar--;
 			}
 		}
@@ -300,17 +301,12 @@ public class ValuacionesSWAP extends Valuaciones {
 
 							MyLogger.log("Fecha de Indice Inicio: "
 									+ DateUtils.dateToString(cuponSWAP.getFechaIndiceInicio()));
-							MyLogger.log("Fecha de Indice Fin: "
-									+ DateUtils.dateToString(cuponSWAP.getFechaIndiceFin()));
+							MyLogger.log("Fecha de Indice Fin: " + DateUtils.dateToString(cuponSWAP.getFechaIndiceFin()));
 
-							MyLogger.log("Fecha de Inicio: "
-									+ DateUtils.dateToString(cuponSWAP.getFechaInicio()));
-							MyLogger.log("Fecha de Proceso: "
-									+ DateUtils.dateToString(cuponSWAP.getFechaProceso()));
-							MyLogger.log("Fecha Vencimiento: "
-									+ DateUtils.dateToString(cuponSWAP.getFechaVencimiento()));
-							MyLogger.log("Nueva Fecha de Proceso: "
-									+ DateUtils.dateToString(nuevaFechaProceso));
+							MyLogger.log("Fecha de Inicio: " + DateUtils.dateToString(cuponSWAP.getFechaInicio()));
+							MyLogger.log("Fecha de Proceso: " + DateUtils.dateToString(cuponSWAP.getFechaProceso()));
+							MyLogger.log("Fecha Vencimiento: " + DateUtils.dateToString(cuponSWAP.getFechaVencimiento()));
+							MyLogger.log("Nueva Fecha de Proceso: " + DateUtils.dateToString(nuevaFechaProceso));
 							MyLogger.log("Diferencia entre FechaVencimiento y FechaInicio: "
 									+ DateUtils.diferenciaEntreFechas(
 											cuponSWAP.getFechaVencimiento(),
@@ -375,6 +371,17 @@ public class ValuacionesSWAP extends Valuaciones {
 		return xs;
 	}
 
+	public static XStream getXStreamFeriados() {
+		XStream xs = new XStream(new DomDriver());
+		xs.alias("respuesta", FeriadosResponse.class);
+		xs.alias("DisponibilizacionFeriadosXmlResponseData", FechaData.class);
+		xs.omitField(FeriadosResponse.class, "cod-retorno");
+		xs.omitField(FeriadosResponse.class, "mensajes");
+		xs.alias("DisponibilizacionFeriadosXmlRequestData",
+				DisponibilizacionFeriadosXmlRequestData.class);
+		return xs;
+	}
+
 	public static XStream getXStreamInformarNovedades() {
 		XStream xs = new XStream(new DomDriver());
 		xs.registerConverter(new MiDoubleConverter());
@@ -406,6 +413,104 @@ public class ValuacionesSWAP extends Valuaciones {
 		xs.aliasField("RecuperarAgendaCuponesOperacionesSWAPAValuarResult",
 				RecuperarAgendaCuponesOperacionesSWAPAValuarResponse.class, "Swaps");
 		return xs;
+	}
+
+	/**
+	 * Busca los dias que obtiene del properties. 5400.
+	 * 
+	 * @param pFechaProceso
+	 * @return
+	 * @throws ParseException
+	 */
+	public static List<FeriadosResponse> diasHabiles(Date pFechaProceso) throws ParseException {
+		List<FeriadosResponse> lista = new ArrayList<FeriadosResponse>();
+
+		FeriadosResponse fr = new FeriadosResponse();
+		FeriadosResponse frTodos = new FeriadosResponse();
+		lista.add(fr);
+		lista.add(frTodos);
+
+		int diasHabiles = 0;
+		Date fechaDesde = pFechaProceso;
+		Date fechaHasta = null;
+
+		fechaHasta = DateUtils.addDays(fechaDesde, DIAS * 2);
+		FeriadosResponse feriadosResponse = getDias(DateUtils.addDays(fechaDesde, -60), fechaHasta);
+
+		// esto es para que me compare en vez de 5/5 , 4/5 a las 16:00 para que
+		// no de problema de gmt
+		fechaDesde = DateUtils.addHours(DateUtils.addDays(fechaDesde, -1), 16);
+
+		if (feriadosResponse != null) {
+			Iterator<FechaData> itr = feriadosResponse.getFeriadosResult().iterator();
+			while (itr.hasNext()) {
+				FechaData fechaData = itr.next();
+				if (!fechaData.getEsFeriado()) {// si es habil
+					frTodos.addFechaData(fechaData);
+					if (fechaDesde.before(DateUtils.stringToDate(fechaData.getFecha(),
+							Valuaciones.DATE_MASK_RTA_FERIADOS)) && diasHabiles < DIAS) {
+						fr.addFechaData(fechaData);
+						diasHabiles++;
+					}
+				}
+			}
+
+			MyLogger.log("Dias Habiles. Total: " + fr.getFeriadosResult().size());
+			MyLogger.log("Dias Habiles Necesarios Para el calculo. Total: "
+					+ frTodos.getFeriadosResult().size());
+		}
+
+		return lista;
+	}
+
+	public static FeriadosResponse getDias(Date pFechaDesde, Date pFechaHasta) {
+		XStream xs = getXStreamFeriados();
+
+		String idSession = Valuaciones.getIdSession();
+
+		FeriadosResponse fr = null;
+		ESBClient client = null;
+		ESBRequest esbRequest = null;
+		ESBResponse esbResponse = new ESBResponse();
+		try {
+			client = ESBClientFactory.createInstance(MODO, HOST, PUERTO);
+			esbRequest = client.createRequest(resourceBundle
+					.getString("servicios.Feriados.nombreServicio"));
+			esbRequest.setParameter(resourceBundle.getString("servicios.Feriados.paramIdSession"),
+					idSession);
+
+			DisponibilizacionFeriadosXmlRequestData feriadosXml = new DisponibilizacionFeriadosXmlRequestData();
+			feriadosXml.setFechaIni(pFechaDesde);
+			feriadosXml.setFechaFin(pFechaHasta);
+			feriadosXml.setIdCalendario(resourceBundle
+					.getString("servicios.Feriados.idCalendarioValue"));
+
+			String xml = xs.toXML(feriadosXml);
+			xml = xml.replace("\n", "");
+			esbRequest.setParameter(resourceBundle.getString("servicios.Feriados.paramXmlRequest"),
+					xml);
+
+			client.execute(esbRequest, esbResponse);
+
+			MyLogger.log("Se ejecuto ESB de Feriados");
+
+			String sRtaFeriados = esbResponse.getResult();
+			if (sRtaFeriados != null && !sRtaFeriados.startsWith("<error")) {
+				fr = (FeriadosResponse) xs.fromXML(sRtaFeriados);
+			} else {
+				MyLogger.logError("RESPUESTA XML Feriados: " + sRtaFeriados);
+			}
+		} catch (ESBClientException e) {
+			MyLogger.logError(e.toString());
+		} catch (Exception e) {
+			MyLogger.logError(e.toString());
+		} finally {
+			if (client != null) {
+				client.close();
+			}
+		}
+
+		return fr;
 	}
 
 	public static List<AgendaCuponOperacioneSWAPAValuarData> agendaSWAP() {
@@ -512,49 +617,21 @@ public class ValuacionesSWAP extends Valuaciones {
 		}
 	}
 
-	private static Date calcularFechaProcesoParaPlazoRemanente(Date pFechaProceso,
-			boolean esUltimoDiaHabilDelMes, boolean esUltimoDiaDelMes, Date fUltimoDiaDelMes) {
-		Date fechaProceso = pFechaProceso;
-		if (esUltimoDiaHabilDelMes) {//si es el ultimo dia habil del mes
-			if (!esUltimoDiaDelMes) {//si NO es el ultimo dia del mes
-				//calculo el plazo remanente con el ultimo dia del mes
-				fechaProceso = fUltimoDiaDelMes;
-			}
-		}
-		return fechaProceso;
-	}
-
-	//(FeriadosResponse pDiasHabilesACalcular,
-	//FeriadosResponse pDiasHabilesParaTasaFWD, Date pFechaProceso)
-	private static void construccionTasasFWD(Date pFechaProceso) throws ParseException {
-		//cambio 04/06/2012
-		boolean esUltimoDiaHabilDelMes = esFechaProcesoUltimoDiaHabilDelMes();
-		boolean esUltimoDiaDelMes = esFechaProcesoUltimoDiaDelMes();
-		Date fUltimoDiaDelMes = ultimoDiaDelMes();
-		MyLogger.log("La fecha de Proceso " + pFechaProceso + " es el último día hábil del mes: "
-				+ esUltimoDiaHabilDelMes + ", es el último día del mes: " + esUltimoDiaDelMes
-				+ " y el último día del mes calculado es: "
-				+ DateUtils.dateToString(fUltimoDiaDelMes));
-
-		Date fechaProcesoParaPlazoRemanente = calcularFechaProcesoParaPlazoRemanente(pFechaProceso,
-				esUltimoDiaHabilDelMes, esUltimoDiaDelMes, fUltimoDiaDelMes);
-		MyLogger.log("Fecha de Proceso para Plazo Remanente: "
-				+ DateUtils.dateToString(fechaProcesoParaPlazoRemanente));
+	private static void construccionTasasFWD(FeriadosResponse pDiasHabilesACalcular,
+			FeriadosResponse pDiasHabilesParaTasaFWD, Date pFechaProceso) {
 
 		List<TasaFWD> tasasFwd = new ArrayList<TasaFWD>();
 		// Double plazo = null;
-		for (FechaData fechaData : Valuaciones.listaDiasHabilesParaCalculo) {
+		for (FechaData fechaData : pDiasHabilesACalcular.getFeriadosResult()) {
 			try {
 
-				//TasaFWD tasa = new TasaFWD(pDiasHabilesParaTasaFWD.getFeriadosResult());
-				TasaFWD tasa = new TasaFWD();
+				TasaFWD tasa = new TasaFWD(pDiasHabilesParaTasaFWD.getFeriadosResult());
 				// 1) Armado de fechas PUBLIC_T + Factor de Actualizaciï¿½n
 				// (Obtenido de Cupon_4).
 				MyLogger.log("************************************");
 				MyLogger.log("Calcular Factor de Actualizacion...");
-				tasa.calcularFactorDeActualizacion(pFechaProceso, fechaProcesoParaPlazoRemanente,
-						DateUtils.stringToDate(fechaData.getFecha(),
-								Valuaciones.DATE_MASK_RTA_FERIADOS));
+				tasa.calcularFactorDeActualizacion(pFechaProceso, DateUtils.stringToDate(
+						fechaData.getFecha(), Valuaciones.DATE_MASK_RTA_FERIADOS));
 				// 2) Obtener fechas de mercado (Fecha ï¿½Tï¿½)
 				MyLogger.log("Calcular Fecha de Mercado...");
 				tasa.calcularFechaMercado();
